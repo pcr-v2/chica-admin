@@ -1,0 +1,92 @@
+"use client";
+
+import CancelIcon from "@mui/icons-material/Cancel";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {
+  InputAdornment,
+  styled,
+  TextField,
+  TextFieldProps,
+} from "@mui/material";
+import { useState } from "react";
+
+type IProps = TextFieldProps & {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export default function Input(props: IProps) {
+  const { type = "text", value, onChange } = props;
+
+  const [showPassword, setShowPassword] = useState(type !== "password");
+
+  function createSyntheticEvent(value: string, id: string) {
+    return {
+      target: { value, id } as HTMLInputElement,
+    } as React.ChangeEvent<HTMLInputElement>;
+  }
+
+  return (
+    <StyledTextField
+      {...props}
+      variant="filled"
+      type={type === "password" && !showPassword ? "password" : "text"}
+      value={value}
+      onChange={onChange}
+      autoComplete="off"
+      slotProps={{
+        inputLabel: { shrink: true },
+        input: {
+          disableUnderline: true,
+          endAdornment: value.length > 0 && (
+            <InputAdornment position="end">
+              {type !== "password" && (
+                <Cancel
+                  onClick={() => onChange(createSyntheticEvent("", props.id!))}
+                />
+              )}
+
+              {type === "password" &&
+                (!showPassword ? (
+                  <Eye onClick={() => setShowPassword(true)} />
+                ) : (
+                  <OffEye onClick={() => setShowPassword(false)} />
+                ))}
+            </InputAdornment>
+          ),
+        },
+      }}
+    />
+  );
+}
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& input.MuiInputBase-input": {
+    fontSize: 16,
+    padding: "12px",
+    fontFamily: "spoqa",
+  },
+  "& .MuiFilledInput-root": {
+    borderRadius: 4,
+    overflow: "hidden",
+    border: "1px solid",
+    borderColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.3)" : "#2D3843",
+    backgroundColor: "transparent",
+    transition: theme.transitions.create([
+      "box-shadow",
+      "border-color",
+      "background-color",
+    ]),
+    "&:hover": { backgroundColor: "transparent" },
+    "&.Mui-focused": {
+      borderWidth: "1px",
+      backgroundColor: "transparent",
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}));
+
+const Cancel = styled(CancelIcon)(() => ({ cursor: "pointer" }));
+const Eye = styled(VisibilityIcon)(() => ({ cursor: "pointer" }));
+const OffEye = styled(VisibilityOffIcon)(() => ({ cursor: "pointer" }));

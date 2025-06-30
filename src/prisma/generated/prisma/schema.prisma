@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_DATABASE_URL")
+}
+
+model Brushed {
+  id             Int                     @id @default(autoincrement())
+  student_id     String?                 @db.VarChar(36)
+  brushed_at     DateTime?               @db.DateTime(0)
+  brushed_status Brushed_brushed_status? @default(No)
+  Student        Student?                @relation(fields: [student_id], references: [student_id], onDelete: Cascade, map: "Brushed_ibfk_1")
+
+  @@index([student_id], map: "student_id")
+}
+
+model Contents {
+  id              Int      @id @default(autoincrement())
+  school_id       String?  @db.VarChar(36)
+  file_type       String?  @db.VarChar(50)
+  file_name       String?  @db.VarChar(255)
+  seq             Int?
+  contents_status Boolean? @default(true)
+  School          School?  @relation(fields: [school_id], references: [school_id], onDelete: Cascade, map: "Contents_ibfk_1")
+
+  @@index([school_id], map: "school_id")
+}
+
+model Holiday {
+  id             Int       @id @default(autoincrement())
+  holiday_name   String?   @db.VarChar(100)
+  holiday_at     DateTime? @db.Date
+  hoilday_status Boolean?  @default(true)
+}
+
+model Schedules {
+  id              Int       @id @default(autoincrement())
+  school_id       String?   @db.VarChar(36)
+  schedule_name   String?   @db.VarChar(100)
+  schedule_target String?   @db.VarChar(10)
+  schedule_at     DateTime? @db.Date
+  schedule_status Boolean?  @default(true)
+  School          School?   @relation(fields: [school_id], references: [school_id], onDelete: Cascade, map: "Schedules_ibfk_1")
+
+  @@index([school_id], map: "school_id")
+}
+
+model School {
+  id            Int         @id @default(autoincrement())
+  school_id     String?     @unique(map: "school_id") @db.VarChar(36)
+  school_name   String      @db.VarChar(100)
+  login_id      String      @db.VarChar(50)
+  login_pw      String      @db.VarChar(255)
+  manager_name  String      @db.VarChar(100)
+  manager_phone String      @db.VarChar(20)
+  manager_email String      @db.VarChar(100)
+  school_logo   String?     @db.VarChar(255)
+  start_at      DateTime    @db.DateTime(0)
+  end_at        DateTime?   @db.DateTime(0)
+  school_status Boolean     @default(true)
+  type          School_type @default(teacher)
+  Contents      Contents[]
+  Schedules     Schedules[]
+  Student       Student[]
+}
+
+model Student {
+  id             Int       @id @default(autoincrement())
+  school_id      String?   @db.VarChar(36)
+  student_id     String?   @unique(map: "student_id") @db.VarChar(36)
+  student_grade  String?   @db.VarChar(10)
+  student_class  String?   @db.VarChar(10)
+  student_number String?   @db.VarChar(10)
+  student_name   String?   @db.VarChar(50)
+  student_gender String?   @db.VarChar(10)
+  student_status Boolean?  @default(true)
+  Brushed        Brushed[]
+  School         School?   @relation(fields: [school_id], references: [school_id], onDelete: Cascade, map: "Student_ibfk_1")
+
+  @@index([school_id], map: "school_id")
+}
+
+enum Brushed_brushed_status {
+  No
+  Ok
+  EarlyLeave
+  Travel
+  Workshop
+  Absence
+}
+
+enum School_type {
+  master
+  teacher
+}

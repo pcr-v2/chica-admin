@@ -165,7 +165,8 @@ exports.Prisma.SchoolScalarFieldEnum = {
   start_at: 'start_at',
   end_at: 'end_at',
   school_status: 'school_status',
-  type: 'type'
+  type: 'type',
+  school_level: 'school_level'
 };
 
 exports.Prisma.StudentScalarFieldEnum = {
@@ -242,6 +243,12 @@ exports.Brushed_brushed_status = exports.$Enums.Brushed_brushed_status = {
 exports.School_type = exports.$Enums.School_type = {
   master: 'master',
   teacher: 'teacher'
+};
+
+exports.School_school_level = exports.$Enums.School_school_level = {
+  elementary: 'elementary',
+  middle: 'middle',
+  high: 'high'
 };
 
 exports.Prisma.ModelName = {

@@ -46,16 +46,19 @@ const RightPannel = styled(Box)(() => {
   return {
     width: "100%",
     display: "flex",
-    minHeight: "100dvh",
+    height: "100dvh",
+    overflow: "hidden",
     flexDirection: "column",
   };
 });
 
 const ContentPage = styled(Box)(() => {
   return {
+    flex: 1,
     width: "100%",
-    height: "100%",
-    padding: "24px",
-    // border: "1px solid blue",
+    overflowY: "auto",
+    overflowX: "hidden",
+    padding: "32px 24px",
+    // minHeight: "calc(100dvh - 51px)",
   };
 });

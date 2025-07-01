@@ -72,21 +72,26 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     overflow: "hidden",
     border: "1px solid",
     borderColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.3)" : "#2D3843",
-    backgroundColor: "transparent",
+    backgroundColor: "#fff",
     transition: theme.transitions.create([
       "box-shadow",
       "border-color",
       "background-color",
     ]),
-    "&:hover": { backgroundColor: "transparent" },
+    "&:hover": { backgroundColor: "#fff" },
+
     "&.Mui-focused": {
       borderWidth: "1px",
-      backgroundColor: "transparent",
+      backgroundColor: "#fff",
       borderColor: theme.palette.primary.main,
     },
   },
 }));
 
-const Cancel = styled(CancelIcon)(() => ({ cursor: "pointer" }));
+const Cancel = styled(CancelIcon)(() => ({
+  cursor: "pointer",
+  width: "24px",
+  height: "24px",
+}));
 const Eye = styled(VisibilityIcon)(() => ({ cursor: "pointer" }));
 const OffEye = styled(VisibilityOffIcon)(() => ({ cursor: "pointer" }));

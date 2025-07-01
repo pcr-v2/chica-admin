@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 const secretKey = new TextEncoder().encode(process.env.TOKEN_SECRET);
 
 const PUBLIC_PATHS = ["/signin", "/signup"];
-const MASTER_PATHS = ["/school", "/member"];
+const MASTER_PATHS = ["/school", "/member", "/master-cs", "/master-video"];
 
 async function refresh(req: NextRequest) {
   const refreshToken = req.cookies.get("CHICA_ADMIN_REFRESH_TOKEN");
@@ -18,16 +18,17 @@ async function refresh(req: NextRequest) {
 
   try {
     const verified = await jwtVerify(refreshToken.value, secretKey);
+    const { id, type } = verified.payload;
 
     // 리프레시 토큰
-    const newAccessToken = await new SignJWT()
+    const newAccessToken = await new SignJWT({ id, type })
       .setSubject(verified.payload.sub!)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("1h")
       .sign(secretKey);
 
-    const newRefreshToken = await new SignJWT()
+    const newRefreshToken = await new SignJWT({ id, type })
       .setSubject(verified.payload.sub!)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
@@ -63,6 +64,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   const accessToken = req.cookies.get("CHICA_ADMIN_ACCESS_TOKEN");
+  const refreshToken = req.cookies.get("CHICA_ADMIN_REFRESH_TOKEN");
 
   if (!accessToken) {
     return NextResponse.redirect(new URL("/signin", req.url));
@@ -81,7 +83,11 @@ export default async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch {
+  } catch (error) {
+    if (error instanceof JWTExpired && refreshToken != null) {
+      return refresh(req);
+    }
+
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 }

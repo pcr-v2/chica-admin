@@ -3,6 +3,8 @@
 import { Box, styled, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ReactNode } from "react";
 
 import { RootToast } from "@/app/_components/RootToast";
@@ -18,7 +20,9 @@ export default function ClientLayout(props: IProps) {
   return (
     <AppRouterCacheProvider options={{ enableCssLayer: false, prepend: false }}>
       <ThemeProvider theme={theme}>
-        <ChildrenWrap>{children}</ChildrenWrap>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"ko"}>
+          <ChildrenWrap>{children}</ChildrenWrap>
+        </LocalizationProvider>
         <CssBaseline />
         <RootToast />
       </ThemeProvider>

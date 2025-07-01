@@ -50,19 +50,20 @@ model Schedules {
 }
 
 model School {
-  id            Int         @id @default(autoincrement())
-  school_id     String?     @unique(map: "school_id") @db.VarChar(36)
-  school_name   String      @db.VarChar(100)
-  login_id      String      @db.VarChar(50)
-  login_pw      String      @db.VarChar(255)
-  manager_name  String      @db.VarChar(100)
-  manager_phone String      @db.VarChar(20)
-  manager_email String      @db.VarChar(100)
-  school_logo   String?     @db.VarChar(255)
-  start_at      DateTime    @db.DateTime(0)
-  end_at        DateTime?   @db.DateTime(0)
-  school_status Boolean     @default(true)
-  type          School_type @default(teacher)
+  id            Int                 @id @default(autoincrement())
+  school_id     String?             @unique(map: "school_id") @db.VarChar(36)
+  school_name   String              @db.VarChar(100)
+  login_id      String              @db.VarChar(50)
+  login_pw      String              @db.VarChar(255)
+  manager_name  String              @db.VarChar(100)
+  manager_phone String              @db.VarChar(20)
+  manager_email String              @db.VarChar(100)
+  school_logo   String?             @db.VarChar(255)
+  start_at      DateTime            @db.DateTime(0)
+  end_at        DateTime?           @db.DateTime(0)
+  school_status Boolean             @default(true)
+  type          School_type         @default(teacher)
+  school_level  School_school_level @default(elementary)
   Contents      Contents[]
   Schedules     Schedules[]
   Student       Student[]
@@ -96,4 +97,10 @@ enum Brushed_brushed_status {
 enum School_type {
   master
   teacher
+}
+
+enum School_school_level {
+  elementary
+  middle
+  high
 }

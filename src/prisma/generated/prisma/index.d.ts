@@ -67,6 +67,15 @@ export const School_type: {
 
 export type School_type = (typeof School_type)[keyof typeof School_type]
 
+
+export const School_school_level: {
+  elementary: 'elementary',
+  middle: 'middle',
+  high: 'high'
+};
+
+export type School_school_level = (typeof School_school_level)[keyof typeof School_school_level]
+
 }
 
 export type Brushed_brushed_status = $Enums.Brushed_brushed_status
@@ -76,6 +85,10 @@ export const Brushed_brushed_status: typeof $Enums.Brushed_brushed_status
 export type School_type = $Enums.School_type
 
 export const School_type: typeof $Enums.School_type
+
+export type School_school_level = $Enums.School_school_level
+
+export const School_school_level: typeof $Enums.School_school_level
 
 /**
  * ##  Prisma Client ʲˢ
@@ -5288,6 +5301,7 @@ export namespace Prisma {
     end_at: Date | null
     school_status: boolean | null
     type: $Enums.School_type | null
+    school_level: $Enums.School_school_level | null
   }
 
   export type SchoolMaxAggregateOutputType = {
@@ -5304,6 +5318,7 @@ export namespace Prisma {
     end_at: Date | null
     school_status: boolean | null
     type: $Enums.School_type | null
+    school_level: $Enums.School_school_level | null
   }
 
   export type SchoolCountAggregateOutputType = {
@@ -5320,6 +5335,7 @@ export namespace Prisma {
     end_at: number
     school_status: number
     type: number
+    school_level: number
     _all: number
   }
 
@@ -5346,6 +5362,7 @@ export namespace Prisma {
     end_at?: true
     school_status?: true
     type?: true
+    school_level?: true
   }
 
   export type SchoolMaxAggregateInputType = {
@@ -5362,6 +5379,7 @@ export namespace Prisma {
     end_at?: true
     school_status?: true
     type?: true
+    school_level?: true
   }
 
   export type SchoolCountAggregateInputType = {
@@ -5378,6 +5396,7 @@ export namespace Prisma {
     end_at?: true
     school_status?: true
     type?: true
+    school_level?: true
     _all?: true
   }
 
@@ -5481,6 +5500,7 @@ export namespace Prisma {
     end_at: Date | null
     school_status: boolean
     type: $Enums.School_type
+    school_level: $Enums.School_school_level
     _count: SchoolCountAggregateOutputType | null
     _avg: SchoolAvgAggregateOutputType | null
     _sum: SchoolSumAggregateOutputType | null
@@ -5516,6 +5536,7 @@ export namespace Prisma {
     end_at?: boolean
     school_status?: boolean
     type?: boolean
+    school_level?: boolean
     Contents?: boolean | School$ContentsArgs<ExtArgs>
     Schedules?: boolean | School$SchedulesArgs<ExtArgs>
     Student?: boolean | School$StudentArgs<ExtArgs>
@@ -5538,9 +5559,10 @@ export namespace Prisma {
     end_at?: boolean
     school_status?: boolean
     type?: boolean
+    school_level?: boolean
   }
 
-  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "school_name" | "login_id" | "login_pw" | "manager_name" | "manager_phone" | "manager_email" | "school_logo" | "start_at" | "end_at" | "school_status" | "type", ExtArgs["result"]["school"]>
+  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "school_name" | "login_id" | "login_pw" | "manager_name" | "manager_phone" | "manager_email" | "school_logo" | "start_at" | "end_at" | "school_status" | "type" | "school_level", ExtArgs["result"]["school"]>
   export type SchoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Contents?: boolean | School$ContentsArgs<ExtArgs>
     Schedules?: boolean | School$SchedulesArgs<ExtArgs>
@@ -5569,6 +5591,7 @@ export namespace Prisma {
       end_at: Date | null
       school_status: boolean
       type: $Enums.School_type
+      school_level: $Enums.School_school_level
     }, ExtArgs["result"]["school"]>
     composites: {}
   }
@@ -5954,6 +5977,7 @@ export namespace Prisma {
     readonly end_at: FieldRef<"School", 'DateTime'>
     readonly school_status: FieldRef<"School", 'Boolean'>
     readonly type: FieldRef<"School", 'School_type'>
+    readonly school_level: FieldRef<"School", 'School_school_level'>
   }
     
 
@@ -7514,7 +7538,8 @@ export namespace Prisma {
     start_at: 'start_at',
     end_at: 'end_at',
     school_status: 'school_status',
-    type: 'type'
+    type: 'type',
+    school_level: 'school_level'
   };
 
   export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
@@ -7654,6 +7679,13 @@ export namespace Prisma {
    * Reference to a field of type 'School_type'
    */
   export type EnumSchool_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'School_type'>
+    
+
+
+  /**
+   * Reference to a field of type 'School_school_level'
+   */
+  export type EnumSchool_school_levelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'School_school_level'>
     
 
 
@@ -7913,6 +7945,7 @@ export namespace Prisma {
     end_at?: DateTimeNullableFilter<"School"> | Date | string | null
     school_status?: BoolFilter<"School"> | boolean
     type?: EnumSchool_typeFilter<"School"> | $Enums.School_type
+    school_level?: EnumSchool_school_levelFilter<"School"> | $Enums.School_school_level
     Contents?: ContentsListRelationFilter
     Schedules?: SchedulesListRelationFilter
     Student?: StudentListRelationFilter
@@ -7932,6 +7965,7 @@ export namespace Prisma {
     end_at?: SortOrderInput | SortOrder
     school_status?: SortOrder
     type?: SortOrder
+    school_level?: SortOrder
     Contents?: ContentsOrderByRelationAggregateInput
     Schedules?: SchedulesOrderByRelationAggregateInput
     Student?: StudentOrderByRelationAggregateInput
@@ -7955,6 +7989,7 @@ export namespace Prisma {
     end_at?: DateTimeNullableFilter<"School"> | Date | string | null
     school_status?: BoolFilter<"School"> | boolean
     type?: EnumSchool_typeFilter<"School"> | $Enums.School_type
+    school_level?: EnumSchool_school_levelFilter<"School"> | $Enums.School_school_level
     Contents?: ContentsListRelationFilter
     Schedules?: SchedulesListRelationFilter
     Student?: StudentListRelationFilter
@@ -7974,6 +8009,7 @@ export namespace Prisma {
     end_at?: SortOrderInput | SortOrder
     school_status?: SortOrder
     type?: SortOrder
+    school_level?: SortOrder
     _count?: SchoolCountOrderByAggregateInput
     _avg?: SchoolAvgOrderByAggregateInput
     _max?: SchoolMaxOrderByAggregateInput
@@ -7998,6 +8034,7 @@ export namespace Prisma {
     end_at?: DateTimeNullableWithAggregatesFilter<"School"> | Date | string | null
     school_status?: BoolWithAggregatesFilter<"School"> | boolean
     type?: EnumSchool_typeWithAggregatesFilter<"School"> | $Enums.School_type
+    school_level?: EnumSchool_school_levelWithAggregatesFilter<"School"> | $Enums.School_school_level
   }
 
   export type StudentWhereInput = {
@@ -8303,6 +8340,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsCreateNestedManyWithoutSchoolInput
     Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     Student?: StudentCreateNestedManyWithoutSchoolInput
@@ -8322,6 +8360,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
@@ -8340,6 +8379,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUpdateManyWithoutSchoolNestedInput
     Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     Student?: StudentUpdateManyWithoutSchoolNestedInput
@@ -8359,6 +8399,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
@@ -8378,6 +8419,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
   }
 
   export type SchoolUpdateManyMutationInput = {
@@ -8393,6 +8435,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
   }
 
   export type SchoolUncheckedUpdateManyInput = {
@@ -8409,6 +8452,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
   }
 
   export type StudentCreateInput = {
@@ -8844,6 +8888,13 @@ export namespace Prisma {
     not?: NestedEnumSchool_typeFilter<$PrismaModel> | $Enums.School_type
   }
 
+  export type EnumSchool_school_levelFilter<$PrismaModel = never> = {
+    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
+    in?: $Enums.School_school_level[]
+    notIn?: $Enums.School_school_level[]
+    not?: NestedEnumSchool_school_levelFilter<$PrismaModel> | $Enums.School_school_level
+  }
+
   export type ContentsListRelationFilter = {
     every?: ContentsWhereInput
     some?: ContentsWhereInput
@@ -8894,6 +8945,7 @@ export namespace Prisma {
     end_at?: SortOrder
     school_status?: SortOrder
     type?: SortOrder
+    school_level?: SortOrder
   }
 
   export type SchoolAvgOrderByAggregateInput = {
@@ -8914,6 +8966,7 @@ export namespace Prisma {
     end_at?: SortOrder
     school_status?: SortOrder
     type?: SortOrder
+    school_level?: SortOrder
   }
 
   export type SchoolMinOrderByAggregateInput = {
@@ -8930,6 +8983,7 @@ export namespace Prisma {
     end_at?: SortOrder
     school_status?: SortOrder
     type?: SortOrder
+    school_level?: SortOrder
   }
 
   export type SchoolSumOrderByAggregateInput = {
@@ -8984,6 +9038,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSchool_typeFilter<$PrismaModel>
     _max?: NestedEnumSchool_typeFilter<$PrismaModel>
+  }
+
+  export type EnumSchool_school_levelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
+    in?: $Enums.School_school_level[]
+    notIn?: $Enums.School_school_level[]
+    not?: NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel> | $Enums.School_school_level
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSchool_school_levelFilter<$PrismaModel>
+    _max?: NestedEnumSchool_school_levelFilter<$PrismaModel>
   }
 
   export type BrushedListRelationFilter = {
@@ -9182,6 +9246,10 @@ export namespace Prisma {
 
   export type EnumSchool_typeFieldUpdateOperationsInput = {
     set?: $Enums.School_type
+  }
+
+  export type EnumSchool_school_levelFieldUpdateOperationsInput = {
+    set?: $Enums.School_school_level
   }
 
   export type ContentsUpdateManyWithoutSchoolNestedInput = {
@@ -9528,6 +9596,13 @@ export namespace Prisma {
     not?: NestedEnumSchool_typeFilter<$PrismaModel> | $Enums.School_type
   }
 
+  export type NestedEnumSchool_school_levelFilter<$PrismaModel = never> = {
+    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
+    in?: $Enums.School_school_level[]
+    notIn?: $Enums.School_school_level[]
+    not?: NestedEnumSchool_school_levelFilter<$PrismaModel> | $Enums.School_school_level
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -9576,6 +9651,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSchool_typeFilter<$PrismaModel>
     _max?: NestedEnumSchool_typeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
+    in?: $Enums.School_school_level[]
+    notIn?: $Enums.School_school_level[]
+    not?: NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel> | $Enums.School_school_level
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSchool_school_levelFilter<$PrismaModel>
+    _max?: NestedEnumSchool_school_levelFilter<$PrismaModel>
   }
 
   export type StudentCreateWithoutBrushedInput = {
@@ -9653,6 +9738,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     Student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -9671,6 +9757,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -9704,6 +9791,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     Student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -9722,6 +9810,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -9739,6 +9828,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsCreateNestedManyWithoutSchoolInput
     Student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -9757,6 +9847,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -9790,6 +9881,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUpdateManyWithoutSchoolNestedInput
     Student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -9808,6 +9900,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -10016,6 +10109,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsCreateNestedManyWithoutSchoolInput
     Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
   }
@@ -10034,6 +10128,7 @@ export namespace Prisma {
     end_at?: Date | string | null
     school_status?: boolean
     type?: $Enums.School_type
+    school_level?: $Enums.School_school_level
     Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -10093,6 +10188,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUpdateManyWithoutSchoolNestedInput
     Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
   }
@@ -10111,6 +10207,7 @@ export namespace Prisma {
     end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     school_status?: BoolFieldUpdateOperationsInput | boolean
     type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
+    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
     Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
   }

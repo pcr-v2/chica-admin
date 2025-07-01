@@ -1,10 +1,11 @@
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Box, styled } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { getMenusByRole, UserRole } from "@/config/menu";
+import { getMenusByRole, MenuItem, UserRole } from "@/config/menu";
 import BlueLogo from "@/public/images/logo/blue-logo.png";
 
 interface IProps {
@@ -13,10 +14,18 @@ interface IProps {
 
 export default function SideBar(props: IProps) {
   const { me } = props;
+
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
-  const toggleMenu = (path: string) => {
-    setOpenMenu((prev) => (prev === path ? null : path));
+  const router = useRouter();
+  const nowPath = usePathname();
+
+  const toggleMenu = (el: MenuItem) => {
+    if (el.children && el.children?.length <= 0) {
+      router.push(el.path);
+      return;
+    }
+    setOpenMenu((prev) => (prev === el.path ? null : el.path));
   };
 
   return (
@@ -24,33 +33,67 @@ export default function SideBar(props: IProps) {
       <Logo src={BlueLogo.src} alt="logo" />
 
       <Menus>
-        {getMenusByRole(me?.data?.type as UserRole).map((el) => {
-          const isOpen = openMenu === el.path;
+        {getMenusByRole(me?.data?.type as UserRole).map((parentMenu) => {
+          const isOpen =
+            openMenu === parentMenu.path ||
+            parentMenu.children?.some(
+              (child) =>
+                nowPath === child.path || nowPath.startsWith(child.path),
+            );
 
           return (
-            <Box key={el.label} sx={{ width: "100%" }}>
-              <SingleMenu onClick={() => toggleMenu(el.path)}>
+            <Box key={parentMenu.label} sx={{ width: "100%" }}>
+              <SingleMenuWrap onClick={() => toggleMenu(parentMenu)}>
                 <IconLabel>
-                  <el.icon />
-                  {el.label}
+                  <parentMenu.icon />
+                  <ParentMenu
+                  // isactive={(
+                  //   openMenu &&
+                  //   parentMenu?.children &&
+                  //   parentMenu?.children?.length <= 0
+                  // ).toString()}
+                  >
+                    {parentMenu.label}
+                  </ParentMenu>
                 </IconLabel>
-                <Arrow animate={{ rotate: isOpen ? 0 : 180 }} />
-              </SingleMenu>
+                {parentMenu.children && parentMenu.children.length > 0 && (
+                  <Arrow
+                    animate={{ rotate: isOpen ? 0 : 180 }}
+                    transition={{ duration: 0.1 }}
+                  />
+                )}
+              </SingleMenuWrap>
 
               <AnimatePresence initial={false}>
-                {isOpen && el.children && el.children.length > 0 && (
-                  <ChildMenuWrap
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {el.children.map((child) => (
-                      <ChildItem key={child.path}>{child.label}</ChildItem>
-                    ))}
-                  </ChildMenuWrap>
-                )}
+                {isOpen &&
+                  parentMenu.children &&
+                  parentMenu.children.length > 0 && (
+                    <ChildMenuWrap
+                      layout
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          marginTop: "8px",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {parentMenu.children.map((child) => (
+                          <ChildItem
+                            key={child.path}
+                            isactive={(nowPath === child.path).toString()}
+                            onClick={() => router.push(child.path)}
+                          >
+                            {child.label}
+                          </ChildItem>
+                        ))}
+                      </Box>
+                    </ChildMenuWrap>
+                  )}
               </AnimatePresence>
             </Box>
           );
@@ -78,7 +121,7 @@ const Logo = styled("img")(() => ({
 }));
 
 const Menus = styled(Box)(() => ({
-  gap: "32px",
+  gap: "16px",
   width: "100%",
   display: "flex",
   alignItems: "center",
@@ -86,13 +129,28 @@ const Menus = styled(Box)(() => ({
   justifyContent: "start",
 }));
 
-const SingleMenu = styled(Box)(() => ({
+const SingleMenuWrap = styled(Box)(() => ({
   width: "100%",
   display: "flex",
   cursor: "pointer",
+  padding: "8px 12px",
+  borderRadius: "8px",
   alignItems: "center",
   justifyContent: "space-between",
+  "&:hover": {
+    backgroundColor: "#f2f8ff",
+  },
 }));
+
+const ParentMenu = styled(Box)(() => {
+  return {
+    fontSize: 20,
+    fontWeight: 400,
+    color: "#212121",
+    lineHeight: "140%",
+    letterSpacing: "-0.24px",
+  };
+});
 
 const IconLabel = styled(Box)(() => ({
   gap: "12px",
@@ -105,31 +163,24 @@ const Arrow = styled(motion(KeyboardArrowDownRoundedIcon))(() => ({
   width: "24px",
   height: "24px",
   cursor: "pointer",
-  transform: "rotate(180deg)",
 }));
-
-// const ChildMenuWrap = styled(motion.div)(() => ({
-//   gap: "8px",
-//   display: "flex",
-//   marginTop: "12px",
-//   overflow: "hidden",
-//   paddingLeft: "40px",
-//   flexDirection: "column",
-// }));
 
 const ChildMenuWrap = styled(motion.div)(() => ({
-  paddingLeft: "40px",
-  display: "flex",
-  flexDirection: "column",
   gap: "8px",
+  display: "flex",
   overflow: "hidden",
+  paddingLeft: "40px",
+  flexDirection: "column",
 }));
 
-const ChildItem = styled(Box)(() => ({
-  fontSize: "14px",
-  color: "#555",
+const ChildItem = styled(Box)<{ isactive: string }>(({ isactive }) => ({
+  fontWeight: 500,
+  fontSize: "16px",
   cursor: "pointer",
+  padding: "8px 12px",
+  borderRadius: "12px",
+  color: isactive === "true" ? "#3196ff" : "#212121",
   "&:hover": {
-    color: "red",
+    backgroundColor: "#f2f8ff",
   },
 }));

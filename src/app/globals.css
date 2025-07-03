@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: spoqa;
+  font-family: NanumSquareNeo;
   -webkit-tap-highlight-color: transparent;
 
   -moz-user-select: -moz-none;
@@ -18,44 +18,13 @@
 }
 
 @font-face {
-  font-family: "NanumSquareRound";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "spoqa";
-  src: url("/fonts/SpoqaHanSansNeo-Thin.woff2"), format("woff2");
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "spoqa";
-  src: url("/fonts/SpoqaHanSansNeo-Light.woff2"), format("woff2");
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "spoqa";
-  src: url("/fonts/SpoqaHanSansNeo-Regular.woff2"), format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "spoqa";
-  src: url("/fonts/SpoqaHanSansNeo-Medium.woff2"), format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "spoca";
-  src: url("/fonts/SpoqaHanSansNeo-Bold.woff2"), format("woff2");
-  font-weight: 700;
-  font-style: normal;
+  font-family: "NanumSquareNeo";
+  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.eot);
+  src:
+    url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.eot?#iefix)
+      format("embedded-opentype"),
+    url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.woff)
+      format("woff"),
+    url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.ttf)
+      format("truetype");
 }

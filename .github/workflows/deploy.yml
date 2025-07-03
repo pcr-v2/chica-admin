@@ -52,15 +52,18 @@ jobs:
           target: "~/deploy"
 
       - name: Deploy on EC2 and restart PM2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            mkdir -p ~/chica-admin
-            tar -xzf ~/deploy/standalone.tar.gz -C ~/chica-admin --strip-components=0
-            cd ~/chica-admin
-            pm2 delete chica-admin || true
-            pm2 start .next/standalone/server.js --name chica-admin
-            pm2 save
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                  export NVM_DIR="$HOME/.nvm"
+                  source $NVM_DIR/nvm.sh
+                  export PATH="$NVM_DIR/versions/node/v22.11.0/bin:$PATH"
+                  mkdir -p ~/chica-admin
+                  tar -xzf ~/deploy/standalone.tar.gz -C ~/chica-admin --strip-components=0
+                  cd ~/chica-admin
+                  pm2 delete chica-admin || true
+                  pm2 start .next/standalone/server.js --name chica-admin
+                  pm2 save

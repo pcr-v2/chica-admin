@@ -37,6 +37,7 @@ jobs:
           ls -la  # 디버깅용
           tar -czf standalone.tar.gz \
             .next/standalone \
+            .next/static \
             public \
             package.json \
             next.config.ts \

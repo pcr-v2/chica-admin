@@ -34,9 +34,10 @@ jobs:
 
       - name: Compress standalone output
         run: |
+          ls -la  # 디버깅용
           tar -czf standalone.tar.gz \
-          -C .next/standalone . \
-          -C . public package.json next.config.js .env
+            -C .next/standalone . \
+            -C . public package.json next.config.js .env
 
       - name: Upload build to EC2
         uses: appleboy/scp-action@v0.1.7

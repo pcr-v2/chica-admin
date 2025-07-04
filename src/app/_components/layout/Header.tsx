@@ -30,7 +30,10 @@ export default function Header(props: IProps) {
       <PathLabel>{lable}</PathLabel>
 
       <UserMenu>
-        <UserName>{me?.data?.name}님</UserName>
+        <UserName>
+          {me?.data?.type === "master" && "마스터 "}
+          {me?.data?.name}님
+        </UserName>
         <Logout onClick={handleLogout} />
       </UserMenu>
     </Wrapper>

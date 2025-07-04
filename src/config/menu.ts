@@ -42,23 +42,10 @@ export const MENUS: MenuItem[] = [
   // },
   {
     label: "학교 관리",
-    path: "/school",
+    path: "/school/list",
     icon: SchoolIcon,
     allowRoles: ["master"],
-    children: [
-      {
-        label: "학교 리스트",
-        path: "/school/list",
-        icon: null,
-        allowRoles: ["master"],
-      },
-      {
-        label: "신규학교 등록",
-        path: "/school/add",
-        icon: null,
-        allowRoles: ["master"],
-      },
-    ],
+    children: [],
   },
   {
     label: "학생 관리",

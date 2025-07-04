@@ -48,16 +48,22 @@ export default function SignInContainer() {
     <Wrapper>
       <Logo src={BtbLogo.src} alt="logo" />
 
-      <SignInForm loginValue={loginValue} onChange={handleForm} />
+      <SignInForm
+        loginValue={loginValue}
+        onChange={handleForm}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleSignIn();
+        }}
+      />
 
       <BottomContent>
         <Btn onClick={handleSignIn}>로그인</Btn>
 
-        <AccountWrap>
+        {/* <AccountWrap>
           <SpanST onClick={() => {}}>계정찾기</SpanST>
           <Divider />
           <SpanST onClick={() => router.push("/signup")}>회원가입</SpanST>
-        </AccountWrap>
+        </AccountWrap> */}
       </BottomContent>
       <CopyRightSpan>
         © 2025 Build the Bridge. All rights reserved.

@@ -34,6 +34,8 @@ export default function SideBar(props: IProps) {
 
       <Menus>
         {getMenusByRole(me?.data?.type as UserRole).map((parentMenu) => {
+          const Icon = parentMenu.icon;
+
           const isOpen =
             openMenu === parentMenu.path ||
             parentMenu.children?.some(
@@ -45,7 +47,7 @@ export default function SideBar(props: IProps) {
             <Box key={parentMenu.label} sx={{ width: "100%" }}>
               <SingleMenuWrap onClick={() => toggleMenu(parentMenu)}>
                 <IconLabel>
-                  <parentMenu.icon />
+                  <Icon sx={{ color: "#374151" }} />
                   <ParentMenu
                   // isactive={(
                   //   openMenu &&
@@ -144,9 +146,9 @@ const SingleMenuWrap = styled(Box)(() => ({
 
 const ParentMenu = styled(Box)(() => {
   return {
-    fontSize: 20,
-    fontWeight: 400,
-    color: "#212121",
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#374151",
     lineHeight: "140%",
     letterSpacing: "-0.24px",
   };
@@ -159,13 +161,13 @@ const IconLabel = styled(Box)(() => ({
   justifyContent: "start",
 }));
 
-const Arrow = styled(motion(KeyboardArrowDownRoundedIcon))(() => ({
+const Arrow = styled(motion.create(KeyboardArrowDownRoundedIcon))(() => ({
   width: "24px",
   height: "24px",
   cursor: "pointer",
 }));
 
-const ChildMenuWrap = styled(motion.div)(() => ({
+const ChildMenuWrap = styled(motion.create("div"))(() => ({
   gap: "8px",
   display: "flex",
   overflow: "hidden",
@@ -174,12 +176,12 @@ const ChildMenuWrap = styled(motion.div)(() => ({
 }));
 
 const ChildItem = styled(Box)<{ isactive: string }>(({ isactive }) => ({
-  fontWeight: 500,
-  fontSize: "16px",
+  fontWeight: isactive === "true" ? 500 : 400,
+  fontSize: "14px",
   cursor: "pointer",
   padding: "8px 12px",
   borderRadius: "12px",
-  color: isactive === "true" ? "#3196ff" : "#212121",
+  color: isactive === "true" ? "#3963d5" : "#374151",
   "&:hover": {
     backgroundColor: "#f2f8ff",
   },

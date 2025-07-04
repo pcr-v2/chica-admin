@@ -19,6 +19,7 @@ export const Toggle = (props: IProps) => {
         />
       }
       label={label}
+      sx={{ margin: 0 }}
     />
   );
 };
@@ -29,6 +30,9 @@ const IOSSwitch = styled((props: SwitchProps) => (
   width: 42,
   height: 26,
   padding: 0,
+  "&.MuiSwitch-root": {
+    margin: 0,
+  },
   "& .MuiSwitch-switchBase": {
     padding: 0,
     margin: 2,

@@ -96,66 +96,6 @@ export default function StudentCard(props: IProps) {
           );
         })}
       </Box>
-      {/* <InputWrap>
-        <Label>이름</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap>
-      <InputWrap>
-        <Label>학년</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap>
-      <InputWrap>
-        <Label>반</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap>
-      <InputWrap>
-        <Label>번호</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap>
-      <InputWrap>
-        <Label>성별</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap>
-      <InputWrap>
-        <Label>학생 사용여부</Label>
-        <Input
-          value={student.student_name}
-          onChange={(e) => {
-            setStudent({ ...student, student_name: e.target.value });
-          }}
-          type="text"
-        />
-      </InputWrap> */}
     </Wrapper>
   );
 }
@@ -167,7 +107,6 @@ const Wrapper = styled(Box)(() => {
     display: "flex",
     borderRadius: "8px",
     padding: "32px 24px",
-    // flexDirection: "column",
     backgroundColor: "#fafafa",
   };
 });

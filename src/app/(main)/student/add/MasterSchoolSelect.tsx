@@ -28,7 +28,7 @@ export default function MasterSchoolSelect(props: IProps) {
               key={el.id}
               onClick={() => selectSchoolId(el.school_id as string)}
             >
-              {el.manager_name}
+              {el.school_name}
             </div>
           );
         })}

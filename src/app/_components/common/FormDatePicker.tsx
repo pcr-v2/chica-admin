@@ -38,7 +38,20 @@ export default function FormDatePicker(props: FormDatePickerProps) {
       format={"YYYY-MM-DD"}
       value={realValue}
       onChange={setValue}
-      // sx={sx}
+      slotProps={{
+        popper: {
+          placement: "top-end", // 기본값: bottom, 원하는 위치 지정
+          modifiers: [
+            {
+              name: "offset",
+              options: {
+                offset: [0, 8], // [가로, 세로] 오프셋
+              },
+            },
+          ],
+        },
+      }}
+      minDate={customDayjs().tz("Asia/Seoul").add(1, "day")}
     />
   );
 }

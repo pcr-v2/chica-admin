@@ -59,6 +59,7 @@ const ContentPage = styled(Box)(() => {
     overflowY: "auto",
     overflowX: "hidden",
     padding: "32px 24px",
+    // backgroundColor: "#fafafa",
     // minHeight: "calc(100dvh - 51px)",
   };
 });

@@ -26,9 +26,12 @@ export async function getSchoolList() {
 
   const result = await mysqlPrisma.school.findMany({
     where: {
-      school_status: { not: false },
-      start_at: { lte: customDayjs().toISOString() },
-      end_at: { gte: customDayjs().toISOString() },
+      schoolStatus: { not: false },
+      startAt: { lte: customDayjs().toISOString() },
+      endAt: { gte: customDayjs().toISOString() },
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 

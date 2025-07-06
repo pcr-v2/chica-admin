@@ -17,15 +17,15 @@ import { Toggle } from "@/app/_components/common/Toggle";
 import { addSchool } from "@/app/actions/school/addSchoolAction";
 
 type TSchool = {
-  school_name: string;
-  login_id: string;
-  login_pw: string;
-  manager_name: string;
-  manager_phone: string;
-  manager_email: string;
-  end_at: string;
-  school_status: boolean;
-  school_level: "elementary" | "middle" | "high";
+  schoolName: string;
+  loginId: string;
+  loginPw: string;
+  teacherName: string;
+  teacherPhone: string;
+  teacherEmail: string;
+  endAt: string;
+  schoolStatus: boolean;
+  schoolLevel: "elementary" | "middle" | "high";
 };
 
 interface IProps {
@@ -36,15 +36,15 @@ export default function SchoolAddForm(props: IProps) {
   const { onSuccess } = props;
 
   const [school, setSchool] = useState<TSchool>({
-    school_name: "",
-    login_id: "",
-    login_pw: "",
-    manager_name: "",
-    manager_email: "",
-    manager_phone: "",
-    end_at: "",
-    school_status: true,
-    school_level: "elementary",
+    schoolName: "",
+    loginId: "",
+    loginPw: "",
+    teacherName: "",
+    teacherEmail: "",
+    teacherPhone: "",
+    endAt: "",
+    schoolStatus: true,
+    schoolLevel: "elementary",
   });
 
   const handleAdd = async () => {
@@ -66,9 +66,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>학교 이름</Label>
           <Input
-            value={school.school_name}
+            value={school.schoolName}
             onChange={(e) => {
-              setSchool({ ...school, school_name: e.target.value });
+              setSchool({ ...school, schoolName: e.target.value });
             }}
             type="text"
           />
@@ -76,9 +76,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>아이디</Label>
           <Input
-            value={school.login_id}
+            value={school.loginId}
             onChange={(e) => {
-              setSchool({ ...school, login_id: e.target.value });
+              setSchool({ ...school, loginId: e.target.value });
             }}
             type="text"
           />
@@ -86,9 +86,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>비밀번호</Label>
           <Input
-            value={school.login_pw}
+            value={school.loginPw}
             onChange={(e) => {
-              setSchool({ ...school, login_pw: e.target.value });
+              setSchool({ ...school, loginPw: e.target.value });
             }}
             type="text"
           />
@@ -96,9 +96,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>매니저 이름</Label>
           <Input
-            value={school.manager_name}
+            value={school.teacherName}
             onChange={(e) => {
-              setSchool({ ...school, manager_name: e.target.value });
+              setSchool({ ...school, teacherName: e.target.value });
             }}
             type="text"
           />
@@ -106,9 +106,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>매니저 이메일</Label>
           <Input
-            value={school.manager_email}
+            value={school.teacherEmail}
             onChange={(e) => {
-              setSchool({ ...school, manager_email: e.target.value });
+              setSchool({ ...school, teacherEmail: e.target.value });
             }}
             type="text"
           />
@@ -116,9 +116,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>매니저 전화번호</Label>
           <Input
-            value={school.manager_phone}
+            value={school.teacherPhone}
             onChange={(e) => {
-              setSchool({ ...school, manager_phone: e.target.value });
+              setSchool({ ...school, teacherPhone: e.target.value });
             }}
             type="text"
           />
@@ -127,9 +127,9 @@ export default function SchoolAddForm(props: IProps) {
         <InputWrap>
           <Label>종료일</Label>
           <FormDatePicker
-            value={school.end_at}
+            value={school.endAt}
             onChange={(e) => {
-              setSchool({ ...school, end_at: e.target.value as string });
+              setSchool({ ...school, endAt: e.target.value as string });
             }}
           />
         </InputWrap>
@@ -139,9 +139,9 @@ export default function SchoolAddForm(props: IProps) {
             <Label>학교 상태</Label>
             <Toggle
               label={""}
-              checked={school.school_status}
+              checked={school.schoolStatus}
               onChange={(e) => {
-                setSchool({ ...school, school_status: e });
+                setSchool({ ...school, schoolStatus: e });
               }}
             />
           </Box>
@@ -149,11 +149,11 @@ export default function SchoolAddForm(props: IProps) {
             <Label>학교 레벨</Label>
             <RadioWrap
               defaultValue="elementary"
-              value={school.school_level}
+              value={school.schoolLevel}
               onChange={(e) =>
                 setSchool({
                   ...school,
-                  school_level: e.target.value as
+                  schoolLevel: e.target.value as
                     | "elementary"
                     | "middle"
                     | "high",

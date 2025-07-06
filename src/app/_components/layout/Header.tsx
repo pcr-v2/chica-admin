@@ -15,7 +15,7 @@ interface IProps {
 
 export default function Header(props: IProps) {
   const { me } = props;
-
+  console.log("me", me);
   const nowPath = usePathname();
 
   const handleLogout = async () => {

@@ -48,7 +48,7 @@ export type Student = $Result.DefaultSelection<Prisma.$StudentPayload>
  * Enums
  */
 export namespace $Enums {
-  export const Brushed_brushed_status: {
+  export const BrushedBrushedStatus: {
   No: 'No',
   Ok: 'Ok',
   EarlyLeave: 'EarlyLeave',
@@ -57,38 +57,50 @@ export namespace $Enums {
   Absence: 'Absence'
 };
 
-export type Brushed_brushed_status = (typeof Brushed_brushed_status)[keyof typeof Brushed_brushed_status]
+export type BrushedBrushedStatus = (typeof BrushedBrushedStatus)[keyof typeof BrushedBrushedStatus]
 
 
-export const School_type: {
+export const StudentStudentGender: {
+  male: 'male',
+  female: 'female'
+};
+
+export type StudentStudentGender = (typeof StudentStudentGender)[keyof typeof StudentStudentGender]
+
+
+export const SchoolSchoolType: {
   master: 'master',
   teacher: 'teacher'
 };
 
-export type School_type = (typeof School_type)[keyof typeof School_type]
+export type SchoolSchoolType = (typeof SchoolSchoolType)[keyof typeof SchoolSchoolType]
 
 
-export const School_school_level: {
+export const SchoolSchoolLevel: {
   elementary: 'elementary',
   middle: 'middle',
   high: 'high'
 };
 
-export type School_school_level = (typeof School_school_level)[keyof typeof School_school_level]
+export type SchoolSchoolLevel = (typeof SchoolSchoolLevel)[keyof typeof SchoolSchoolLevel]
 
 }
 
-export type Brushed_brushed_status = $Enums.Brushed_brushed_status
+export type BrushedBrushedStatus = $Enums.BrushedBrushedStatus
 
-export const Brushed_brushed_status: typeof $Enums.Brushed_brushed_status
+export const BrushedBrushedStatus: typeof $Enums.BrushedBrushedStatus
 
-export type School_type = $Enums.School_type
+export type StudentStudentGender = $Enums.StudentStudentGender
 
-export const School_type: typeof $Enums.School_type
+export const StudentStudentGender: typeof $Enums.StudentStudentGender
 
-export type School_school_level = $Enums.School_school_level
+export type SchoolSchoolType = $Enums.SchoolSchoolType
 
-export const School_school_level: typeof $Enums.School_school_level
+export const SchoolSchoolType: typeof $Enums.SchoolSchoolType
+
+export type SchoolSchoolLevel = $Enums.SchoolSchoolLevel
+
+export const SchoolSchoolLevel: typeof $Enums.SchoolSchoolLevel
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1322,15 +1334,15 @@ export namespace Prisma {
    */
 
   export type SchoolCountOutputType = {
-    Contents: number
-    Schedules: number
-    Student: number
+    contents: number
+    schedules: number
+    student: number
   }
 
   export type SchoolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Contents?: boolean | SchoolCountOutputTypeCountContentsArgs
-    Schedules?: boolean | SchoolCountOutputTypeCountSchedulesArgs
-    Student?: boolean | SchoolCountOutputTypeCountStudentArgs
+    contents?: boolean | SchoolCountOutputTypeCountContentsArgs
+    schedules?: boolean | SchoolCountOutputTypeCountSchedulesArgs
+    student?: boolean | SchoolCountOutputTypeCountStudentArgs
   }
 
   // Custom InputTypes
@@ -1371,11 +1383,11 @@ export namespace Prisma {
    */
 
   export type StudentCountOutputType = {
-    Brushed: number
+    brushed: number
   }
 
   export type StudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Brushed?: boolean | StudentCountOutputTypeCountBrushedArgs
+    brushed?: boolean | StudentCountOutputTypeCountBrushedArgs
   }
 
   // Custom InputTypes
@@ -1423,23 +1435,23 @@ export namespace Prisma {
 
   export type BrushedMinAggregateOutputType = {
     id: number | null
-    student_id: string | null
-    brushed_at: Date | null
-    brushed_status: $Enums.Brushed_brushed_status | null
+    studentId: string | null
+    brushedAt: Date | null
+    brushedStatus: $Enums.BrushedBrushedStatus | null
   }
 
   export type BrushedMaxAggregateOutputType = {
     id: number | null
-    student_id: string | null
-    brushed_at: Date | null
-    brushed_status: $Enums.Brushed_brushed_status | null
+    studentId: string | null
+    brushedAt: Date | null
+    brushedStatus: $Enums.BrushedBrushedStatus | null
   }
 
   export type BrushedCountAggregateOutputType = {
     id: number
-    student_id: number
-    brushed_at: number
-    brushed_status: number
+    studentId: number
+    brushedAt: number
+    brushedStatus: number
     _all: number
   }
 
@@ -1454,23 +1466,23 @@ export namespace Prisma {
 
   export type BrushedMinAggregateInputType = {
     id?: true
-    student_id?: true
-    brushed_at?: true
-    brushed_status?: true
+    studentId?: true
+    brushedAt?: true
+    brushedStatus?: true
   }
 
   export type BrushedMaxAggregateInputType = {
     id?: true
-    student_id?: true
-    brushed_at?: true
-    brushed_status?: true
+    studentId?: true
+    brushedAt?: true
+    brushedStatus?: true
   }
 
   export type BrushedCountAggregateInputType = {
     id?: true
-    student_id?: true
-    brushed_at?: true
-    brushed_status?: true
+    studentId?: true
+    brushedAt?: true
+    brushedStatus?: true
     _all?: true
   }
 
@@ -1562,9 +1574,9 @@ export namespace Prisma {
 
   export type BrushedGroupByOutputType = {
     id: number
-    student_id: string | null
-    brushed_at: Date | null
-    brushed_status: $Enums.Brushed_brushed_status | null
+    studentId: string
+    brushedAt: Date
+    brushedStatus: $Enums.BrushedBrushedStatus
     _count: BrushedCountAggregateOutputType | null
     _avg: BrushedAvgAggregateOutputType | null
     _sum: BrushedSumAggregateOutputType | null
@@ -1588,36 +1600,36 @@ export namespace Prisma {
 
   export type BrushedSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    student_id?: boolean
-    brushed_at?: boolean
-    brushed_status?: boolean
-    Student?: boolean | Brushed$StudentArgs<ExtArgs>
+    studentId?: boolean
+    brushedAt?: boolean
+    brushedStatus?: boolean
+    student?: boolean | StudentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["brushed"]>
 
 
 
   export type BrushedSelectScalar = {
     id?: boolean
-    student_id?: boolean
-    brushed_at?: boolean
-    brushed_status?: boolean
+    studentId?: boolean
+    brushedAt?: boolean
+    brushedStatus?: boolean
   }
 
-  export type BrushedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "student_id" | "brushed_at" | "brushed_status", ExtArgs["result"]["brushed"]>
+  export type BrushedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "brushedAt" | "brushedStatus", ExtArgs["result"]["brushed"]>
   export type BrushedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Student?: boolean | Brushed$StudentArgs<ExtArgs>
+    student?: boolean | StudentDefaultArgs<ExtArgs>
   }
 
   export type $BrushedPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Brushed"
     objects: {
-      Student: Prisma.$StudentPayload<ExtArgs> | null
+      student: Prisma.$StudentPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      student_id: string | null
-      brushed_at: Date | null
-      brushed_status: $Enums.Brushed_brushed_status | null
+      studentId: string
+      brushedAt: Date
+      brushedStatus: $Enums.BrushedBrushedStatus
     }, ExtArgs["result"]["brushed"]>
     composites: {}
   }
@@ -1958,7 +1970,7 @@ export namespace Prisma {
    */
   export interface Prisma__BrushedClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Student<T extends Brushed$StudentArgs<ExtArgs> = {}>(args?: Subset<T, Brushed$StudentArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    student<T extends StudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentDefaultArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1989,9 +2001,9 @@ export namespace Prisma {
    */
   interface BrushedFieldRefs {
     readonly id: FieldRef<"Brushed", 'Int'>
-    readonly student_id: FieldRef<"Brushed", 'String'>
-    readonly brushed_at: FieldRef<"Brushed", 'DateTime'>
-    readonly brushed_status: FieldRef<"Brushed", 'Brushed_brushed_status'>
+    readonly studentId: FieldRef<"Brushed", 'String'>
+    readonly brushedAt: FieldRef<"Brushed", 'DateTime'>
+    readonly brushedStatus: FieldRef<"Brushed", 'BrushedBrushedStatus'>
   }
     
 
@@ -2210,7 +2222,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Brushed.
      */
-    data?: XOR<BrushedCreateInput, BrushedUncheckedCreateInput>
+    data: XOR<BrushedCreateInput, BrushedUncheckedCreateInput>
   }
 
   /**
@@ -2335,25 +2347,6 @@ export namespace Prisma {
   }
 
   /**
-   * Brushed.Student
-   */
-  export type Brushed$StudentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Student
-     */
-    select?: StudentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Student
-     */
-    omit?: StudentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: StudentInclude<ExtArgs> | null
-    where?: StudentWhereInput
-  }
-
-  /**
    * Brushed without action
    */
   export type BrushedDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2396,29 +2389,29 @@ export namespace Prisma {
 
   export type ContentsMinAggregateOutputType = {
     id: number | null
-    school_id: string | null
-    file_type: string | null
-    file_name: string | null
+    schoolId: string | null
+    fileType: string | null
+    fileName: string | null
     seq: number | null
-    contents_status: boolean | null
+    contentsStatus: boolean | null
   }
 
   export type ContentsMaxAggregateOutputType = {
     id: number | null
-    school_id: string | null
-    file_type: string | null
-    file_name: string | null
+    schoolId: string | null
+    fileType: string | null
+    fileName: string | null
     seq: number | null
-    contents_status: boolean | null
+    contentsStatus: boolean | null
   }
 
   export type ContentsCountAggregateOutputType = {
     id: number
-    school_id: number
-    file_type: number
-    file_name: number
+    schoolId: number
+    fileType: number
+    fileName: number
     seq: number
-    contents_status: number
+    contentsStatus: number
     _all: number
   }
 
@@ -2435,29 +2428,29 @@ export namespace Prisma {
 
   export type ContentsMinAggregateInputType = {
     id?: true
-    school_id?: true
-    file_type?: true
-    file_name?: true
+    schoolId?: true
+    fileType?: true
+    fileName?: true
     seq?: true
-    contents_status?: true
+    contentsStatus?: true
   }
 
   export type ContentsMaxAggregateInputType = {
     id?: true
-    school_id?: true
-    file_type?: true
-    file_name?: true
+    schoolId?: true
+    fileType?: true
+    fileName?: true
     seq?: true
-    contents_status?: true
+    contentsStatus?: true
   }
 
   export type ContentsCountAggregateInputType = {
     id?: true
-    school_id?: true
-    file_type?: true
-    file_name?: true
+    schoolId?: true
+    fileType?: true
+    fileName?: true
     seq?: true
-    contents_status?: true
+    contentsStatus?: true
     _all?: true
   }
 
@@ -2549,11 +2542,11 @@ export namespace Prisma {
 
   export type ContentsGroupByOutputType = {
     id: number
-    school_id: string | null
-    file_type: string | null
-    file_name: string | null
-    seq: number | null
-    contents_status: boolean | null
+    schoolId: string
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus: boolean
     _count: ContentsCountAggregateOutputType | null
     _avg: ContentsAvgAggregateOutputType | null
     _sum: ContentsSumAggregateOutputType | null
@@ -2577,42 +2570,42 @@ export namespace Prisma {
 
   export type ContentsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    school_id?: boolean
-    file_type?: boolean
-    file_name?: boolean
+    schoolId?: boolean
+    fileType?: boolean
+    fileName?: boolean
     seq?: boolean
-    contents_status?: boolean
-    School?: boolean | Contents$SchoolArgs<ExtArgs>
+    contentsStatus?: boolean
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contents"]>
 
 
 
   export type ContentsSelectScalar = {
     id?: boolean
-    school_id?: boolean
-    file_type?: boolean
-    file_name?: boolean
+    schoolId?: boolean
+    fileType?: boolean
+    fileName?: boolean
     seq?: boolean
-    contents_status?: boolean
+    contentsStatus?: boolean
   }
 
-  export type ContentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "file_type" | "file_name" | "seq" | "contents_status", ExtArgs["result"]["contents"]>
+  export type ContentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "fileType" | "fileName" | "seq" | "contentsStatus", ExtArgs["result"]["contents"]>
   export type ContentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    School?: boolean | Contents$SchoolArgs<ExtArgs>
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
   }
 
   export type $ContentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Contents"
     objects: {
-      School: Prisma.$SchoolPayload<ExtArgs> | null
+      school: Prisma.$SchoolPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      school_id: string | null
-      file_type: string | null
-      file_name: string | null
-      seq: number | null
-      contents_status: boolean | null
+      schoolId: string
+      fileType: string
+      fileName: string
+      seq: number
+      contentsStatus: boolean
     }, ExtArgs["result"]["contents"]>
     composites: {}
   }
@@ -2953,7 +2946,7 @@ export namespace Prisma {
    */
   export interface Prisma__ContentsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    School<T extends Contents$SchoolArgs<ExtArgs> = {}>(args?: Subset<T, Contents$SchoolArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    school<T extends SchoolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SchoolDefaultArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2984,11 +2977,11 @@ export namespace Prisma {
    */
   interface ContentsFieldRefs {
     readonly id: FieldRef<"Contents", 'Int'>
-    readonly school_id: FieldRef<"Contents", 'String'>
-    readonly file_type: FieldRef<"Contents", 'String'>
-    readonly file_name: FieldRef<"Contents", 'String'>
+    readonly schoolId: FieldRef<"Contents", 'String'>
+    readonly fileType: FieldRef<"Contents", 'String'>
+    readonly fileName: FieldRef<"Contents", 'String'>
     readonly seq: FieldRef<"Contents", 'Int'>
-    readonly contents_status: FieldRef<"Contents", 'Boolean'>
+    readonly contentsStatus: FieldRef<"Contents", 'Boolean'>
   }
     
 
@@ -3207,7 +3200,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Contents.
      */
-    data?: XOR<ContentsCreateInput, ContentsUncheckedCreateInput>
+    data: XOR<ContentsCreateInput, ContentsUncheckedCreateInput>
   }
 
   /**
@@ -3332,25 +3325,6 @@ export namespace Prisma {
   }
 
   /**
-   * Contents.School
-   */
-  export type Contents$SchoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the School
-     */
-    select?: SchoolSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the School
-     */
-    omit?: SchoolOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SchoolInclude<ExtArgs> | null
-    where?: SchoolWhereInput
-  }
-
-  /**
    * Contents without action
    */
   export type ContentsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3391,23 +3365,23 @@ export namespace Prisma {
 
   export type HolidayMinAggregateOutputType = {
     id: number | null
-    holiday_name: string | null
-    holiday_at: Date | null
-    hoilday_status: boolean | null
+    holidayName: string | null
+    holidayAt: Date | null
+    holidayStatus: boolean | null
   }
 
   export type HolidayMaxAggregateOutputType = {
     id: number | null
-    holiday_name: string | null
-    holiday_at: Date | null
-    hoilday_status: boolean | null
+    holidayName: string | null
+    holidayAt: Date | null
+    holidayStatus: boolean | null
   }
 
   export type HolidayCountAggregateOutputType = {
     id: number
-    holiday_name: number
-    holiday_at: number
-    hoilday_status: number
+    holidayName: number
+    holidayAt: number
+    holidayStatus: number
     _all: number
   }
 
@@ -3422,23 +3396,23 @@ export namespace Prisma {
 
   export type HolidayMinAggregateInputType = {
     id?: true
-    holiday_name?: true
-    holiday_at?: true
-    hoilday_status?: true
+    holidayName?: true
+    holidayAt?: true
+    holidayStatus?: true
   }
 
   export type HolidayMaxAggregateInputType = {
     id?: true
-    holiday_name?: true
-    holiday_at?: true
-    hoilday_status?: true
+    holidayName?: true
+    holidayAt?: true
+    holidayStatus?: true
   }
 
   export type HolidayCountAggregateInputType = {
     id?: true
-    holiday_name?: true
-    holiday_at?: true
-    hoilday_status?: true
+    holidayName?: true
+    holidayAt?: true
+    holidayStatus?: true
     _all?: true
   }
 
@@ -3530,9 +3504,9 @@ export namespace Prisma {
 
   export type HolidayGroupByOutputType = {
     id: number
-    holiday_name: string | null
-    holiday_at: Date | null
-    hoilday_status: boolean | null
+    holidayName: string
+    holidayAt: Date
+    holidayStatus: boolean
     _count: HolidayCountAggregateOutputType | null
     _avg: HolidayAvgAggregateOutputType | null
     _sum: HolidaySumAggregateOutputType | null
@@ -3556,30 +3530,30 @@ export namespace Prisma {
 
   export type HolidaySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    holiday_name?: boolean
-    holiday_at?: boolean
-    hoilday_status?: boolean
+    holidayName?: boolean
+    holidayAt?: boolean
+    holidayStatus?: boolean
   }, ExtArgs["result"]["holiday"]>
 
 
 
   export type HolidaySelectScalar = {
     id?: boolean
-    holiday_name?: boolean
-    holiday_at?: boolean
-    hoilday_status?: boolean
+    holidayName?: boolean
+    holidayAt?: boolean
+    holidayStatus?: boolean
   }
 
-  export type HolidayOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "holiday_name" | "holiday_at" | "hoilday_status", ExtArgs["result"]["holiday"]>
+  export type HolidayOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "holidayName" | "holidayAt" | "holidayStatus", ExtArgs["result"]["holiday"]>
 
   export type $HolidayPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Holiday"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      holiday_name: string | null
-      holiday_at: Date | null
-      hoilday_status: boolean | null
+      holidayName: string
+      holidayAt: Date
+      holidayStatus: boolean
     }, ExtArgs["result"]["holiday"]>
     composites: {}
   }
@@ -3950,9 +3924,9 @@ export namespace Prisma {
    */
   interface HolidayFieldRefs {
     readonly id: FieldRef<"Holiday", 'Int'>
-    readonly holiday_name: FieldRef<"Holiday", 'String'>
-    readonly holiday_at: FieldRef<"Holiday", 'DateTime'>
-    readonly hoilday_status: FieldRef<"Holiday", 'Boolean'>
+    readonly holidayName: FieldRef<"Holiday", 'String'>
+    readonly holidayAt: FieldRef<"Holiday", 'DateTime'>
+    readonly holidayStatus: FieldRef<"Holiday", 'Boolean'>
   }
     
 
@@ -4147,7 +4121,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Holiday.
      */
-    data?: XOR<HolidayCreateInput, HolidayUncheckedCreateInput>
+    data: XOR<HolidayCreateInput, HolidayUncheckedCreateInput>
   }
 
   /**
@@ -4296,29 +4270,29 @@ export namespace Prisma {
 
   export type SchedulesMinAggregateOutputType = {
     id: number | null
-    school_id: string | null
-    schedule_name: string | null
-    schedule_target: string | null
-    schedule_at: Date | null
-    schedule_status: boolean | null
+    schoolId: string | null
+    scheduleName: string | null
+    scheduleTarget: string | null
+    scheduleAt: Date | null
+    scheduleStatus: boolean | null
   }
 
   export type SchedulesMaxAggregateOutputType = {
     id: number | null
-    school_id: string | null
-    schedule_name: string | null
-    schedule_target: string | null
-    schedule_at: Date | null
-    schedule_status: boolean | null
+    schoolId: string | null
+    scheduleName: string | null
+    scheduleTarget: string | null
+    scheduleAt: Date | null
+    scheduleStatus: boolean | null
   }
 
   export type SchedulesCountAggregateOutputType = {
     id: number
-    school_id: number
-    schedule_name: number
-    schedule_target: number
-    schedule_at: number
-    schedule_status: number
+    schoolId: number
+    scheduleName: number
+    scheduleTarget: number
+    scheduleAt: number
+    scheduleStatus: number
     _all: number
   }
 
@@ -4333,29 +4307,29 @@ export namespace Prisma {
 
   export type SchedulesMinAggregateInputType = {
     id?: true
-    school_id?: true
-    schedule_name?: true
-    schedule_target?: true
-    schedule_at?: true
-    schedule_status?: true
+    schoolId?: true
+    scheduleName?: true
+    scheduleTarget?: true
+    scheduleAt?: true
+    scheduleStatus?: true
   }
 
   export type SchedulesMaxAggregateInputType = {
     id?: true
-    school_id?: true
-    schedule_name?: true
-    schedule_target?: true
-    schedule_at?: true
-    schedule_status?: true
+    schoolId?: true
+    scheduleName?: true
+    scheduleTarget?: true
+    scheduleAt?: true
+    scheduleStatus?: true
   }
 
   export type SchedulesCountAggregateInputType = {
     id?: true
-    school_id?: true
-    schedule_name?: true
-    schedule_target?: true
-    schedule_at?: true
-    schedule_status?: true
+    schoolId?: true
+    scheduleName?: true
+    scheduleTarget?: true
+    scheduleAt?: true
+    scheduleStatus?: true
     _all?: true
   }
 
@@ -4447,11 +4421,11 @@ export namespace Prisma {
 
   export type SchedulesGroupByOutputType = {
     id: number
-    school_id: string | null
-    schedule_name: string | null
-    schedule_target: string | null
-    schedule_at: Date | null
-    schedule_status: boolean | null
+    schoolId: string
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date
+    scheduleStatus: boolean
     _count: SchedulesCountAggregateOutputType | null
     _avg: SchedulesAvgAggregateOutputType | null
     _sum: SchedulesSumAggregateOutputType | null
@@ -4475,42 +4449,42 @@ export namespace Prisma {
 
   export type SchedulesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    school_id?: boolean
-    schedule_name?: boolean
-    schedule_target?: boolean
-    schedule_at?: boolean
-    schedule_status?: boolean
-    School?: boolean | Schedules$SchoolArgs<ExtArgs>
+    schoolId?: boolean
+    scheduleName?: boolean
+    scheduleTarget?: boolean
+    scheduleAt?: boolean
+    scheduleStatus?: boolean
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["schedules"]>
 
 
 
   export type SchedulesSelectScalar = {
     id?: boolean
-    school_id?: boolean
-    schedule_name?: boolean
-    schedule_target?: boolean
-    schedule_at?: boolean
-    schedule_status?: boolean
+    schoolId?: boolean
+    scheduleName?: boolean
+    scheduleTarget?: boolean
+    scheduleAt?: boolean
+    scheduleStatus?: boolean
   }
 
-  export type SchedulesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "schedule_name" | "schedule_target" | "schedule_at" | "schedule_status", ExtArgs["result"]["schedules"]>
+  export type SchedulesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "scheduleName" | "scheduleTarget" | "scheduleAt" | "scheduleStatus", ExtArgs["result"]["schedules"]>
   export type SchedulesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    School?: boolean | Schedules$SchoolArgs<ExtArgs>
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
   }
 
   export type $SchedulesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Schedules"
     objects: {
-      School: Prisma.$SchoolPayload<ExtArgs> | null
+      school: Prisma.$SchoolPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      school_id: string | null
-      schedule_name: string | null
-      schedule_target: string | null
-      schedule_at: Date | null
-      schedule_status: boolean | null
+      schoolId: string
+      scheduleName: string
+      scheduleTarget: string
+      scheduleAt: Date
+      scheduleStatus: boolean
     }, ExtArgs["result"]["schedules"]>
     composites: {}
   }
@@ -4851,7 +4825,7 @@ export namespace Prisma {
    */
   export interface Prisma__SchedulesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    School<T extends Schedules$SchoolArgs<ExtArgs> = {}>(args?: Subset<T, Schedules$SchoolArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    school<T extends SchoolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SchoolDefaultArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4882,11 +4856,11 @@ export namespace Prisma {
    */
   interface SchedulesFieldRefs {
     readonly id: FieldRef<"Schedules", 'Int'>
-    readonly school_id: FieldRef<"Schedules", 'String'>
-    readonly schedule_name: FieldRef<"Schedules", 'String'>
-    readonly schedule_target: FieldRef<"Schedules", 'String'>
-    readonly schedule_at: FieldRef<"Schedules", 'DateTime'>
-    readonly schedule_status: FieldRef<"Schedules", 'Boolean'>
+    readonly schoolId: FieldRef<"Schedules", 'String'>
+    readonly scheduleName: FieldRef<"Schedules", 'String'>
+    readonly scheduleTarget: FieldRef<"Schedules", 'String'>
+    readonly scheduleAt: FieldRef<"Schedules", 'DateTime'>
+    readonly scheduleStatus: FieldRef<"Schedules", 'Boolean'>
   }
     
 
@@ -5105,7 +5079,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Schedules.
      */
-    data?: XOR<SchedulesCreateInput, SchedulesUncheckedCreateInput>
+    data: XOR<SchedulesCreateInput, SchedulesUncheckedCreateInput>
   }
 
   /**
@@ -5230,25 +5204,6 @@ export namespace Prisma {
   }
 
   /**
-   * Schedules.School
-   */
-  export type Schedules$SchoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the School
-     */
-    select?: SchoolSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the School
-     */
-    omit?: SchoolOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SchoolInclude<ExtArgs> | null
-    where?: SchoolWhereInput
-  }
-
-  /**
    * Schedules without action
    */
   export type SchedulesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5273,130 +5228,112 @@ export namespace Prisma {
 
   export type AggregateSchool = {
     _count: SchoolCountAggregateOutputType | null
-    _avg: SchoolAvgAggregateOutputType | null
-    _sum: SchoolSumAggregateOutputType | null
     _min: SchoolMinAggregateOutputType | null
     _max: SchoolMaxAggregateOutputType | null
   }
 
-  export type SchoolAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type SchoolSumAggregateOutputType = {
-    id: number | null
-  }
-
   export type SchoolMinAggregateOutputType = {
-    id: number | null
-    school_id: string | null
-    school_name: string | null
-    login_id: string | null
-    login_pw: string | null
-    manager_name: string | null
-    manager_phone: string | null
-    manager_email: string | null
-    school_logo: string | null
-    start_at: Date | null
-    end_at: Date | null
-    school_status: boolean | null
-    type: $Enums.School_type | null
-    school_level: $Enums.School_school_level | null
+    id: string | null
+    schoolName: string | null
+    loginId: string | null
+    loginPw: string | null
+    teacherName: string | null
+    teacherEmail: string | null
+    teacherPhone: string | null
+    schoolLogo: string | null
+    startAt: Date | null
+    endAt: Date | null
+    schoolType: $Enums.SchoolSchoolType | null
+    schoolLevel: $Enums.SchoolSchoolLevel | null
+    schoolStatus: boolean | null
+    createdAt: Date | null
   }
 
   export type SchoolMaxAggregateOutputType = {
-    id: number | null
-    school_id: string | null
-    school_name: string | null
-    login_id: string | null
-    login_pw: string | null
-    manager_name: string | null
-    manager_phone: string | null
-    manager_email: string | null
-    school_logo: string | null
-    start_at: Date | null
-    end_at: Date | null
-    school_status: boolean | null
-    type: $Enums.School_type | null
-    school_level: $Enums.School_school_level | null
+    id: string | null
+    schoolName: string | null
+    loginId: string | null
+    loginPw: string | null
+    teacherName: string | null
+    teacherEmail: string | null
+    teacherPhone: string | null
+    schoolLogo: string | null
+    startAt: Date | null
+    endAt: Date | null
+    schoolType: $Enums.SchoolSchoolType | null
+    schoolLevel: $Enums.SchoolSchoolLevel | null
+    schoolStatus: boolean | null
+    createdAt: Date | null
   }
 
   export type SchoolCountAggregateOutputType = {
     id: number
-    school_id: number
-    school_name: number
-    login_id: number
-    login_pw: number
-    manager_name: number
-    manager_phone: number
-    manager_email: number
-    school_logo: number
-    start_at: number
-    end_at: number
-    school_status: number
-    type: number
-    school_level: number
+    schoolName: number
+    loginId: number
+    loginPw: number
+    teacherName: number
+    teacherEmail: number
+    teacherPhone: number
+    schoolLogo: number
+    startAt: number
+    endAt: number
+    schoolType: number
+    schoolLevel: number
+    schoolStatus: number
+    createdAt: number
     _all: number
   }
 
 
-  export type SchoolAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type SchoolSumAggregateInputType = {
-    id?: true
-  }
-
   export type SchoolMinAggregateInputType = {
     id?: true
-    school_id?: true
-    school_name?: true
-    login_id?: true
-    login_pw?: true
-    manager_name?: true
-    manager_phone?: true
-    manager_email?: true
-    school_logo?: true
-    start_at?: true
-    end_at?: true
-    school_status?: true
-    type?: true
-    school_level?: true
+    schoolName?: true
+    loginId?: true
+    loginPw?: true
+    teacherName?: true
+    teacherEmail?: true
+    teacherPhone?: true
+    schoolLogo?: true
+    startAt?: true
+    endAt?: true
+    schoolType?: true
+    schoolLevel?: true
+    schoolStatus?: true
+    createdAt?: true
   }
 
   export type SchoolMaxAggregateInputType = {
     id?: true
-    school_id?: true
-    school_name?: true
-    login_id?: true
-    login_pw?: true
-    manager_name?: true
-    manager_phone?: true
-    manager_email?: true
-    school_logo?: true
-    start_at?: true
-    end_at?: true
-    school_status?: true
-    type?: true
-    school_level?: true
+    schoolName?: true
+    loginId?: true
+    loginPw?: true
+    teacherName?: true
+    teacherEmail?: true
+    teacherPhone?: true
+    schoolLogo?: true
+    startAt?: true
+    endAt?: true
+    schoolType?: true
+    schoolLevel?: true
+    schoolStatus?: true
+    createdAt?: true
   }
 
   export type SchoolCountAggregateInputType = {
     id?: true
-    school_id?: true
-    school_name?: true
-    login_id?: true
-    login_pw?: true
-    manager_name?: true
-    manager_phone?: true
-    manager_email?: true
-    school_logo?: true
-    start_at?: true
-    end_at?: true
-    school_status?: true
-    type?: true
-    school_level?: true
+    schoolName?: true
+    loginId?: true
+    loginPw?: true
+    teacherName?: true
+    teacherEmail?: true
+    teacherPhone?: true
+    schoolLogo?: true
+    startAt?: true
+    endAt?: true
+    schoolType?: true
+    schoolLevel?: true
+    schoolStatus?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -5438,18 +5375,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: SchoolAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: SchoolSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: SchoolMinAggregateInputType
@@ -5480,30 +5405,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SchoolCountAggregateInputType | true
-    _avg?: SchoolAvgAggregateInputType
-    _sum?: SchoolSumAggregateInputType
     _min?: SchoolMinAggregateInputType
     _max?: SchoolMaxAggregateInputType
   }
 
   export type SchoolGroupByOutputType = {
-    id: number
-    school_id: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo: string | null
-    start_at: Date
-    end_at: Date | null
-    school_status: boolean
-    type: $Enums.School_type
-    school_level: $Enums.School_school_level
+    id: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo: string | null
+    startAt: Date
+    endAt: Date
+    schoolType: $Enums.SchoolSchoolType
+    schoolLevel: $Enums.SchoolSchoolLevel
+    schoolStatus: boolean
+    createdAt: Date
     _count: SchoolCountAggregateOutputType | null
-    _avg: SchoolAvgAggregateOutputType | null
-    _sum: SchoolSumAggregateOutputType | null
     _min: SchoolMinAggregateOutputType | null
     _max: SchoolMaxAggregateOutputType | null
   }
@@ -5524,22 +5445,22 @@ export namespace Prisma {
 
   export type SchoolSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    school_id?: boolean
-    school_name?: boolean
-    login_id?: boolean
-    login_pw?: boolean
-    manager_name?: boolean
-    manager_phone?: boolean
-    manager_email?: boolean
-    school_logo?: boolean
-    start_at?: boolean
-    end_at?: boolean
-    school_status?: boolean
-    type?: boolean
-    school_level?: boolean
-    Contents?: boolean | School$ContentsArgs<ExtArgs>
-    Schedules?: boolean | School$SchedulesArgs<ExtArgs>
-    Student?: boolean | School$StudentArgs<ExtArgs>
+    schoolName?: boolean
+    loginId?: boolean
+    loginPw?: boolean
+    teacherName?: boolean
+    teacherEmail?: boolean
+    teacherPhone?: boolean
+    schoolLogo?: boolean
+    startAt?: boolean
+    endAt?: boolean
+    schoolType?: boolean
+    schoolLevel?: boolean
+    schoolStatus?: boolean
+    createdAt?: boolean
+    contents?: boolean | School$contentsArgs<ExtArgs>
+    schedules?: boolean | School$schedulesArgs<ExtArgs>
+    student?: boolean | School$studentArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["school"]>
 
@@ -5547,51 +5468,51 @@ export namespace Prisma {
 
   export type SchoolSelectScalar = {
     id?: boolean
-    school_id?: boolean
-    school_name?: boolean
-    login_id?: boolean
-    login_pw?: boolean
-    manager_name?: boolean
-    manager_phone?: boolean
-    manager_email?: boolean
-    school_logo?: boolean
-    start_at?: boolean
-    end_at?: boolean
-    school_status?: boolean
-    type?: boolean
-    school_level?: boolean
+    schoolName?: boolean
+    loginId?: boolean
+    loginPw?: boolean
+    teacherName?: boolean
+    teacherEmail?: boolean
+    teacherPhone?: boolean
+    schoolLogo?: boolean
+    startAt?: boolean
+    endAt?: boolean
+    schoolType?: boolean
+    schoolLevel?: boolean
+    schoolStatus?: boolean
+    createdAt?: boolean
   }
 
-  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "school_name" | "login_id" | "login_pw" | "manager_name" | "manager_phone" | "manager_email" | "school_logo" | "start_at" | "end_at" | "school_status" | "type" | "school_level", ExtArgs["result"]["school"]>
+  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolName" | "loginId" | "loginPw" | "teacherName" | "teacherEmail" | "teacherPhone" | "schoolLogo" | "startAt" | "endAt" | "schoolType" | "schoolLevel" | "schoolStatus" | "createdAt", ExtArgs["result"]["school"]>
   export type SchoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Contents?: boolean | School$ContentsArgs<ExtArgs>
-    Schedules?: boolean | School$SchedulesArgs<ExtArgs>
-    Student?: boolean | School$StudentArgs<ExtArgs>
+    contents?: boolean | School$contentsArgs<ExtArgs>
+    schedules?: boolean | School$schedulesArgs<ExtArgs>
+    student?: boolean | School$studentArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $SchoolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "School"
     objects: {
-      Contents: Prisma.$ContentsPayload<ExtArgs>[]
-      Schedules: Prisma.$SchedulesPayload<ExtArgs>[]
-      Student: Prisma.$StudentPayload<ExtArgs>[]
+      contents: Prisma.$ContentsPayload<ExtArgs>[]
+      schedules: Prisma.$SchedulesPayload<ExtArgs>[]
+      student: Prisma.$StudentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      school_id: string | null
-      school_name: string
-      login_id: string
-      login_pw: string
-      manager_name: string
-      manager_phone: string
-      manager_email: string
-      school_logo: string | null
-      start_at: Date
-      end_at: Date | null
-      school_status: boolean
-      type: $Enums.School_type
-      school_level: $Enums.School_school_level
+      id: string
+      schoolName: string
+      loginId: string
+      loginPw: string
+      teacherName: string
+      teacherEmail: string
+      teacherPhone: string
+      schoolLogo: string | null
+      startAt: Date
+      endAt: Date
+      schoolType: $Enums.SchoolSchoolType
+      schoolLevel: $Enums.SchoolSchoolLevel
+      schoolStatus: boolean
+      createdAt: Date
     }, ExtArgs["result"]["school"]>
     composites: {}
   }
@@ -5932,9 +5853,9 @@ export namespace Prisma {
    */
   export interface Prisma__SchoolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Contents<T extends School$ContentsArgs<ExtArgs> = {}>(args?: Subset<T, School$ContentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Schedules<T extends School$SchedulesArgs<ExtArgs> = {}>(args?: Subset<T, School$SchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Student<T extends School$StudentArgs<ExtArgs> = {}>(args?: Subset<T, School$StudentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    contents<T extends School$contentsArgs<ExtArgs> = {}>(args?: Subset<T, School$contentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    schedules<T extends School$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, School$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    student<T extends School$studentArgs<ExtArgs> = {}>(args?: Subset<T, School$studentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5964,20 +5885,20 @@ export namespace Prisma {
    * Fields of the School model
    */
   interface SchoolFieldRefs {
-    readonly id: FieldRef<"School", 'Int'>
-    readonly school_id: FieldRef<"School", 'String'>
-    readonly school_name: FieldRef<"School", 'String'>
-    readonly login_id: FieldRef<"School", 'String'>
-    readonly login_pw: FieldRef<"School", 'String'>
-    readonly manager_name: FieldRef<"School", 'String'>
-    readonly manager_phone: FieldRef<"School", 'String'>
-    readonly manager_email: FieldRef<"School", 'String'>
-    readonly school_logo: FieldRef<"School", 'String'>
-    readonly start_at: FieldRef<"School", 'DateTime'>
-    readonly end_at: FieldRef<"School", 'DateTime'>
-    readonly school_status: FieldRef<"School", 'Boolean'>
-    readonly type: FieldRef<"School", 'School_type'>
-    readonly school_level: FieldRef<"School", 'School_school_level'>
+    readonly id: FieldRef<"School", 'String'>
+    readonly schoolName: FieldRef<"School", 'String'>
+    readonly loginId: FieldRef<"School", 'String'>
+    readonly loginPw: FieldRef<"School", 'String'>
+    readonly teacherName: FieldRef<"School", 'String'>
+    readonly teacherEmail: FieldRef<"School", 'String'>
+    readonly teacherPhone: FieldRef<"School", 'String'>
+    readonly schoolLogo: FieldRef<"School", 'String'>
+    readonly startAt: FieldRef<"School", 'DateTime'>
+    readonly endAt: FieldRef<"School", 'DateTime'>
+    readonly schoolType: FieldRef<"School", 'SchoolSchoolType'>
+    readonly schoolLevel: FieldRef<"School", 'SchoolSchoolLevel'>
+    readonly schoolStatus: FieldRef<"School", 'Boolean'>
+    readonly createdAt: FieldRef<"School", 'DateTime'>
   }
     
 
@@ -6321,9 +6242,9 @@ export namespace Prisma {
   }
 
   /**
-   * School.Contents
+   * School.contents
    */
-  export type School$ContentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type School$contentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Contents
      */
@@ -6345,9 +6266,9 @@ export namespace Prisma {
   }
 
   /**
-   * School.Schedules
+   * School.schedules
    */
-  export type School$SchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type School$schedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Schedules
      */
@@ -6369,9 +6290,9 @@ export namespace Prisma {
   }
 
   /**
-   * School.Student
+   * School.student
    */
-  export type School$StudentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type School$studentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Student
      */
@@ -6424,93 +6345,91 @@ export namespace Prisma {
   }
 
   export type StudentAvgAggregateOutputType = {
-    id: number | null
+    studentGrade: number | null
+    studentNumber: number | null
   }
 
   export type StudentSumAggregateOutputType = {
-    id: number | null
+    studentGrade: number | null
+    studentNumber: number | null
   }
 
   export type StudentMinAggregateOutputType = {
-    id: number | null
-    school_id: string | null
-    student_id: string | null
-    student_grade: string | null
-    student_class: string | null
-    student_number: string | null
-    student_name: string | null
-    student_gender: string | null
-    student_status: boolean | null
+    id: string | null
+    schoolId: string | null
+    studentGrade: number | null
+    studentClass: string | null
+    studentNumber: number | null
+    studentName: string | null
+    studentGender: $Enums.StudentStudentGender | null
+    studentStatus: boolean | null
   }
 
   export type StudentMaxAggregateOutputType = {
-    id: number | null
-    school_id: string | null
-    student_id: string | null
-    student_grade: string | null
-    student_class: string | null
-    student_number: string | null
-    student_name: string | null
-    student_gender: string | null
-    student_status: boolean | null
+    id: string | null
+    schoolId: string | null
+    studentGrade: number | null
+    studentClass: string | null
+    studentNumber: number | null
+    studentName: string | null
+    studentGender: $Enums.StudentStudentGender | null
+    studentStatus: boolean | null
   }
 
   export type StudentCountAggregateOutputType = {
     id: number
-    school_id: number
-    student_id: number
-    student_grade: number
-    student_class: number
-    student_number: number
-    student_name: number
-    student_gender: number
-    student_status: number
+    schoolId: number
+    studentGrade: number
+    studentClass: number
+    studentNumber: number
+    studentName: number
+    studentGender: number
+    studentStatus: number
     _all: number
   }
 
 
   export type StudentAvgAggregateInputType = {
-    id?: true
+    studentGrade?: true
+    studentNumber?: true
   }
 
   export type StudentSumAggregateInputType = {
-    id?: true
+    studentGrade?: true
+    studentNumber?: true
   }
 
   export type StudentMinAggregateInputType = {
     id?: true
-    school_id?: true
-    student_id?: true
-    student_grade?: true
-    student_class?: true
-    student_number?: true
-    student_name?: true
-    student_gender?: true
-    student_status?: true
+    schoolId?: true
+    studentGrade?: true
+    studentClass?: true
+    studentNumber?: true
+    studentName?: true
+    studentGender?: true
+    studentStatus?: true
   }
 
   export type StudentMaxAggregateInputType = {
     id?: true
-    school_id?: true
-    student_id?: true
-    student_grade?: true
-    student_class?: true
-    student_number?: true
-    student_name?: true
-    student_gender?: true
-    student_status?: true
+    schoolId?: true
+    studentGrade?: true
+    studentClass?: true
+    studentNumber?: true
+    studentName?: true
+    studentGender?: true
+    studentStatus?: true
   }
 
   export type StudentCountAggregateInputType = {
     id?: true
-    school_id?: true
-    student_id?: true
-    student_grade?: true
-    student_class?: true
-    student_number?: true
-    student_name?: true
-    student_gender?: true
-    student_status?: true
+    schoolId?: true
+    studentGrade?: true
+    studentClass?: true
+    studentNumber?: true
+    studentName?: true
+    studentGender?: true
+    studentStatus?: true
     _all?: true
   }
 
@@ -6601,15 +6520,14 @@ export namespace Prisma {
   }
 
   export type StudentGroupByOutputType = {
-    id: number
-    school_id: string | null
-    student_id: string | null
-    student_grade: string | null
-    student_class: string | null
-    student_number: string | null
-    student_name: string | null
-    student_gender: string | null
-    student_status: boolean | null
+    id: string
+    schoolId: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus: boolean
     _count: StudentCountAggregateOutputType | null
     _avg: StudentAvgAggregateOutputType | null
     _sum: StudentSumAggregateOutputType | null
@@ -6633,16 +6551,15 @@ export namespace Prisma {
 
   export type StudentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    school_id?: boolean
-    student_id?: boolean
-    student_grade?: boolean
-    student_class?: boolean
-    student_number?: boolean
-    student_name?: boolean
-    student_gender?: boolean
-    student_status?: boolean
-    Brushed?: boolean | Student$BrushedArgs<ExtArgs>
-    School?: boolean | Student$SchoolArgs<ExtArgs>
+    schoolId?: boolean
+    studentGrade?: boolean
+    studentClass?: boolean
+    studentNumber?: boolean
+    studentName?: boolean
+    studentGender?: boolean
+    studentStatus?: boolean
+    brushed?: boolean | Student$brushedArgs<ExtArgs>
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["student"]>
 
@@ -6650,39 +6567,37 @@ export namespace Prisma {
 
   export type StudentSelectScalar = {
     id?: boolean
-    school_id?: boolean
-    student_id?: boolean
-    student_grade?: boolean
-    student_class?: boolean
-    student_number?: boolean
-    student_name?: boolean
-    student_gender?: boolean
-    student_status?: boolean
+    schoolId?: boolean
+    studentGrade?: boolean
+    studentClass?: boolean
+    studentNumber?: boolean
+    studentName?: boolean
+    studentGender?: boolean
+    studentStatus?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "school_id" | "student_id" | "student_grade" | "student_class" | "student_number" | "student_name" | "student_gender" | "student_status", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "studentGrade" | "studentClass" | "studentNumber" | "studentName" | "studentGender" | "studentStatus", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Brushed?: boolean | Student$BrushedArgs<ExtArgs>
-    School?: boolean | Student$SchoolArgs<ExtArgs>
+    brushed?: boolean | Student$brushedArgs<ExtArgs>
+    school?: boolean | SchoolDefaultArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $StudentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Student"
     objects: {
-      Brushed: Prisma.$BrushedPayload<ExtArgs>[]
-      School: Prisma.$SchoolPayload<ExtArgs> | null
+      brushed: Prisma.$BrushedPayload<ExtArgs>[]
+      school: Prisma.$SchoolPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      school_id: string | null
-      student_id: string | null
-      student_grade: string | null
-      student_class: string | null
-      student_number: string | null
-      student_name: string | null
-      student_gender: string | null
-      student_status: boolean | null
+      id: string
+      schoolId: string
+      studentGrade: number
+      studentClass: string
+      studentNumber: number
+      studentName: string
+      studentGender: $Enums.StudentStudentGender
+      studentStatus: boolean
     }, ExtArgs["result"]["student"]>
     composites: {}
   }
@@ -7023,8 +6938,8 @@ export namespace Prisma {
    */
   export interface Prisma__StudentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Brushed<T extends Student$BrushedArgs<ExtArgs> = {}>(args?: Subset<T, Student$BrushedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BrushedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    School<T extends Student$SchoolArgs<ExtArgs> = {}>(args?: Subset<T, Student$SchoolArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    brushed<T extends Student$brushedArgs<ExtArgs> = {}>(args?: Subset<T, Student$brushedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BrushedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    school<T extends SchoolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SchoolDefaultArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7054,15 +6969,14 @@ export namespace Prisma {
    * Fields of the Student model
    */
   interface StudentFieldRefs {
-    readonly id: FieldRef<"Student", 'Int'>
-    readonly school_id: FieldRef<"Student", 'String'>
-    readonly student_id: FieldRef<"Student", 'String'>
-    readonly student_grade: FieldRef<"Student", 'String'>
-    readonly student_class: FieldRef<"Student", 'String'>
-    readonly student_number: FieldRef<"Student", 'String'>
-    readonly student_name: FieldRef<"Student", 'String'>
-    readonly student_gender: FieldRef<"Student", 'String'>
-    readonly student_status: FieldRef<"Student", 'Boolean'>
+    readonly id: FieldRef<"Student", 'String'>
+    readonly schoolId: FieldRef<"Student", 'String'>
+    readonly studentGrade: FieldRef<"Student", 'Int'>
+    readonly studentClass: FieldRef<"Student", 'String'>
+    readonly studentNumber: FieldRef<"Student", 'Int'>
+    readonly studentName: FieldRef<"Student", 'String'>
+    readonly studentGender: FieldRef<"Student", 'StudentStudentGender'>
+    readonly studentStatus: FieldRef<"Student", 'Boolean'>
   }
     
 
@@ -7281,7 +7195,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Student.
      */
-    data?: XOR<StudentCreateInput, StudentUncheckedCreateInput>
+    data: XOR<StudentCreateInput, StudentUncheckedCreateInput>
   }
 
   /**
@@ -7406,9 +7320,9 @@ export namespace Prisma {
   }
 
   /**
-   * Student.Brushed
+   * Student.brushed
    */
-  export type Student$BrushedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Student$brushedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Brushed
      */
@@ -7427,25 +7341,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BrushedScalarFieldEnum | BrushedScalarFieldEnum[]
-  }
-
-  /**
-   * Student.School
-   */
-  export type Student$SchoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the School
-     */
-    select?: SchoolSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the School
-     */
-    omit?: SchoolOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SchoolInclude<ExtArgs> | null
-    where?: SchoolWhereInput
   }
 
   /**
@@ -7483,9 +7378,9 @@ export namespace Prisma {
 
   export const BrushedScalarFieldEnum: {
     id: 'id',
-    student_id: 'student_id',
-    brushed_at: 'brushed_at',
-    brushed_status: 'brushed_status'
+    studentId: 'studentId',
+    brushedAt: 'brushedAt',
+    brushedStatus: 'brushedStatus'
   };
 
   export type BrushedScalarFieldEnum = (typeof BrushedScalarFieldEnum)[keyof typeof BrushedScalarFieldEnum]
@@ -7493,11 +7388,11 @@ export namespace Prisma {
 
   export const ContentsScalarFieldEnum: {
     id: 'id',
-    school_id: 'school_id',
-    file_type: 'file_type',
-    file_name: 'file_name',
+    schoolId: 'schoolId',
+    fileType: 'fileType',
+    fileName: 'fileName',
     seq: 'seq',
-    contents_status: 'contents_status'
+    contentsStatus: 'contentsStatus'
   };
 
   export type ContentsScalarFieldEnum = (typeof ContentsScalarFieldEnum)[keyof typeof ContentsScalarFieldEnum]
@@ -7505,9 +7400,9 @@ export namespace Prisma {
 
   export const HolidayScalarFieldEnum: {
     id: 'id',
-    holiday_name: 'holiday_name',
-    holiday_at: 'holiday_at',
-    hoilday_status: 'hoilday_status'
+    holidayName: 'holidayName',
+    holidayAt: 'holidayAt',
+    holidayStatus: 'holidayStatus'
   };
 
   export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
@@ -7515,11 +7410,11 @@ export namespace Prisma {
 
   export const SchedulesScalarFieldEnum: {
     id: 'id',
-    school_id: 'school_id',
-    schedule_name: 'schedule_name',
-    schedule_target: 'schedule_target',
-    schedule_at: 'schedule_at',
-    schedule_status: 'schedule_status'
+    schoolId: 'schoolId',
+    scheduleName: 'scheduleName',
+    scheduleTarget: 'scheduleTarget',
+    scheduleAt: 'scheduleAt',
+    scheduleStatus: 'scheduleStatus'
   };
 
   export type SchedulesScalarFieldEnum = (typeof SchedulesScalarFieldEnum)[keyof typeof SchedulesScalarFieldEnum]
@@ -7527,19 +7422,19 @@ export namespace Prisma {
 
   export const SchoolScalarFieldEnum: {
     id: 'id',
-    school_id: 'school_id',
-    school_name: 'school_name',
-    login_id: 'login_id',
-    login_pw: 'login_pw',
-    manager_name: 'manager_name',
-    manager_phone: 'manager_phone',
-    manager_email: 'manager_email',
-    school_logo: 'school_logo',
-    start_at: 'start_at',
-    end_at: 'end_at',
-    school_status: 'school_status',
-    type: 'type',
-    school_level: 'school_level'
+    schoolName: 'schoolName',
+    loginId: 'loginId',
+    loginPw: 'loginPw',
+    teacherName: 'teacherName',
+    teacherEmail: 'teacherEmail',
+    teacherPhone: 'teacherPhone',
+    schoolLogo: 'schoolLogo',
+    startAt: 'startAt',
+    endAt: 'endAt',
+    schoolType: 'schoolType',
+    schoolLevel: 'schoolLevel',
+    schoolStatus: 'schoolStatus',
+    createdAt: 'createdAt'
   };
 
   export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
@@ -7547,14 +7442,13 @@ export namespace Prisma {
 
   export const StudentScalarFieldEnum: {
     id: 'id',
-    school_id: 'school_id',
-    student_id: 'student_id',
-    student_grade: 'student_grade',
-    student_class: 'student_class',
-    student_number: 'student_number',
-    student_name: 'student_name',
-    student_gender: 'student_gender',
-    student_status: 'student_status'
+    schoolId: 'schoolId',
+    studentGrade: 'studentGrade',
+    studentClass: 'studentClass',
+    studentNumber: 'studentNumber',
+    studentName: 'studentName',
+    studentGender: 'studentGender',
+    studentStatus: 'studentStatus'
   };
 
   export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -7568,6 +7462,38 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const BrushedOrderByRelevanceFieldEnum: {
+    studentId: 'studentId'
+  };
+
+  export type BrushedOrderByRelevanceFieldEnum = (typeof BrushedOrderByRelevanceFieldEnum)[keyof typeof BrushedOrderByRelevanceFieldEnum]
+
+
+  export const ContentsOrderByRelevanceFieldEnum: {
+    schoolId: 'schoolId',
+    fileType: 'fileType',
+    fileName: 'fileName'
+  };
+
+  export type ContentsOrderByRelevanceFieldEnum = (typeof ContentsOrderByRelevanceFieldEnum)[keyof typeof ContentsOrderByRelevanceFieldEnum]
+
+
+  export const HolidayOrderByRelevanceFieldEnum: {
+    holidayName: 'holidayName'
+  };
+
+  export type HolidayOrderByRelevanceFieldEnum = (typeof HolidayOrderByRelevanceFieldEnum)[keyof typeof HolidayOrderByRelevanceFieldEnum]
+
+
+  export const SchedulesOrderByRelevanceFieldEnum: {
+    schoolId: 'schoolId',
+    scheduleName: 'scheduleName',
+    scheduleTarget: 'scheduleTarget'
+  };
+
+  export type SchedulesOrderByRelevanceFieldEnum = (typeof SchedulesOrderByRelevanceFieldEnum)[keyof typeof SchedulesOrderByRelevanceFieldEnum]
+
+
   export const NullsOrder: {
     first: 'first',
     last: 'last'
@@ -7576,60 +7502,25 @@ export namespace Prisma {
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-  export const BrushedOrderByRelevanceFieldEnum: {
-    student_id: 'student_id'
-  };
-
-  export type BrushedOrderByRelevanceFieldEnum = (typeof BrushedOrderByRelevanceFieldEnum)[keyof typeof BrushedOrderByRelevanceFieldEnum]
-
-
-  export const ContentsOrderByRelevanceFieldEnum: {
-    school_id: 'school_id',
-    file_type: 'file_type',
-    file_name: 'file_name'
-  };
-
-  export type ContentsOrderByRelevanceFieldEnum = (typeof ContentsOrderByRelevanceFieldEnum)[keyof typeof ContentsOrderByRelevanceFieldEnum]
-
-
-  export const HolidayOrderByRelevanceFieldEnum: {
-    holiday_name: 'holiday_name'
-  };
-
-  export type HolidayOrderByRelevanceFieldEnum = (typeof HolidayOrderByRelevanceFieldEnum)[keyof typeof HolidayOrderByRelevanceFieldEnum]
-
-
-  export const SchedulesOrderByRelevanceFieldEnum: {
-    school_id: 'school_id',
-    schedule_name: 'schedule_name',
-    schedule_target: 'schedule_target'
-  };
-
-  export type SchedulesOrderByRelevanceFieldEnum = (typeof SchedulesOrderByRelevanceFieldEnum)[keyof typeof SchedulesOrderByRelevanceFieldEnum]
-
-
   export const SchoolOrderByRelevanceFieldEnum: {
-    school_id: 'school_id',
-    school_name: 'school_name',
-    login_id: 'login_id',
-    login_pw: 'login_pw',
-    manager_name: 'manager_name',
-    manager_phone: 'manager_phone',
-    manager_email: 'manager_email',
-    school_logo: 'school_logo'
+    id: 'id',
+    schoolName: 'schoolName',
+    loginId: 'loginId',
+    loginPw: 'loginPw',
+    teacherName: 'teacherName',
+    teacherEmail: 'teacherEmail',
+    teacherPhone: 'teacherPhone',
+    schoolLogo: 'schoolLogo'
   };
 
   export type SchoolOrderByRelevanceFieldEnum = (typeof SchoolOrderByRelevanceFieldEnum)[keyof typeof SchoolOrderByRelevanceFieldEnum]
 
 
   export const StudentOrderByRelevanceFieldEnum: {
-    school_id: 'school_id',
-    student_id: 'student_id',
-    student_grade: 'student_grade',
-    student_class: 'student_class',
-    student_number: 'student_number',
-    student_name: 'student_name',
-    student_gender: 'student_gender'
+    id: 'id',
+    schoolId: 'schoolId',
+    studentClass: 'studentClass',
+    studentName: 'studentName'
   };
 
   export type StudentOrderByRelevanceFieldEnum = (typeof StudentOrderByRelevanceFieldEnum)[keyof typeof StudentOrderByRelevanceFieldEnum]
@@ -7662,9 +7553,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Brushed_brushed_status'
+   * Reference to a field of type 'BrushedBrushedStatus'
    */
-  export type EnumBrushed_brushed_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Brushed_brushed_status'>
+  export type EnumBrushedBrushedStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BrushedBrushedStatus'>
     
 
 
@@ -7676,16 +7567,23 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'School_type'
+   * Reference to a field of type 'SchoolSchoolType'
    */
-  export type EnumSchool_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'School_type'>
+  export type EnumSchoolSchoolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolSchoolType'>
     
 
 
   /**
-   * Reference to a field of type 'School_school_level'
+   * Reference to a field of type 'SchoolSchoolLevel'
    */
-  export type EnumSchool_school_levelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'School_school_level'>
+  export type EnumSchoolSchoolLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolSchoolLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'StudentStudentGender'
+   */
+  export type EnumStudentStudentGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStudentGender'>
     
 
 
@@ -7704,18 +7602,18 @@ export namespace Prisma {
     OR?: BrushedWhereInput[]
     NOT?: BrushedWhereInput | BrushedWhereInput[]
     id?: IntFilter<"Brushed"> | number
-    student_id?: StringNullableFilter<"Brushed"> | string | null
-    brushed_at?: DateTimeNullableFilter<"Brushed"> | Date | string | null
-    brushed_status?: EnumBrushed_brushed_statusNullableFilter<"Brushed"> | $Enums.Brushed_brushed_status | null
-    Student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
+    studentId?: StringFilter<"Brushed"> | string
+    brushedAt?: DateTimeFilter<"Brushed"> | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }
 
   export type BrushedOrderByWithRelationInput = {
     id?: SortOrder
-    student_id?: SortOrderInput | SortOrder
-    brushed_at?: SortOrderInput | SortOrder
-    brushed_status?: SortOrderInput | SortOrder
-    Student?: StudentOrderByWithRelationInput
+    studentId?: SortOrder
+    brushedAt?: SortOrder
+    brushedStatus?: SortOrder
+    student?: StudentOrderByWithRelationInput
     _relevance?: BrushedOrderByRelevanceInput
   }
 
@@ -7724,17 +7622,17 @@ export namespace Prisma {
     AND?: BrushedWhereInput | BrushedWhereInput[]
     OR?: BrushedWhereInput[]
     NOT?: BrushedWhereInput | BrushedWhereInput[]
-    student_id?: StringNullableFilter<"Brushed"> | string | null
-    brushed_at?: DateTimeNullableFilter<"Brushed"> | Date | string | null
-    brushed_status?: EnumBrushed_brushed_statusNullableFilter<"Brushed"> | $Enums.Brushed_brushed_status | null
-    Student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
+    studentId?: StringFilter<"Brushed"> | string
+    brushedAt?: DateTimeFilter<"Brushed"> | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }, "id">
 
   export type BrushedOrderByWithAggregationInput = {
     id?: SortOrder
-    student_id?: SortOrderInput | SortOrder
-    brushed_at?: SortOrderInput | SortOrder
-    brushed_status?: SortOrderInput | SortOrder
+    studentId?: SortOrder
+    brushedAt?: SortOrder
+    brushedStatus?: SortOrder
     _count?: BrushedCountOrderByAggregateInput
     _avg?: BrushedAvgOrderByAggregateInput
     _max?: BrushedMaxOrderByAggregateInput
@@ -7747,9 +7645,9 @@ export namespace Prisma {
     OR?: BrushedScalarWhereWithAggregatesInput[]
     NOT?: BrushedScalarWhereWithAggregatesInput | BrushedScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Brushed"> | number
-    student_id?: StringNullableWithAggregatesFilter<"Brushed"> | string | null
-    brushed_at?: DateTimeNullableWithAggregatesFilter<"Brushed"> | Date | string | null
-    brushed_status?: EnumBrushed_brushed_statusNullableWithAggregatesFilter<"Brushed"> | $Enums.Brushed_brushed_status | null
+    studentId?: StringWithAggregatesFilter<"Brushed"> | string
+    brushedAt?: DateTimeWithAggregatesFilter<"Brushed"> | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusWithAggregatesFilter<"Brushed"> | $Enums.BrushedBrushedStatus
   }
 
   export type ContentsWhereInput = {
@@ -7757,22 +7655,22 @@ export namespace Prisma {
     OR?: ContentsWhereInput[]
     NOT?: ContentsWhereInput | ContentsWhereInput[]
     id?: IntFilter<"Contents"> | number
-    school_id?: StringNullableFilter<"Contents"> | string | null
-    file_type?: StringNullableFilter<"Contents"> | string | null
-    file_name?: StringNullableFilter<"Contents"> | string | null
-    seq?: IntNullableFilter<"Contents"> | number | null
-    contents_status?: BoolNullableFilter<"Contents"> | boolean | null
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
+    schoolId?: StringFilter<"Contents"> | string
+    fileType?: StringFilter<"Contents"> | string
+    fileName?: StringFilter<"Contents"> | string
+    seq?: IntFilter<"Contents"> | number
+    contentsStatus?: BoolFilter<"Contents"> | boolean
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
 
   export type ContentsOrderByWithRelationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    file_type?: SortOrderInput | SortOrder
-    file_name?: SortOrderInput | SortOrder
-    seq?: SortOrderInput | SortOrder
-    contents_status?: SortOrderInput | SortOrder
-    School?: SchoolOrderByWithRelationInput
+    schoolId?: SortOrder
+    fileType?: SortOrder
+    fileName?: SortOrder
+    seq?: SortOrder
+    contentsStatus?: SortOrder
+    school?: SchoolOrderByWithRelationInput
     _relevance?: ContentsOrderByRelevanceInput
   }
 
@@ -7781,21 +7679,21 @@ export namespace Prisma {
     AND?: ContentsWhereInput | ContentsWhereInput[]
     OR?: ContentsWhereInput[]
     NOT?: ContentsWhereInput | ContentsWhereInput[]
-    school_id?: StringNullableFilter<"Contents"> | string | null
-    file_type?: StringNullableFilter<"Contents"> | string | null
-    file_name?: StringNullableFilter<"Contents"> | string | null
-    seq?: IntNullableFilter<"Contents"> | number | null
-    contents_status?: BoolNullableFilter<"Contents"> | boolean | null
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
+    schoolId?: StringFilter<"Contents"> | string
+    fileType?: StringFilter<"Contents"> | string
+    fileName?: StringFilter<"Contents"> | string
+    seq?: IntFilter<"Contents"> | number
+    contentsStatus?: BoolFilter<"Contents"> | boolean
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }, "id">
 
   export type ContentsOrderByWithAggregationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    file_type?: SortOrderInput | SortOrder
-    file_name?: SortOrderInput | SortOrder
-    seq?: SortOrderInput | SortOrder
-    contents_status?: SortOrderInput | SortOrder
+    schoolId?: SortOrder
+    fileType?: SortOrder
+    fileName?: SortOrder
+    seq?: SortOrder
+    contentsStatus?: SortOrder
     _count?: ContentsCountOrderByAggregateInput
     _avg?: ContentsAvgOrderByAggregateInput
     _max?: ContentsMaxOrderByAggregateInput
@@ -7808,11 +7706,11 @@ export namespace Prisma {
     OR?: ContentsScalarWhereWithAggregatesInput[]
     NOT?: ContentsScalarWhereWithAggregatesInput | ContentsScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Contents"> | number
-    school_id?: StringNullableWithAggregatesFilter<"Contents"> | string | null
-    file_type?: StringNullableWithAggregatesFilter<"Contents"> | string | null
-    file_name?: StringNullableWithAggregatesFilter<"Contents"> | string | null
-    seq?: IntNullableWithAggregatesFilter<"Contents"> | number | null
-    contents_status?: BoolNullableWithAggregatesFilter<"Contents"> | boolean | null
+    schoolId?: StringWithAggregatesFilter<"Contents"> | string
+    fileType?: StringWithAggregatesFilter<"Contents"> | string
+    fileName?: StringWithAggregatesFilter<"Contents"> | string
+    seq?: IntWithAggregatesFilter<"Contents"> | number
+    contentsStatus?: BoolWithAggregatesFilter<"Contents"> | boolean
   }
 
   export type HolidayWhereInput = {
@@ -7820,16 +7718,16 @@ export namespace Prisma {
     OR?: HolidayWhereInput[]
     NOT?: HolidayWhereInput | HolidayWhereInput[]
     id?: IntFilter<"Holiday"> | number
-    holiday_name?: StringNullableFilter<"Holiday"> | string | null
-    holiday_at?: DateTimeNullableFilter<"Holiday"> | Date | string | null
-    hoilday_status?: BoolNullableFilter<"Holiday"> | boolean | null
+    holidayName?: StringFilter<"Holiday"> | string
+    holidayAt?: DateTimeFilter<"Holiday"> | Date | string
+    holidayStatus?: BoolFilter<"Holiday"> | boolean
   }
 
   export type HolidayOrderByWithRelationInput = {
     id?: SortOrder
-    holiday_name?: SortOrderInput | SortOrder
-    holiday_at?: SortOrderInput | SortOrder
-    hoilday_status?: SortOrderInput | SortOrder
+    holidayName?: SortOrder
+    holidayAt?: SortOrder
+    holidayStatus?: SortOrder
     _relevance?: HolidayOrderByRelevanceInput
   }
 
@@ -7838,16 +7736,16 @@ export namespace Prisma {
     AND?: HolidayWhereInput | HolidayWhereInput[]
     OR?: HolidayWhereInput[]
     NOT?: HolidayWhereInput | HolidayWhereInput[]
-    holiday_name?: StringNullableFilter<"Holiday"> | string | null
-    holiday_at?: DateTimeNullableFilter<"Holiday"> | Date | string | null
-    hoilday_status?: BoolNullableFilter<"Holiday"> | boolean | null
+    holidayName?: StringFilter<"Holiday"> | string
+    holidayAt?: DateTimeFilter<"Holiday"> | Date | string
+    holidayStatus?: BoolFilter<"Holiday"> | boolean
   }, "id">
 
   export type HolidayOrderByWithAggregationInput = {
     id?: SortOrder
-    holiday_name?: SortOrderInput | SortOrder
-    holiday_at?: SortOrderInput | SortOrder
-    hoilday_status?: SortOrderInput | SortOrder
+    holidayName?: SortOrder
+    holidayAt?: SortOrder
+    holidayStatus?: SortOrder
     _count?: HolidayCountOrderByAggregateInput
     _avg?: HolidayAvgOrderByAggregateInput
     _max?: HolidayMaxOrderByAggregateInput
@@ -7860,9 +7758,9 @@ export namespace Prisma {
     OR?: HolidayScalarWhereWithAggregatesInput[]
     NOT?: HolidayScalarWhereWithAggregatesInput | HolidayScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Holiday"> | number
-    holiday_name?: StringNullableWithAggregatesFilter<"Holiday"> | string | null
-    holiday_at?: DateTimeNullableWithAggregatesFilter<"Holiday"> | Date | string | null
-    hoilday_status?: BoolNullableWithAggregatesFilter<"Holiday"> | boolean | null
+    holidayName?: StringWithAggregatesFilter<"Holiday"> | string
+    holidayAt?: DateTimeWithAggregatesFilter<"Holiday"> | Date | string
+    holidayStatus?: BoolWithAggregatesFilter<"Holiday"> | boolean
   }
 
   export type SchedulesWhereInput = {
@@ -7870,22 +7768,22 @@ export namespace Prisma {
     OR?: SchedulesWhereInput[]
     NOT?: SchedulesWhereInput | SchedulesWhereInput[]
     id?: IntFilter<"Schedules"> | number
-    school_id?: StringNullableFilter<"Schedules"> | string | null
-    schedule_name?: StringNullableFilter<"Schedules"> | string | null
-    schedule_target?: StringNullableFilter<"Schedules"> | string | null
-    schedule_at?: DateTimeNullableFilter<"Schedules"> | Date | string | null
-    schedule_status?: BoolNullableFilter<"Schedules"> | boolean | null
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
+    schoolId?: StringFilter<"Schedules"> | string
+    scheduleName?: StringFilter<"Schedules"> | string
+    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
+    scheduleStatus?: BoolFilter<"Schedules"> | boolean
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
 
   export type SchedulesOrderByWithRelationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    schedule_name?: SortOrderInput | SortOrder
-    schedule_target?: SortOrderInput | SortOrder
-    schedule_at?: SortOrderInput | SortOrder
-    schedule_status?: SortOrderInput | SortOrder
-    School?: SchoolOrderByWithRelationInput
+    schoolId?: SortOrder
+    scheduleName?: SortOrder
+    scheduleTarget?: SortOrder
+    scheduleAt?: SortOrder
+    scheduleStatus?: SortOrder
+    school?: SchoolOrderByWithRelationInput
     _relevance?: SchedulesOrderByRelevanceInput
   }
 
@@ -7894,21 +7792,21 @@ export namespace Prisma {
     AND?: SchedulesWhereInput | SchedulesWhereInput[]
     OR?: SchedulesWhereInput[]
     NOT?: SchedulesWhereInput | SchedulesWhereInput[]
-    school_id?: StringNullableFilter<"Schedules"> | string | null
-    schedule_name?: StringNullableFilter<"Schedules"> | string | null
-    schedule_target?: StringNullableFilter<"Schedules"> | string | null
-    schedule_at?: DateTimeNullableFilter<"Schedules"> | Date | string | null
-    schedule_status?: BoolNullableFilter<"Schedules"> | boolean | null
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
+    schoolId?: StringFilter<"Schedules"> | string
+    scheduleName?: StringFilter<"Schedules"> | string
+    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
+    scheduleStatus?: BoolFilter<"Schedules"> | boolean
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }, "id">
 
   export type SchedulesOrderByWithAggregationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    schedule_name?: SortOrderInput | SortOrder
-    schedule_target?: SortOrderInput | SortOrder
-    schedule_at?: SortOrderInput | SortOrder
-    schedule_status?: SortOrderInput | SortOrder
+    schoolId?: SortOrder
+    scheduleName?: SortOrder
+    scheduleTarget?: SortOrder
+    scheduleAt?: SortOrder
+    scheduleStatus?: SortOrder
     _count?: SchedulesCountOrderByAggregateInput
     _avg?: SchedulesAvgOrderByAggregateInput
     _max?: SchedulesMaxOrderByAggregateInput
@@ -7921,181 +7819,175 @@ export namespace Prisma {
     OR?: SchedulesScalarWhereWithAggregatesInput[]
     NOT?: SchedulesScalarWhereWithAggregatesInput | SchedulesScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Schedules"> | number
-    school_id?: StringNullableWithAggregatesFilter<"Schedules"> | string | null
-    schedule_name?: StringNullableWithAggregatesFilter<"Schedules"> | string | null
-    schedule_target?: StringNullableWithAggregatesFilter<"Schedules"> | string | null
-    schedule_at?: DateTimeNullableWithAggregatesFilter<"Schedules"> | Date | string | null
-    schedule_status?: BoolNullableWithAggregatesFilter<"Schedules"> | boolean | null
+    schoolId?: StringWithAggregatesFilter<"Schedules"> | string
+    scheduleName?: StringWithAggregatesFilter<"Schedules"> | string
+    scheduleTarget?: StringWithAggregatesFilter<"Schedules"> | string
+    scheduleAt?: DateTimeWithAggregatesFilter<"Schedules"> | Date | string
+    scheduleStatus?: BoolWithAggregatesFilter<"Schedules"> | boolean
   }
 
   export type SchoolWhereInput = {
     AND?: SchoolWhereInput | SchoolWhereInput[]
     OR?: SchoolWhereInput[]
     NOT?: SchoolWhereInput | SchoolWhereInput[]
-    id?: IntFilter<"School"> | number
-    school_id?: StringNullableFilter<"School"> | string | null
-    school_name?: StringFilter<"School"> | string
-    login_id?: StringFilter<"School"> | string
-    login_pw?: StringFilter<"School"> | string
-    manager_name?: StringFilter<"School"> | string
-    manager_phone?: StringFilter<"School"> | string
-    manager_email?: StringFilter<"School"> | string
-    school_logo?: StringNullableFilter<"School"> | string | null
-    start_at?: DateTimeFilter<"School"> | Date | string
-    end_at?: DateTimeNullableFilter<"School"> | Date | string | null
-    school_status?: BoolFilter<"School"> | boolean
-    type?: EnumSchool_typeFilter<"School"> | $Enums.School_type
-    school_level?: EnumSchool_school_levelFilter<"School"> | $Enums.School_school_level
-    Contents?: ContentsListRelationFilter
-    Schedules?: SchedulesListRelationFilter
-    Student?: StudentListRelationFilter
+    id?: StringFilter<"School"> | string
+    schoolName?: StringFilter<"School"> | string
+    loginId?: StringFilter<"School"> | string
+    loginPw?: StringFilter<"School"> | string
+    teacherName?: StringFilter<"School"> | string
+    teacherEmail?: StringFilter<"School"> | string
+    teacherPhone?: StringFilter<"School"> | string
+    schoolLogo?: StringNullableFilter<"School"> | string | null
+    startAt?: DateTimeFilter<"School"> | Date | string
+    endAt?: DateTimeFilter<"School"> | Date | string
+    schoolType?: EnumSchoolSchoolTypeFilter<"School"> | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFilter<"School"> | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFilter<"School"> | boolean
+    createdAt?: DateTimeFilter<"School"> | Date | string
+    contents?: ContentsListRelationFilter
+    schedules?: SchedulesListRelationFilter
+    student?: StudentListRelationFilter
   }
 
   export type SchoolOrderByWithRelationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    school_name?: SortOrder
-    login_id?: SortOrder
-    login_pw?: SortOrder
-    manager_name?: SortOrder
-    manager_phone?: SortOrder
-    manager_email?: SortOrder
-    school_logo?: SortOrderInput | SortOrder
-    start_at?: SortOrder
-    end_at?: SortOrderInput | SortOrder
-    school_status?: SortOrder
-    type?: SortOrder
-    school_level?: SortOrder
-    Contents?: ContentsOrderByRelationAggregateInput
-    Schedules?: SchedulesOrderByRelationAggregateInput
-    Student?: StudentOrderByRelationAggregateInput
+    schoolName?: SortOrder
+    loginId?: SortOrder
+    loginPw?: SortOrder
+    teacherName?: SortOrder
+    teacherEmail?: SortOrder
+    teacherPhone?: SortOrder
+    schoolLogo?: SortOrderInput | SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    schoolType?: SortOrder
+    schoolLevel?: SortOrder
+    schoolStatus?: SortOrder
+    createdAt?: SortOrder
+    contents?: ContentsOrderByRelationAggregateInput
+    schedules?: SchedulesOrderByRelationAggregateInput
+    student?: StudentOrderByRelationAggregateInput
     _relevance?: SchoolOrderByRelevanceInput
   }
 
   export type SchoolWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    school_id?: string
+    id?: string
     AND?: SchoolWhereInput | SchoolWhereInput[]
     OR?: SchoolWhereInput[]
     NOT?: SchoolWhereInput | SchoolWhereInput[]
-    school_name?: StringFilter<"School"> | string
-    login_id?: StringFilter<"School"> | string
-    login_pw?: StringFilter<"School"> | string
-    manager_name?: StringFilter<"School"> | string
-    manager_phone?: StringFilter<"School"> | string
-    manager_email?: StringFilter<"School"> | string
-    school_logo?: StringNullableFilter<"School"> | string | null
-    start_at?: DateTimeFilter<"School"> | Date | string
-    end_at?: DateTimeNullableFilter<"School"> | Date | string | null
-    school_status?: BoolFilter<"School"> | boolean
-    type?: EnumSchool_typeFilter<"School"> | $Enums.School_type
-    school_level?: EnumSchool_school_levelFilter<"School"> | $Enums.School_school_level
-    Contents?: ContentsListRelationFilter
-    Schedules?: SchedulesListRelationFilter
-    Student?: StudentListRelationFilter
-  }, "id" | "school_id">
+    schoolName?: StringFilter<"School"> | string
+    loginId?: StringFilter<"School"> | string
+    loginPw?: StringFilter<"School"> | string
+    teacherName?: StringFilter<"School"> | string
+    teacherEmail?: StringFilter<"School"> | string
+    teacherPhone?: StringFilter<"School"> | string
+    schoolLogo?: StringNullableFilter<"School"> | string | null
+    startAt?: DateTimeFilter<"School"> | Date | string
+    endAt?: DateTimeFilter<"School"> | Date | string
+    schoolType?: EnumSchoolSchoolTypeFilter<"School"> | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFilter<"School"> | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFilter<"School"> | boolean
+    createdAt?: DateTimeFilter<"School"> | Date | string
+    contents?: ContentsListRelationFilter
+    schedules?: SchedulesListRelationFilter
+    student?: StudentListRelationFilter
+  }, "id">
 
   export type SchoolOrderByWithAggregationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    school_name?: SortOrder
-    login_id?: SortOrder
-    login_pw?: SortOrder
-    manager_name?: SortOrder
-    manager_phone?: SortOrder
-    manager_email?: SortOrder
-    school_logo?: SortOrderInput | SortOrder
-    start_at?: SortOrder
-    end_at?: SortOrderInput | SortOrder
-    school_status?: SortOrder
-    type?: SortOrder
-    school_level?: SortOrder
+    schoolName?: SortOrder
+    loginId?: SortOrder
+    loginPw?: SortOrder
+    teacherName?: SortOrder
+    teacherEmail?: SortOrder
+    teacherPhone?: SortOrder
+    schoolLogo?: SortOrderInput | SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    schoolType?: SortOrder
+    schoolLevel?: SortOrder
+    schoolStatus?: SortOrder
+    createdAt?: SortOrder
     _count?: SchoolCountOrderByAggregateInput
-    _avg?: SchoolAvgOrderByAggregateInput
     _max?: SchoolMaxOrderByAggregateInput
     _min?: SchoolMinOrderByAggregateInput
-    _sum?: SchoolSumOrderByAggregateInput
   }
 
   export type SchoolScalarWhereWithAggregatesInput = {
     AND?: SchoolScalarWhereWithAggregatesInput | SchoolScalarWhereWithAggregatesInput[]
     OR?: SchoolScalarWhereWithAggregatesInput[]
     NOT?: SchoolScalarWhereWithAggregatesInput | SchoolScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"School"> | number
-    school_id?: StringNullableWithAggregatesFilter<"School"> | string | null
-    school_name?: StringWithAggregatesFilter<"School"> | string
-    login_id?: StringWithAggregatesFilter<"School"> | string
-    login_pw?: StringWithAggregatesFilter<"School"> | string
-    manager_name?: StringWithAggregatesFilter<"School"> | string
-    manager_phone?: StringWithAggregatesFilter<"School"> | string
-    manager_email?: StringWithAggregatesFilter<"School"> | string
-    school_logo?: StringNullableWithAggregatesFilter<"School"> | string | null
-    start_at?: DateTimeWithAggregatesFilter<"School"> | Date | string
-    end_at?: DateTimeNullableWithAggregatesFilter<"School"> | Date | string | null
-    school_status?: BoolWithAggregatesFilter<"School"> | boolean
-    type?: EnumSchool_typeWithAggregatesFilter<"School"> | $Enums.School_type
-    school_level?: EnumSchool_school_levelWithAggregatesFilter<"School"> | $Enums.School_school_level
+    id?: StringWithAggregatesFilter<"School"> | string
+    schoolName?: StringWithAggregatesFilter<"School"> | string
+    loginId?: StringWithAggregatesFilter<"School"> | string
+    loginPw?: StringWithAggregatesFilter<"School"> | string
+    teacherName?: StringWithAggregatesFilter<"School"> | string
+    teacherEmail?: StringWithAggregatesFilter<"School"> | string
+    teacherPhone?: StringWithAggregatesFilter<"School"> | string
+    schoolLogo?: StringNullableWithAggregatesFilter<"School"> | string | null
+    startAt?: DateTimeWithAggregatesFilter<"School"> | Date | string
+    endAt?: DateTimeWithAggregatesFilter<"School"> | Date | string
+    schoolType?: EnumSchoolSchoolTypeWithAggregatesFilter<"School"> | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelWithAggregatesFilter<"School"> | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolWithAggregatesFilter<"School"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"School"> | Date | string
   }
 
   export type StudentWhereInput = {
     AND?: StudentWhereInput | StudentWhereInput[]
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
-    id?: IntFilter<"Student"> | number
-    school_id?: StringNullableFilter<"Student"> | string | null
-    student_id?: StringNullableFilter<"Student"> | string | null
-    student_grade?: StringNullableFilter<"Student"> | string | null
-    student_class?: StringNullableFilter<"Student"> | string | null
-    student_number?: StringNullableFilter<"Student"> | string | null
-    student_name?: StringNullableFilter<"Student"> | string | null
-    student_gender?: StringNullableFilter<"Student"> | string | null
-    student_status?: BoolNullableFilter<"Student"> | boolean | null
-    Brushed?: BrushedListRelationFilter
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
+    id?: StringFilter<"Student"> | string
+    schoolId?: StringFilter<"Student"> | string
+    studentGrade?: IntFilter<"Student"> | number
+    studentClass?: StringFilter<"Student"> | string
+    studentNumber?: IntFilter<"Student"> | number
+    studentName?: StringFilter<"Student"> | string
+    studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
+    studentStatus?: BoolFilter<"Student"> | boolean
+    brushed?: BrushedListRelationFilter
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
 
   export type StudentOrderByWithRelationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    student_id?: SortOrderInput | SortOrder
-    student_grade?: SortOrderInput | SortOrder
-    student_class?: SortOrderInput | SortOrder
-    student_number?: SortOrderInput | SortOrder
-    student_name?: SortOrderInput | SortOrder
-    student_gender?: SortOrderInput | SortOrder
-    student_status?: SortOrderInput | SortOrder
-    Brushed?: BrushedOrderByRelationAggregateInput
-    School?: SchoolOrderByWithRelationInput
+    schoolId?: SortOrder
+    studentGrade?: SortOrder
+    studentClass?: SortOrder
+    studentNumber?: SortOrder
+    studentName?: SortOrder
+    studentGender?: SortOrder
+    studentStatus?: SortOrder
+    brushed?: BrushedOrderByRelationAggregateInput
+    school?: SchoolOrderByWithRelationInput
     _relevance?: StudentOrderByRelevanceInput
   }
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    student_id?: string
+    id?: string
     AND?: StudentWhereInput | StudentWhereInput[]
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
-    school_id?: StringNullableFilter<"Student"> | string | null
-    student_grade?: StringNullableFilter<"Student"> | string | null
-    student_class?: StringNullableFilter<"Student"> | string | null
-    student_number?: StringNullableFilter<"Student"> | string | null
-    student_name?: StringNullableFilter<"Student"> | string | null
-    student_gender?: StringNullableFilter<"Student"> | string | null
-    student_status?: BoolNullableFilter<"Student"> | boolean | null
-    Brushed?: BrushedListRelationFilter
-    School?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
-  }, "id" | "student_id">
+    schoolId?: StringFilter<"Student"> | string
+    studentGrade?: IntFilter<"Student"> | number
+    studentClass?: StringFilter<"Student"> | string
+    studentNumber?: IntFilter<"Student"> | number
+    studentName?: StringFilter<"Student"> | string
+    studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
+    studentStatus?: BoolFilter<"Student"> | boolean
+    brushed?: BrushedListRelationFilter
+    school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
+  }, "id">
 
   export type StudentOrderByWithAggregationInput = {
     id?: SortOrder
-    school_id?: SortOrderInput | SortOrder
-    student_id?: SortOrderInput | SortOrder
-    student_grade?: SortOrderInput | SortOrder
-    student_class?: SortOrderInput | SortOrder
-    student_number?: SortOrderInput | SortOrder
-    student_name?: SortOrderInput | SortOrder
-    student_gender?: SortOrderInput | SortOrder
-    student_status?: SortOrderInput | SortOrder
+    schoolId?: SortOrder
+    studentGrade?: SortOrder
+    studentClass?: SortOrder
+    studentNumber?: SortOrder
+    studentName?: SortOrder
+    studentGender?: SortOrder
+    studentStatus?: SortOrder
     _count?: StudentCountOrderByAggregateInput
     _avg?: StudentAvgOrderByAggregateInput
     _max?: StudentMaxOrderByAggregateInput
@@ -8107,436 +7999,434 @@ export namespace Prisma {
     AND?: StudentScalarWhereWithAggregatesInput | StudentScalarWhereWithAggregatesInput[]
     OR?: StudentScalarWhereWithAggregatesInput[]
     NOT?: StudentScalarWhereWithAggregatesInput | StudentScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Student"> | number
-    school_id?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_id?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_grade?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_class?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_number?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_name?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_gender?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    student_status?: BoolNullableWithAggregatesFilter<"Student"> | boolean | null
+    id?: StringWithAggregatesFilter<"Student"> | string
+    schoolId?: StringWithAggregatesFilter<"Student"> | string
+    studentGrade?: IntWithAggregatesFilter<"Student"> | number
+    studentClass?: StringWithAggregatesFilter<"Student"> | string
+    studentNumber?: IntWithAggregatesFilter<"Student"> | number
+    studentName?: StringWithAggregatesFilter<"Student"> | string
+    studentGender?: EnumStudentStudentGenderWithAggregatesFilter<"Student"> | $Enums.StudentStudentGender
+    studentStatus?: BoolWithAggregatesFilter<"Student"> | boolean
   }
 
   export type BrushedCreateInput = {
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
-    Student?: StudentCreateNestedOneWithoutBrushedInput
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
+    student: StudentCreateNestedOneWithoutBrushedInput
   }
 
   export type BrushedUncheckedCreateInput = {
     id?: number
-    student_id?: string | null
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
+    studentId: string
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUpdateInput = {
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
-    Student?: StudentUpdateOneWithoutBrushedNestedInput
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    student?: StudentUpdateOneRequiredWithoutBrushedNestedInput
   }
 
   export type BrushedUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    studentId?: StringFieldUpdateOperationsInput | string
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
   export type BrushedCreateManyInput = {
     id?: number
-    student_id?: string | null
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
+    studentId: string
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUpdateManyMutationInput = {
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    studentId?: StringFieldUpdateOperationsInput | string
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
   export type ContentsCreateInput = {
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
-    School?: SchoolCreateNestedOneWithoutContentsInput
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
+    school: SchoolCreateNestedOneWithoutContentsInput
   }
 
   export type ContentsUncheckedCreateInput = {
     id?: number
-    school_id?: string | null
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
+    schoolId: string
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
   }
 
   export type ContentsUpdateInput = {
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    School?: SchoolUpdateOneWithoutContentsNestedInput
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    school?: SchoolUpdateOneRequiredWithoutContentsNestedInput
   }
 
   export type ContentsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    schoolId?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ContentsCreateManyInput = {
     id?: number
-    school_id?: string | null
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
+    schoolId: string
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
   }
 
   export type ContentsUpdateManyMutationInput = {
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ContentsUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    schoolId?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type HolidayCreateInput = {
-    holiday_name?: string | null
-    holiday_at?: Date | string | null
-    hoilday_status?: boolean | null
+    holidayName: string
+    holidayAt: Date | string
+    holidayStatus?: boolean
   }
 
   export type HolidayUncheckedCreateInput = {
     id?: number
-    holiday_name?: string | null
-    holiday_at?: Date | string | null
-    hoilday_status?: boolean | null
+    holidayName: string
+    holidayAt: Date | string
+    holidayStatus?: boolean
   }
 
   export type HolidayUpdateInput = {
-    holiday_name?: NullableStringFieldUpdateOperationsInput | string | null
-    holiday_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hoilday_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    holidayName?: StringFieldUpdateOperationsInput | string
+    holidayAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    holidayStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type HolidayUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    holiday_name?: NullableStringFieldUpdateOperationsInput | string | null
-    holiday_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hoilday_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    holidayName?: StringFieldUpdateOperationsInput | string
+    holidayAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    holidayStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type HolidayCreateManyInput = {
     id?: number
-    holiday_name?: string | null
-    holiday_at?: Date | string | null
-    hoilday_status?: boolean | null
+    holidayName: string
+    holidayAt: Date | string
+    holidayStatus?: boolean
   }
 
   export type HolidayUpdateManyMutationInput = {
-    holiday_name?: NullableStringFieldUpdateOperationsInput | string | null
-    holiday_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hoilday_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    holidayName?: StringFieldUpdateOperationsInput | string
+    holidayAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    holidayStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type HolidayUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    holiday_name?: NullableStringFieldUpdateOperationsInput | string | null
-    holiday_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hoilday_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    holidayName?: StringFieldUpdateOperationsInput | string
+    holidayAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    holidayStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesCreateInput = {
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
-    School?: SchoolCreateNestedOneWithoutSchedulesInput
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
+    school: SchoolCreateNestedOneWithoutSchedulesInput
   }
 
   export type SchedulesUncheckedCreateInput = {
     id?: number
-    school_id?: string | null
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
+    schoolId: string
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
   }
 
   export type SchedulesUpdateInput = {
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    School?: SchoolUpdateOneWithoutSchedulesNestedInput
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
+    school?: SchoolUpdateOneRequiredWithoutSchedulesNestedInput
   }
 
   export type SchedulesUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    schoolId?: StringFieldUpdateOperationsInput | string
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesCreateManyInput = {
     id?: number
-    school_id?: string | null
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
+    schoolId: string
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
   }
 
   export type SchedulesUpdateManyMutationInput = {
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    schoolId?: StringFieldUpdateOperationsInput | string
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchoolCreateInput = {
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsCreateNestedManyWithoutSchoolInput
-    Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
-    Student?: StudentCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesCreateNestedManyWithoutSchoolInput
+    student?: StudentCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateInput = {
-    id?: number
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
-    Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
-    Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
+    student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUpdateInput = {
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUpdateManyWithoutSchoolNestedInput
-    Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
+    student?: StudentUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
-    Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
+    student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolCreateManyInput = {
-    id?: number
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
   }
 
   export type SchoolUpdateManyMutationInput = {
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SchoolUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentCreateInput = {
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
-    Brushed?: BrushedCreateNestedManyWithoutStudentInput
-    School?: SchoolCreateNestedOneWithoutStudentInput
+    id?: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
+    brushed?: BrushedCreateNestedManyWithoutStudentInput
+    school: SchoolCreateNestedOneWithoutStudentInput
   }
 
   export type StudentUncheckedCreateInput = {
-    id?: number
-    school_id?: string | null
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
-    Brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
+    id?: string
+    schoolId: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
+    brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    Brushed?: BrushedUpdateManyWithoutStudentNestedInput
-    School?: SchoolUpdateOneWithoutStudentNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    brushed?: BrushedUpdateManyWithoutStudentNestedInput
+    school?: SchoolUpdateOneRequiredWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    Brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentCreateManyInput = {
-    id?: number
-    school_id?: string | null
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
+    id?: string
+    schoolId: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
   }
 
   export type StudentUpdateManyMutationInput = {
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StudentUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    id?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -8548,306 +8438,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type EnumBrushed_brushed_statusNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Brushed_brushed_status | EnumBrushed_brushed_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Brushed_brushed_status[] | null
-    notIn?: $Enums.Brushed_brushed_status[] | null
-    not?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel> | $Enums.Brushed_brushed_status | null
-  }
-
-  export type StudentNullableScalarRelationFilter = {
-    is?: StudentWhereInput | null
-    isNot?: StudentWhereInput | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type BrushedOrderByRelevanceInput = {
-    fields: BrushedOrderByRelevanceFieldEnum | BrushedOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type BrushedCountOrderByAggregateInput = {
-    id?: SortOrder
-    student_id?: SortOrder
-    brushed_at?: SortOrder
-    brushed_status?: SortOrder
-  }
-
-  export type BrushedAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type BrushedMaxOrderByAggregateInput = {
-    id?: SortOrder
-    student_id?: SortOrder
-    brushed_at?: SortOrder
-    brushed_status?: SortOrder
-  }
-
-  export type BrushedMinOrderByAggregateInput = {
-    id?: SortOrder
-    student_id?: SortOrder
-    brushed_at?: SortOrder
-    brushed_status?: SortOrder
-  }
-
-  export type BrushedSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type EnumBrushed_brushed_statusNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Brushed_brushed_status | EnumBrushed_brushed_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Brushed_brushed_status[] | null
-    notIn?: $Enums.Brushed_brushed_status[] | null
-    not?: NestedEnumBrushed_brushed_statusNullableWithAggregatesFilter<$PrismaModel> | $Enums.Brushed_brushed_status | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel>
-    _max?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type BoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type SchoolNullableScalarRelationFilter = {
-    is?: SchoolWhereInput | null
-    isNot?: SchoolWhereInput | null
-  }
-
-  export type ContentsOrderByRelevanceInput = {
-    fields: ContentsOrderByRelevanceFieldEnum | ContentsOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ContentsCountOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    file_type?: SortOrder
-    file_name?: SortOrder
-    seq?: SortOrder
-    contents_status?: SortOrder
-  }
-
-  export type ContentsAvgOrderByAggregateInput = {
-    id?: SortOrder
-    seq?: SortOrder
-  }
-
-  export type ContentsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    file_type?: SortOrder
-    file_name?: SortOrder
-    seq?: SortOrder
-    contents_status?: SortOrder
-  }
-
-  export type ContentsMinOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    file_type?: SortOrder
-    file_name?: SortOrder
-    seq?: SortOrder
-    contents_status?: SortOrder
-  }
-
-  export type ContentsSumOrderByAggregateInput = {
-    id?: SortOrder
-    seq?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type HolidayOrderByRelevanceInput = {
-    fields: HolidayOrderByRelevanceFieldEnum | HolidayOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type HolidayCountOrderByAggregateInput = {
-    id?: SortOrder
-    holiday_name?: SortOrder
-    holiday_at?: SortOrder
-    hoilday_status?: SortOrder
-  }
-
-  export type HolidayAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type HolidayMaxOrderByAggregateInput = {
-    id?: SortOrder
-    holiday_name?: SortOrder
-    holiday_at?: SortOrder
-    hoilday_status?: SortOrder
-  }
-
-  export type HolidayMinOrderByAggregateInput = {
-    id?: SortOrder
-    holiday_name?: SortOrder
-    holiday_at?: SortOrder
-    hoilday_status?: SortOrder
-  }
-
-  export type HolidaySumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type SchedulesOrderByRelevanceInput = {
-    fields: SchedulesOrderByRelevanceFieldEnum | SchedulesOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type SchedulesCountOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    schedule_name?: SortOrder
-    schedule_target?: SortOrder
-    schedule_at?: SortOrder
-    schedule_status?: SortOrder
-  }
-
-  export type SchedulesAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type SchedulesMaxOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    schedule_name?: SortOrder
-    schedule_target?: SortOrder
-    schedule_at?: SortOrder
-    schedule_status?: SortOrder
-  }
-
-  export type SchedulesMinOrderByAggregateInput = {
-    id?: SortOrder
-    school_id?: SortOrder
-    schedule_name?: SortOrder
-    schedule_target?: SortOrder
-    schedule_at?: SortOrder
-    schedule_status?: SortOrder
-  }
-
-  export type SchedulesSumOrderByAggregateInput = {
-    id?: SortOrder
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8876,118 +8466,67 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type EnumBrushedBrushedStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BrushedBrushedStatus | EnumBrushedBrushedStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BrushedBrushedStatus[]
+    notIn?: $Enums.BrushedBrushedStatus[]
+    not?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel> | $Enums.BrushedBrushedStatus
   }
 
-  export type EnumSchool_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_type | EnumSchool_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.School_type[]
-    notIn?: $Enums.School_type[]
-    not?: NestedEnumSchool_typeFilter<$PrismaModel> | $Enums.School_type
+  export type StudentScalarRelationFilter = {
+    is?: StudentWhereInput
+    isNot?: StudentWhereInput
   }
 
-  export type EnumSchool_school_levelFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
-    in?: $Enums.School_school_level[]
-    notIn?: $Enums.School_school_level[]
-    not?: NestedEnumSchool_school_levelFilter<$PrismaModel> | $Enums.School_school_level
-  }
-
-  export type ContentsListRelationFilter = {
-    every?: ContentsWhereInput
-    some?: ContentsWhereInput
-    none?: ContentsWhereInput
-  }
-
-  export type SchedulesListRelationFilter = {
-    every?: SchedulesWhereInput
-    some?: SchedulesWhereInput
-    none?: SchedulesWhereInput
-  }
-
-  export type StudentListRelationFilter = {
-    every?: StudentWhereInput
-    some?: StudentWhereInput
-    none?: StudentWhereInput
-  }
-
-  export type ContentsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SchedulesOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type StudentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SchoolOrderByRelevanceInput = {
-    fields: SchoolOrderByRelevanceFieldEnum | SchoolOrderByRelevanceFieldEnum[]
+  export type BrushedOrderByRelevanceInput = {
+    fields: BrushedOrderByRelevanceFieldEnum | BrushedOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type SchoolCountOrderByAggregateInput = {
+  export type BrushedCountOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    school_name?: SortOrder
-    login_id?: SortOrder
-    login_pw?: SortOrder
-    manager_name?: SortOrder
-    manager_phone?: SortOrder
-    manager_email?: SortOrder
-    school_logo?: SortOrder
-    start_at?: SortOrder
-    end_at?: SortOrder
-    school_status?: SortOrder
-    type?: SortOrder
-    school_level?: SortOrder
+    studentId?: SortOrder
+    brushedAt?: SortOrder
+    brushedStatus?: SortOrder
   }
 
-  export type SchoolAvgOrderByAggregateInput = {
+  export type BrushedAvgOrderByAggregateInput = {
     id?: SortOrder
   }
 
-  export type SchoolMaxOrderByAggregateInput = {
+  export type BrushedMaxOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    school_name?: SortOrder
-    login_id?: SortOrder
-    login_pw?: SortOrder
-    manager_name?: SortOrder
-    manager_phone?: SortOrder
-    manager_email?: SortOrder
-    school_logo?: SortOrder
-    start_at?: SortOrder
-    end_at?: SortOrder
-    school_status?: SortOrder
-    type?: SortOrder
-    school_level?: SortOrder
+    studentId?: SortOrder
+    brushedAt?: SortOrder
+    brushedStatus?: SortOrder
   }
 
-  export type SchoolMinOrderByAggregateInput = {
+  export type BrushedMinOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    school_name?: SortOrder
-    login_id?: SortOrder
-    login_pw?: SortOrder
-    manager_name?: SortOrder
-    manager_phone?: SortOrder
-    manager_email?: SortOrder
-    school_logo?: SortOrder
-    start_at?: SortOrder
-    end_at?: SortOrder
-    school_status?: SortOrder
-    type?: SortOrder
-    school_level?: SortOrder
+    studentId?: SortOrder
+    brushedAt?: SortOrder
+    brushedStatus?: SortOrder
   }
 
-  export type SchoolSumOrderByAggregateInput = {
+  export type BrushedSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -9022,6 +8561,69 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EnumBrushedBrushedStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BrushedBrushedStatus | EnumBrushedBrushedStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BrushedBrushedStatus[]
+    notIn?: $Enums.BrushedBrushedStatus[]
+    not?: NestedEnumBrushedBrushedStatusWithAggregatesFilter<$PrismaModel> | $Enums.BrushedBrushedStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel>
+    _max?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type SchoolScalarRelationFilter = {
+    is?: SchoolWhereInput
+    isNot?: SchoolWhereInput
+  }
+
+  export type ContentsOrderByRelevanceInput = {
+    fields: ContentsOrderByRelevanceFieldEnum | ContentsOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type ContentsCountOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    fileType?: SortOrder
+    fileName?: SortOrder
+    seq?: SortOrder
+    contentsStatus?: SortOrder
+  }
+
+  export type ContentsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    seq?: SortOrder
+  }
+
+  export type ContentsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    fileType?: SortOrder
+    fileName?: SortOrder
+    seq?: SortOrder
+    contentsStatus?: SortOrder
+  }
+
+  export type ContentsMinOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    fileType?: SortOrder
+    fileName?: SortOrder
+    seq?: SortOrder
+    contentsStatus?: SortOrder
+  }
+
+  export type ContentsSumOrderByAggregateInput = {
+    id?: SortOrder
+    seq?: SortOrder
+  }
+
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -9030,24 +8632,246 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type EnumSchool_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_type | EnumSchool_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.School_type[]
-    notIn?: $Enums.School_type[]
-    not?: NestedEnumSchool_typeWithAggregatesFilter<$PrismaModel> | $Enums.School_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSchool_typeFilter<$PrismaModel>
-    _max?: NestedEnumSchool_typeFilter<$PrismaModel>
+  export type HolidayOrderByRelevanceInput = {
+    fields: HolidayOrderByRelevanceFieldEnum | HolidayOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
-  export type EnumSchool_school_levelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
-    in?: $Enums.School_school_level[]
-    notIn?: $Enums.School_school_level[]
-    not?: NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel> | $Enums.School_school_level
+  export type HolidayCountOrderByAggregateInput = {
+    id?: SortOrder
+    holidayName?: SortOrder
+    holidayAt?: SortOrder
+    holidayStatus?: SortOrder
+  }
+
+  export type HolidayAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type HolidayMaxOrderByAggregateInput = {
+    id?: SortOrder
+    holidayName?: SortOrder
+    holidayAt?: SortOrder
+    holidayStatus?: SortOrder
+  }
+
+  export type HolidayMinOrderByAggregateInput = {
+    id?: SortOrder
+    holidayName?: SortOrder
+    holidayAt?: SortOrder
+    holidayStatus?: SortOrder
+  }
+
+  export type HolidaySumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type SchedulesOrderByRelevanceInput = {
+    fields: SchedulesOrderByRelevanceFieldEnum | SchedulesOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SchedulesCountOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    scheduleName?: SortOrder
+    scheduleTarget?: SortOrder
+    scheduleAt?: SortOrder
+    scheduleStatus?: SortOrder
+  }
+
+  export type SchedulesAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type SchedulesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    scheduleName?: SortOrder
+    scheduleTarget?: SortOrder
+    scheduleAt?: SortOrder
+    scheduleStatus?: SortOrder
+  }
+
+  export type SchedulesMinOrderByAggregateInput = {
+    id?: SortOrder
+    schoolId?: SortOrder
+    scheduleName?: SortOrder
+    scheduleTarget?: SortOrder
+    scheduleAt?: SortOrder
+    scheduleStatus?: SortOrder
+  }
+
+  export type SchedulesSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type EnumSchoolSchoolTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolType | EnumSchoolSchoolTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolType[]
+    notIn?: $Enums.SchoolSchoolType[]
+    not?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel> | $Enums.SchoolSchoolType
+  }
+
+  export type EnumSchoolSchoolLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolLevel | EnumSchoolSchoolLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolLevel[]
+    notIn?: $Enums.SchoolSchoolLevel[]
+    not?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel> | $Enums.SchoolSchoolLevel
+  }
+
+  export type ContentsListRelationFilter = {
+    every?: ContentsWhereInput
+    some?: ContentsWhereInput
+    none?: ContentsWhereInput
+  }
+
+  export type SchedulesListRelationFilter = {
+    every?: SchedulesWhereInput
+    some?: SchedulesWhereInput
+    none?: SchedulesWhereInput
+  }
+
+  export type StudentListRelationFilter = {
+    every?: StudentWhereInput
+    some?: StudentWhereInput
+    none?: StudentWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type ContentsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SchedulesOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SchoolOrderByRelevanceInput = {
+    fields: SchoolOrderByRelevanceFieldEnum | SchoolOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SchoolCountOrderByAggregateInput = {
+    id?: SortOrder
+    schoolName?: SortOrder
+    loginId?: SortOrder
+    loginPw?: SortOrder
+    teacherName?: SortOrder
+    teacherEmail?: SortOrder
+    teacherPhone?: SortOrder
+    schoolLogo?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    schoolType?: SortOrder
+    schoolLevel?: SortOrder
+    schoolStatus?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SchoolMaxOrderByAggregateInput = {
+    id?: SortOrder
+    schoolName?: SortOrder
+    loginId?: SortOrder
+    loginPw?: SortOrder
+    teacherName?: SortOrder
+    teacherEmail?: SortOrder
+    teacherPhone?: SortOrder
+    schoolLogo?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    schoolType?: SortOrder
+    schoolLevel?: SortOrder
+    schoolStatus?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SchoolMinOrderByAggregateInput = {
+    id?: SortOrder
+    schoolName?: SortOrder
+    loginId?: SortOrder
+    loginPw?: SortOrder
+    teacherName?: SortOrder
+    teacherEmail?: SortOrder
+    teacherPhone?: SortOrder
+    schoolLogo?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    schoolType?: SortOrder
+    schoolLevel?: SortOrder
+    schoolStatus?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumSchoolSchoolTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolType | EnumSchoolSchoolTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolType[]
+    notIn?: $Enums.SchoolSchoolType[]
+    not?: NestedEnumSchoolSchoolTypeWithAggregatesFilter<$PrismaModel> | $Enums.SchoolSchoolType
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSchool_school_levelFilter<$PrismaModel>
-    _max?: NestedEnumSchool_school_levelFilter<$PrismaModel>
+    _min?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel>
+    _max?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel>
+  }
+
+  export type EnumSchoolSchoolLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolLevel | EnumSchoolSchoolLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolLevel[]
+    notIn?: $Enums.SchoolSchoolLevel[]
+    not?: NestedEnumSchoolSchoolLevelWithAggregatesFilter<$PrismaModel> | $Enums.SchoolSchoolLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel>
+    _max?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel>
+  }
+
+  export type EnumStudentStudentGenderFilter<$PrismaModel = never> = {
+    equals?: $Enums.StudentStudentGender | EnumStudentStudentGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.StudentStudentGender[]
+    notIn?: $Enums.StudentStudentGender[]
+    not?: NestedEnumStudentStudentGenderFilter<$PrismaModel> | $Enums.StudentStudentGender
   }
 
   export type BrushedListRelationFilter = {
@@ -9068,46 +8892,55 @@ export namespace Prisma {
 
   export type StudentCountOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    student_id?: SortOrder
-    student_grade?: SortOrder
-    student_class?: SortOrder
-    student_number?: SortOrder
-    student_name?: SortOrder
-    student_gender?: SortOrder
-    student_status?: SortOrder
+    schoolId?: SortOrder
+    studentGrade?: SortOrder
+    studentClass?: SortOrder
+    studentNumber?: SortOrder
+    studentName?: SortOrder
+    studentGender?: SortOrder
+    studentStatus?: SortOrder
   }
 
   export type StudentAvgOrderByAggregateInput = {
-    id?: SortOrder
+    studentGrade?: SortOrder
+    studentNumber?: SortOrder
   }
 
   export type StudentMaxOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    student_id?: SortOrder
-    student_grade?: SortOrder
-    student_class?: SortOrder
-    student_number?: SortOrder
-    student_name?: SortOrder
-    student_gender?: SortOrder
-    student_status?: SortOrder
+    schoolId?: SortOrder
+    studentGrade?: SortOrder
+    studentClass?: SortOrder
+    studentNumber?: SortOrder
+    studentName?: SortOrder
+    studentGender?: SortOrder
+    studentStatus?: SortOrder
   }
 
   export type StudentMinOrderByAggregateInput = {
     id?: SortOrder
-    school_id?: SortOrder
-    student_id?: SortOrder
-    student_grade?: SortOrder
-    student_class?: SortOrder
-    student_number?: SortOrder
-    student_name?: SortOrder
-    student_gender?: SortOrder
-    student_status?: SortOrder
+    schoolId?: SortOrder
+    studentGrade?: SortOrder
+    studentClass?: SortOrder
+    studentNumber?: SortOrder
+    studentName?: SortOrder
+    studentGender?: SortOrder
+    studentStatus?: SortOrder
   }
 
   export type StudentSumOrderByAggregateInput = {
-    id?: SortOrder
+    studentGrade?: SortOrder
+    studentNumber?: SortOrder
+  }
+
+  export type EnumStudentStudentGenderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StudentStudentGender | EnumStudentStudentGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.StudentStudentGender[]
+    notIn?: $Enums.StudentStudentGender[]
+    not?: NestedEnumStudentStudentGenderWithAggregatesFilter<$PrismaModel> | $Enums.StudentStudentGender
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
+    _max?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
   }
 
   export type StudentCreateNestedOneWithoutBrushedInput = {
@@ -9116,20 +8949,18 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
-  export type NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput = {
-    set?: $Enums.Brushed_brushed_status | null
+  export type EnumBrushedBrushedStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BrushedBrushedStatus
   }
 
-  export type StudentUpdateOneWithoutBrushedNestedInput = {
+  export type StudentUpdateOneRequiredWithoutBrushedNestedInput = {
     create?: XOR<StudentCreateWithoutBrushedInput, StudentUncheckedCreateWithoutBrushedInput>
     connectOrCreate?: StudentCreateOrConnectWithoutBrushedInput
     upsert?: StudentUpsertWithoutBrushedInput
-    disconnect?: StudentWhereInput | boolean
-    delete?: StudentWhereInput | boolean
     connect?: StudentWhereUniqueInput
     update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutBrushedInput, StudentUpdateWithoutBrushedInput>, StudentUncheckedUpdateWithoutBrushedInput>
   }
@@ -9142,8 +8973,8 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type SchoolCreateNestedOneWithoutContentsInput = {
@@ -9152,24 +8983,14 @@ export namespace Prisma {
     connect?: SchoolWhereUniqueInput
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
-  }
-
-  export type SchoolUpdateOneWithoutContentsNestedInput = {
+  export type SchoolUpdateOneRequiredWithoutContentsNestedInput = {
     create?: XOR<SchoolCreateWithoutContentsInput, SchoolUncheckedCreateWithoutContentsInput>
     connectOrCreate?: SchoolCreateOrConnectWithoutContentsInput
     upsert?: SchoolUpsertWithoutContentsInput
-    disconnect?: SchoolWhereInput | boolean
-    delete?: SchoolWhereInput | boolean
     connect?: SchoolWhereUniqueInput
     update?: XOR<XOR<SchoolUpdateToOneWithWhereWithoutContentsInput, SchoolUpdateWithoutContentsInput>, SchoolUncheckedUpdateWithoutContentsInput>
   }
@@ -9180,12 +9001,10 @@ export namespace Prisma {
     connect?: SchoolWhereUniqueInput
   }
 
-  export type SchoolUpdateOneWithoutSchedulesNestedInput = {
+  export type SchoolUpdateOneRequiredWithoutSchedulesNestedInput = {
     create?: XOR<SchoolCreateWithoutSchedulesInput, SchoolUncheckedCreateWithoutSchedulesInput>
     connectOrCreate?: SchoolCreateOrConnectWithoutSchedulesInput
     upsert?: SchoolUpsertWithoutSchedulesInput
-    disconnect?: SchoolWhereInput | boolean
-    delete?: SchoolWhereInput | boolean
     connect?: SchoolWhereUniqueInput
     update?: XOR<XOR<SchoolUpdateToOneWithWhereWithoutSchedulesInput, SchoolUpdateWithoutSchedulesInput>, SchoolUncheckedUpdateWithoutSchedulesInput>
   }
@@ -9232,24 +9051,16 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput | StudentWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type EnumSchoolSchoolTypeFieldUpdateOperationsInput = {
+    set?: $Enums.SchoolSchoolType
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type EnumSchool_typeFieldUpdateOperationsInput = {
-    set?: $Enums.School_type
-  }
-
-  export type EnumSchool_school_levelFieldUpdateOperationsInput = {
-    set?: $Enums.School_school_level
+  export type EnumSchoolSchoolLevelFieldUpdateOperationsInput = {
+    set?: $Enums.SchoolSchoolLevel
   }
 
   export type ContentsUpdateManyWithoutSchoolNestedInput = {
@@ -9356,6 +9167,10 @@ export namespace Prisma {
     connect?: BrushedWhereUniqueInput | BrushedWhereUniqueInput[]
   }
 
+  export type EnumStudentStudentGenderFieldUpdateOperationsInput = {
+    set?: $Enums.StudentStudentGender
+  }
+
   export type BrushedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<BrushedCreateWithoutStudentInput, BrushedUncheckedCreateWithoutStudentInput> | BrushedCreateWithoutStudentInput[] | BrushedUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: BrushedCreateOrConnectWithoutStudentInput | BrushedCreateOrConnectWithoutStudentInput[]
@@ -9370,12 +9185,10 @@ export namespace Prisma {
     deleteMany?: BrushedScalarWhereInput | BrushedScalarWhereInput[]
   }
 
-  export type SchoolUpdateOneWithoutStudentNestedInput = {
+  export type SchoolUpdateOneRequiredWithoutStudentNestedInput = {
     create?: XOR<SchoolCreateWithoutStudentInput, SchoolUncheckedCreateWithoutStudentInput>
     connectOrCreate?: SchoolCreateOrConnectWithoutStudentInput
     upsert?: SchoolUpsertWithoutStudentInput
-    disconnect?: SchoolWhereInput | boolean
-    delete?: SchoolWhereInput | boolean
     connect?: SchoolWhereUniqueInput
     update?: XOR<XOR<SchoolUpdateToOneWithWhereWithoutStudentInput, SchoolUpdateWithoutStudentInput>, SchoolUncheckedUpdateWithoutStudentInput>
   }
@@ -9405,10 +9218,10 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+  export type NestedStringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -9417,25 +9230,25 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Brushed_brushed_status | EnumBrushed_brushed_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Brushed_brushed_status[] | null
-    notIn?: $Enums.Brushed_brushed_status[] | null
-    not?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel> | $Enums.Brushed_brushed_status | null
+  export type NestedEnumBrushedBrushedStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BrushedBrushedStatus | EnumBrushedBrushedStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BrushedBrushedStatus[]
+    notIn?: $Enums.BrushedBrushedStatus[]
+    not?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel> | $Enums.BrushedBrushedStatus
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9463,144 +9276,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumBrushed_brushed_statusNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Brushed_brushed_status | EnumBrushed_brushed_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Brushed_brushed_status[] | null
-    notIn?: $Enums.Brushed_brushed_status[] | null
-    not?: NestedEnumBrushed_brushed_statusNullableWithAggregatesFilter<$PrismaModel> | $Enums.Brushed_brushed_status | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel>
-    _max?: NestedEnumBrushed_brushed_statusNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type NestedStringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringFilter<$PrismaModel> | string
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedEnumSchool_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_type | EnumSchool_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.School_type[]
-    notIn?: $Enums.School_type[]
-    not?: NestedEnumSchool_typeFilter<$PrismaModel> | $Enums.School_type
-  }
-
-  export type NestedEnumSchool_school_levelFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
-    in?: $Enums.School_school_level[]
-    notIn?: $Enums.School_school_level[]
-    not?: NestedEnumSchool_school_levelFilter<$PrismaModel> | $Enums.School_school_level
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -9635,6 +9310,21 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumBrushedBrushedStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BrushedBrushedStatus | EnumBrushedBrushedStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BrushedBrushedStatus[]
+    notIn?: $Enums.BrushedBrushedStatus[]
+    not?: NestedEnumBrushedBrushedStatusWithAggregatesFilter<$PrismaModel> | $Enums.BrushedBrushedStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel>
+    _max?: NestedEnumBrushedBrushedStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -9643,47 +9333,121 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumSchool_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_type | EnumSchool_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.School_type[]
-    notIn?: $Enums.School_type[]
-    not?: NestedEnumSchool_typeWithAggregatesFilter<$PrismaModel> | $Enums.School_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSchool_typeFilter<$PrismaModel>
-    _max?: NestedEnumSchool_typeFilter<$PrismaModel>
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.School_school_level | EnumSchool_school_levelFieldRefInput<$PrismaModel>
-    in?: $Enums.School_school_level[]
-    notIn?: $Enums.School_school_level[]
-    not?: NestedEnumSchool_school_levelWithAggregatesFilter<$PrismaModel> | $Enums.School_school_level
+  export type NestedEnumSchoolSchoolTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolType | EnumSchoolSchoolTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolType[]
+    notIn?: $Enums.SchoolSchoolType[]
+    not?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel> | $Enums.SchoolSchoolType
+  }
+
+  export type NestedEnumSchoolSchoolLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolLevel | EnumSchoolSchoolLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolLevel[]
+    notIn?: $Enums.SchoolSchoolLevel[]
+    not?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel> | $Enums.SchoolSchoolLevel
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumSchoolSchoolTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolType | EnumSchoolSchoolTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolType[]
+    notIn?: $Enums.SchoolSchoolType[]
+    not?: NestedEnumSchoolSchoolTypeWithAggregatesFilter<$PrismaModel> | $Enums.SchoolSchoolType
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSchool_school_levelFilter<$PrismaModel>
-    _max?: NestedEnumSchool_school_levelFilter<$PrismaModel>
+    _min?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel>
+    _max?: NestedEnumSchoolSchoolTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSchoolSchoolLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolSchoolLevel | EnumSchoolSchoolLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.SchoolSchoolLevel[]
+    notIn?: $Enums.SchoolSchoolLevel[]
+    not?: NestedEnumSchoolSchoolLevelWithAggregatesFilter<$PrismaModel> | $Enums.SchoolSchoolLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel>
+    _max?: NestedEnumSchoolSchoolLevelFilter<$PrismaModel>
+  }
+
+  export type NestedEnumStudentStudentGenderFilter<$PrismaModel = never> = {
+    equals?: $Enums.StudentStudentGender | EnumStudentStudentGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.StudentStudentGender[]
+    notIn?: $Enums.StudentStudentGender[]
+    not?: NestedEnumStudentStudentGenderFilter<$PrismaModel> | $Enums.StudentStudentGender
+  }
+
+  export type NestedEnumStudentStudentGenderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StudentStudentGender | EnumStudentStudentGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.StudentStudentGender[]
+    notIn?: $Enums.StudentStudentGender[]
+    not?: NestedEnumStudentStudentGenderWithAggregatesFilter<$PrismaModel> | $Enums.StudentStudentGender
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
+    _max?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
   }
 
   export type StudentCreateWithoutBrushedInput = {
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
-    School?: SchoolCreateNestedOneWithoutStudentInput
+    id?: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
+    school: SchoolCreateNestedOneWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutBrushedInput = {
-    id?: number
-    school_id?: string | null
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
+    id?: string
+    schoolId: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
   }
 
   export type StudentCreateOrConnectWithoutBrushedInput = {
@@ -9703,63 +9467,63 @@ export namespace Prisma {
   }
 
   export type StudentUpdateWithoutBrushedInput = {
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    School?: SchoolUpdateOneWithoutStudentNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    school?: SchoolUpdateOneRequiredWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutBrushedInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    id?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchoolCreateWithoutContentsInput = {
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
-    Student?: StudentCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    schedules?: SchedulesCreateNestedManyWithoutSchoolInput
+    student?: StudentCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateWithoutContentsInput = {
-    id?: number
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
-    Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
+    student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolCreateOrConnectWithoutContentsInput = {
@@ -9779,77 +9543,79 @@ export namespace Prisma {
   }
 
   export type SchoolUpdateWithoutContentsInput = {
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
+    student?: StudentUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateWithoutContentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
+    student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolCreateWithoutSchedulesInput = {
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsCreateNestedManyWithoutSchoolInput
-    Student?: StudentCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsCreateNestedManyWithoutSchoolInput
+    student?: StudentCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateWithoutSchedulesInput = {
-    id?: number
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
-    Student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolCreateOrConnectWithoutSchedulesInput = {
@@ -9869,55 +9635,56 @@ export namespace Prisma {
   }
 
   export type SchoolUpdateWithoutSchedulesInput = {
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    student?: StudentUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateWithoutSchedulesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
-    Student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type ContentsCreateWithoutSchoolInput = {
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
   }
 
   export type ContentsUncheckedCreateWithoutSchoolInput = {
     id?: number
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
   }
 
   export type ContentsCreateOrConnectWithoutSchoolInput = {
@@ -9931,18 +9698,18 @@ export namespace Prisma {
   }
 
   export type SchedulesCreateWithoutSchoolInput = {
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
   }
 
   export type SchedulesUncheckedCreateWithoutSchoolInput = {
     id?: number
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
   }
 
   export type SchedulesCreateOrConnectWithoutSchoolInput = {
@@ -9956,26 +9723,25 @@ export namespace Prisma {
   }
 
   export type StudentCreateWithoutSchoolInput = {
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
-    Brushed?: BrushedCreateNestedManyWithoutStudentInput
+    id?: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
+    brushed?: BrushedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutSchoolInput = {
-    id?: number
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
-    Brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
+    id?: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
+    brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutSchoolInput = {
@@ -10009,11 +9775,11 @@ export namespace Prisma {
     OR?: ContentsScalarWhereInput[]
     NOT?: ContentsScalarWhereInput | ContentsScalarWhereInput[]
     id?: IntFilter<"Contents"> | number
-    school_id?: StringNullableFilter<"Contents"> | string | null
-    file_type?: StringNullableFilter<"Contents"> | string | null
-    file_name?: StringNullableFilter<"Contents"> | string | null
-    seq?: IntNullableFilter<"Contents"> | number | null
-    contents_status?: BoolNullableFilter<"Contents"> | boolean | null
+    schoolId?: StringFilter<"Contents"> | string
+    fileType?: StringFilter<"Contents"> | string
+    fileName?: StringFilter<"Contents"> | string
+    seq?: IntFilter<"Contents"> | number
+    contentsStatus?: BoolFilter<"Contents"> | boolean
   }
 
   export type SchedulesUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -10037,11 +9803,11 @@ export namespace Prisma {
     OR?: SchedulesScalarWhereInput[]
     NOT?: SchedulesScalarWhereInput | SchedulesScalarWhereInput[]
     id?: IntFilter<"Schedules"> | number
-    school_id?: StringNullableFilter<"Schedules"> | string | null
-    schedule_name?: StringNullableFilter<"Schedules"> | string | null
-    schedule_target?: StringNullableFilter<"Schedules"> | string | null
-    schedule_at?: DateTimeNullableFilter<"Schedules"> | Date | string | null
-    schedule_status?: BoolNullableFilter<"Schedules"> | boolean | null
+    schoolId?: StringFilter<"Schedules"> | string
+    scheduleName?: StringFilter<"Schedules"> | string
+    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
+    scheduleStatus?: BoolFilter<"Schedules"> | boolean
   }
 
   export type StudentUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -10064,26 +9830,25 @@ export namespace Prisma {
     AND?: StudentScalarWhereInput | StudentScalarWhereInput[]
     OR?: StudentScalarWhereInput[]
     NOT?: StudentScalarWhereInput | StudentScalarWhereInput[]
-    id?: IntFilter<"Student"> | number
-    school_id?: StringNullableFilter<"Student"> | string | null
-    student_id?: StringNullableFilter<"Student"> | string | null
-    student_grade?: StringNullableFilter<"Student"> | string | null
-    student_class?: StringNullableFilter<"Student"> | string | null
-    student_number?: StringNullableFilter<"Student"> | string | null
-    student_name?: StringNullableFilter<"Student"> | string | null
-    student_gender?: StringNullableFilter<"Student"> | string | null
-    student_status?: BoolNullableFilter<"Student"> | boolean | null
+    id?: StringFilter<"Student"> | string
+    schoolId?: StringFilter<"Student"> | string
+    studentGrade?: IntFilter<"Student"> | number
+    studentClass?: StringFilter<"Student"> | string
+    studentNumber?: IntFilter<"Student"> | number
+    studentName?: StringFilter<"Student"> | string
+    studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
+    studentStatus?: BoolFilter<"Student"> | boolean
   }
 
   export type BrushedCreateWithoutStudentInput = {
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUncheckedCreateWithoutStudentInput = {
     id?: number
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
   }
 
   export type BrushedCreateOrConnectWithoutStudentInput = {
@@ -10097,40 +9862,41 @@ export namespace Prisma {
   }
 
   export type SchoolCreateWithoutStudentInput = {
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsCreateNestedManyWithoutSchoolInput
-    Schedules?: SchedulesCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateWithoutStudentInput = {
-    id?: number
-    school_id?: string | null
-    school_name: string
-    login_id: string
-    login_pw: string
-    manager_name: string
-    manager_phone: string
-    manager_email: string
-    school_logo?: string | null
-    start_at: Date | string
-    end_at?: Date | string | null
-    school_status?: boolean
-    type?: $Enums.School_type
-    school_level?: $Enums.School_school_level
-    Contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
-    Schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
+    id?: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    schoolStatus?: boolean
+    createdAt?: Date | string
+    contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolCreateOrConnectWithoutStudentInput = {
@@ -10159,9 +9925,9 @@ export namespace Prisma {
     OR?: BrushedScalarWhereInput[]
     NOT?: BrushedScalarWhereInput | BrushedScalarWhereInput[]
     id?: IntFilter<"Brushed"> | number
-    student_id?: StringNullableFilter<"Brushed"> | string | null
-    brushed_at?: DateTimeNullableFilter<"Brushed"> | Date | string | null
-    brushed_status?: EnumBrushed_brushed_statusNullableFilter<"Brushed"> | $Enums.Brushed_brushed_status | null
+    studentId?: StringFilter<"Brushed"> | string
+    brushedAt?: DateTimeFilter<"Brushed"> | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
   }
 
   export type SchoolUpsertWithoutStudentInput = {
@@ -10176,170 +9942,168 @@ export namespace Prisma {
   }
 
   export type SchoolUpdateWithoutStudentInput = {
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUpdateManyWithoutSchoolNestedInput
-    Schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateWithoutStudentInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    school_id?: NullableStringFieldUpdateOperationsInput | string | null
-    school_name?: StringFieldUpdateOperationsInput | string
-    login_id?: StringFieldUpdateOperationsInput | string
-    login_pw?: StringFieldUpdateOperationsInput | string
-    manager_name?: StringFieldUpdateOperationsInput | string
-    manager_phone?: StringFieldUpdateOperationsInput | string
-    manager_email?: StringFieldUpdateOperationsInput | string
-    school_logo?: NullableStringFieldUpdateOperationsInput | string | null
-    start_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    school_status?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumSchool_typeFieldUpdateOperationsInput | $Enums.School_type
-    school_level?: EnumSchool_school_levelFieldUpdateOperationsInput | $Enums.School_school_level
-    Contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
-    Schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type ContentsCreateManySchoolInput = {
     id?: number
-    file_type?: string | null
-    file_name?: string | null
-    seq?: number | null
-    contents_status?: boolean | null
+    fileType: string
+    fileName: string
+    seq: number
+    contentsStatus?: boolean
   }
 
   export type SchedulesCreateManySchoolInput = {
     id?: number
-    schedule_name?: string | null
-    schedule_target?: string | null
-    schedule_at?: Date | string | null
-    schedule_status?: boolean | null
+    scheduleName: string
+    scheduleTarget: string
+    scheduleAt: Date | string
+    scheduleStatus?: boolean
   }
 
   export type StudentCreateManySchoolInput = {
-    id?: number
-    student_id?: string | null
-    student_grade?: string | null
-    student_class?: string | null
-    student_number?: string | null
-    student_name?: string | null
-    student_gender?: string | null
-    student_status?: boolean | null
+    id?: string
+    studentGrade: number
+    studentClass: string
+    studentNumber: number
+    studentName: string
+    studentGender: $Enums.StudentStudentGender
+    studentStatus?: boolean
   }
 
   export type ContentsUpdateWithoutSchoolInput = {
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ContentsUncheckedUpdateWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ContentsUncheckedUpdateManyWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
-    file_type?: NullableStringFieldUpdateOperationsInput | string | null
-    file_name?: NullableStringFieldUpdateOperationsInput | string | null
-    seq?: NullableIntFieldUpdateOperationsInput | number | null
-    contents_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    fileType?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    seq?: IntFieldUpdateOperationsInput | number
+    contentsStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesUpdateWithoutSchoolInput = {
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesUncheckedUpdateWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SchedulesUncheckedUpdateManyWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
-    schedule_name?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_target?: NullableStringFieldUpdateOperationsInput | string | null
-    schedule_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    schedule_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    scheduleName?: StringFieldUpdateOperationsInput | string
+    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StudentUpdateWithoutSchoolInput = {
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    Brushed?: BrushedUpdateManyWithoutStudentNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    brushed?: BrushedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutSchoolInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    Brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateManyWithoutSchoolInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    student_id?: NullableStringFieldUpdateOperationsInput | string | null
-    student_grade?: NullableStringFieldUpdateOperationsInput | string | null
-    student_class?: NullableStringFieldUpdateOperationsInput | string | null
-    student_number?: NullableStringFieldUpdateOperationsInput | string | null
-    student_name?: NullableStringFieldUpdateOperationsInput | string | null
-    student_gender?: NullableStringFieldUpdateOperationsInput | string | null
-    student_status?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    id?: StringFieldUpdateOperationsInput | string
+    studentGrade?: IntFieldUpdateOperationsInput | number
+    studentClass?: StringFieldUpdateOperationsInput | string
+    studentNumber?: IntFieldUpdateOperationsInput | number
+    studentName?: StringFieldUpdateOperationsInput | string
+    studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
+    studentStatus?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BrushedCreateManyStudentInput = {
     id?: number
-    brushed_at?: Date | string | null
-    brushed_status?: $Enums.Brushed_brushed_status | null
+    brushedAt?: Date | string
+    brushedStatus: $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUpdateWithoutStudentInput = {
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUncheckedUpdateWithoutStudentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
   export type BrushedUncheckedUpdateManyWithoutStudentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    brushed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    brushed_status?: NullableEnumBrushed_brushed_statusFieldUpdateOperationsInput | $Enums.Brushed_brushed_status | null
+    brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
   }
 
 

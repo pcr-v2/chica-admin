@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "prisma db pull --schema=./prisma/schema.prisma && prisma generate --schema=./prisma/schema.prisma"
+    "prebuild": "npx prisma db pull --schema=./prisma/schema.prisma && npx prisma-case-format --file ./prisma/schema.prisma && npx prisma generate --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -41,6 +41,7 @@
     "@types/react-dom": "^19",
     "@types/uuid": "^10.0.0",
     "prisma": "^6.10.1",
+    "prisma-case-format": "^2.2.1",
     "typescript": "^5"
   }
 }

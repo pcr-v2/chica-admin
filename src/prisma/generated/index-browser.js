@@ -122,63 +122,62 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.BrushedScalarFieldEnum = {
   id: 'id',
-  student_id: 'student_id',
-  brushed_at: 'brushed_at',
-  brushed_status: 'brushed_status'
+  studentId: 'studentId',
+  brushedAt: 'brushedAt',
+  brushedStatus: 'brushedStatus'
 };
 
 exports.Prisma.ContentsScalarFieldEnum = {
   id: 'id',
-  school_id: 'school_id',
-  file_type: 'file_type',
-  file_name: 'file_name',
+  schoolId: 'schoolId',
+  fileType: 'fileType',
+  fileName: 'fileName',
   seq: 'seq',
-  contents_status: 'contents_status'
+  contentsStatus: 'contentsStatus'
 };
 
 exports.Prisma.HolidayScalarFieldEnum = {
   id: 'id',
-  holiday_name: 'holiday_name',
-  holiday_at: 'holiday_at',
-  hoilday_status: 'hoilday_status'
+  holidayName: 'holidayName',
+  holidayAt: 'holidayAt',
+  holidayStatus: 'holidayStatus'
 };
 
 exports.Prisma.SchedulesScalarFieldEnum = {
   id: 'id',
-  school_id: 'school_id',
-  schedule_name: 'schedule_name',
-  schedule_target: 'schedule_target',
-  schedule_at: 'schedule_at',
-  schedule_status: 'schedule_status'
+  schoolId: 'schoolId',
+  scheduleName: 'scheduleName',
+  scheduleTarget: 'scheduleTarget',
+  scheduleAt: 'scheduleAt',
+  scheduleStatus: 'scheduleStatus'
 };
 
 exports.Prisma.SchoolScalarFieldEnum = {
   id: 'id',
-  school_id: 'school_id',
-  school_name: 'school_name',
-  login_id: 'login_id',
-  login_pw: 'login_pw',
-  manager_name: 'manager_name',
-  manager_phone: 'manager_phone',
-  manager_email: 'manager_email',
-  school_logo: 'school_logo',
-  start_at: 'start_at',
-  end_at: 'end_at',
-  school_status: 'school_status',
-  type: 'type',
-  school_level: 'school_level'
+  schoolName: 'schoolName',
+  loginId: 'loginId',
+  loginPw: 'loginPw',
+  teacherName: 'teacherName',
+  teacherEmail: 'teacherEmail',
+  teacherPhone: 'teacherPhone',
+  schoolLogo: 'schoolLogo',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  schoolType: 'schoolType',
+  schoolLevel: 'schoolLevel',
+  schoolStatus: 'schoolStatus',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.StudentScalarFieldEnum = {
   id: 'id',
-  school_id: 'school_id',
-  student_id: 'student_id',
-  student_grade: 'student_grade',
-  student_class: 'student_class',
-  student_number: 'student_number',
-  student_name: 'student_name',
-  student_gender: 'student_gender',
-  student_status: 'student_status'
+  schoolId: 'schoolId',
+  studentGrade: 'studentGrade',
+  studentClass: 'studentClass',
+  studentNumber: 'studentNumber',
+  studentName: 'studentName',
+  studentGender: 'studentGender',
+  studentStatus: 'studentStatus'
 };
 
 exports.Prisma.SortOrder = {
@@ -186,52 +185,49 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.BrushedOrderByRelevanceFieldEnum = {
+  studentId: 'studentId'
+};
+
+exports.Prisma.ContentsOrderByRelevanceFieldEnum = {
+  schoolId: 'schoolId',
+  fileType: 'fileType',
+  fileName: 'fileName'
+};
+
+exports.Prisma.HolidayOrderByRelevanceFieldEnum = {
+  holidayName: 'holidayName'
+};
+
+exports.Prisma.SchedulesOrderByRelevanceFieldEnum = {
+  schoolId: 'schoolId',
+  scheduleName: 'scheduleName',
+  scheduleTarget: 'scheduleTarget'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
 
-exports.Prisma.BrushedOrderByRelevanceFieldEnum = {
-  student_id: 'student_id'
-};
-
-exports.Prisma.ContentsOrderByRelevanceFieldEnum = {
-  school_id: 'school_id',
-  file_type: 'file_type',
-  file_name: 'file_name'
-};
-
-exports.Prisma.HolidayOrderByRelevanceFieldEnum = {
-  holiday_name: 'holiday_name'
-};
-
-exports.Prisma.SchedulesOrderByRelevanceFieldEnum = {
-  school_id: 'school_id',
-  schedule_name: 'schedule_name',
-  schedule_target: 'schedule_target'
-};
-
 exports.Prisma.SchoolOrderByRelevanceFieldEnum = {
-  school_id: 'school_id',
-  school_name: 'school_name',
-  login_id: 'login_id',
-  login_pw: 'login_pw',
-  manager_name: 'manager_name',
-  manager_phone: 'manager_phone',
-  manager_email: 'manager_email',
-  school_logo: 'school_logo'
+  id: 'id',
+  schoolName: 'schoolName',
+  loginId: 'loginId',
+  loginPw: 'loginPw',
+  teacherName: 'teacherName',
+  teacherEmail: 'teacherEmail',
+  teacherPhone: 'teacherPhone',
+  schoolLogo: 'schoolLogo'
 };
 
 exports.Prisma.StudentOrderByRelevanceFieldEnum = {
-  school_id: 'school_id',
-  student_id: 'student_id',
-  student_grade: 'student_grade',
-  student_class: 'student_class',
-  student_number: 'student_number',
-  student_name: 'student_name',
-  student_gender: 'student_gender'
+  id: 'id',
+  schoolId: 'schoolId',
+  studentClass: 'studentClass',
+  studentName: 'studentName'
 };
-exports.Brushed_brushed_status = exports.$Enums.Brushed_brushed_status = {
+exports.BrushedBrushedStatus = exports.$Enums.BrushedBrushedStatus = {
   No: 'No',
   Ok: 'Ok',
   EarlyLeave: 'EarlyLeave',
@@ -240,15 +236,20 @@ exports.Brushed_brushed_status = exports.$Enums.Brushed_brushed_status = {
   Absence: 'Absence'
 };
 
-exports.School_type = exports.$Enums.School_type = {
+exports.SchoolSchoolType = exports.$Enums.SchoolSchoolType = {
   master: 'master',
   teacher: 'teacher'
 };
 
-exports.School_school_level = exports.$Enums.School_school_level = {
+exports.SchoolSchoolLevel = exports.$Enums.SchoolSchoolLevel = {
   elementary: 'elementary',
   middle: 'middle',
   high: 'high'
+};
+
+exports.StudentStudentGender = exports.$Enums.StudentStudentGender = {
+  male: 'male',
+  female: 'female'
 };
 
 exports.Prisma.ModelName = {

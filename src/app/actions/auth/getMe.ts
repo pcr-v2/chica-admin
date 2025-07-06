@@ -25,7 +25,7 @@ export async function getMe() {
 
   const admin = await mysqlPrisma.school.findFirst({
     where: {
-      login_id: verified.payload.id!,
+      loginId: verified.payload.id!,
     },
   });
 
@@ -39,11 +39,11 @@ export async function getMe() {
   return {
     code: "SUCCESS",
     data: {
-      type: admin.type,
-      loginId: admin.login_id,
-      schoolId: admin.school_id,
-      schoolLevel: admin.school_level,
-      name: admin.manager_name,
+      type: admin.schoolType,
+      loginId: admin.loginId,
+      schoolId: admin.id,
+      schoolLevel: admin.schoolLevel,
+      name: admin.teacherName,
     },
   };
 }

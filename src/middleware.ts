@@ -19,7 +19,6 @@ async function refresh(req: NextRequest) {
   try {
     const verified = await jwtVerify(refreshToken.value, secretKey);
     const { id, type } = verified.payload;
-
     // 리프레시 토큰
     const newAccessToken = await new SignJWT({ id, type })
       .setSubject(verified.payload.sub!)
@@ -74,6 +73,7 @@ export default async function middleware(req: NextRequest) {
     const { payload } = await jwtVerify(accessToken.value, secretKey);
 
     const userType = payload.type as string | undefined;
+    console.log("verified.payload", payload);
 
     // 마스터 권한 필요한 경로 접근 제어
     if (MASTER_PATHS.some((path) => pathname.startsWith(path))) {

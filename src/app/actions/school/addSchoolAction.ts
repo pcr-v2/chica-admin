@@ -21,30 +21,30 @@ export async function addSchool(request: AddSchoolRequest) {
   }
 
   const {
-    school_name,
-    login_id,
-    login_pw,
-    manager_name,
-    manager_email,
-    manager_phone,
-    end_at,
-    school_status,
+    schoolName,
+    loginId,
+    loginPw,
+    teacherName,
+    teacherEmail,
+    teacherPhone,
+    endAt,
+    schoolStatus,
   } = validated.data;
 
-  const hashedPw = await bcrypt.hash(login_pw, 12);
+  const hashedPw = await bcrypt.hash(loginPw, 12);
 
   const res = await mysqlPrisma.school.create({
     data: {
-      school_id: uuidv4(),
-      school_name,
-      login_id,
-      login_pw: hashedPw,
-      manager_email,
-      manager_name,
-      manager_phone,
-      end_at: customDayjs(end_at).toISOString(),
-      start_at: new Date(),
-      school_status,
+      // schoolId: uuidv4(),
+      schoolName,
+      loginId,
+      loginPw: hashedPw,
+      teacherEmail,
+      teacherName,
+      teacherPhone,
+      endAt: customDayjs(endAt).toISOString(),
+      startAt: new Date(),
+      schoolStatus,
     },
   });
 

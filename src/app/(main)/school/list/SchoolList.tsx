@@ -35,15 +35,15 @@ export default function SchoolList(props: IProps) {
         {schoolList.result?.map((el) => {
           return (
             <SingleRow key={el.id}>
-              <Box sx={{}}>{el.school_name}</Box>
-              <Box sx={{}}>{el.manager_name}</Box>
-              <Box sx={{}}>{el.manager_email}</Box>
-              <Box sx={{}}>{el.manager_phone}</Box>
-              <Box sx={{}}>{el.login_id}</Box>
+              <Box sx={{}}>{el.schoolName}</Box>
+              <Box sx={{}}>{el.teacherName}</Box>
+              <Box sx={{}}>{el.teacherEmail}</Box>
+              <Box sx={{}}>{el.teacherPhone}</Box>
+              <Box sx={{}}>{el.loginId}</Box>
               <Box sx={{}}>
-                계약 종료일 : {customDayjs(el.end_at).format("YYYY-MM-DD")}
+                계약 종료일 : {customDayjs(el.endAt).format("YYYY-MM-DD")}
               </Box>
-              <Box sx={{}}>{el.school_status.toString()}</Box>
+              <Box sx={{}}>{el.schoolStatus.toString()}</Box>
             </SingleRow>
           );
         })}

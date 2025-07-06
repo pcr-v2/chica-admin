@@ -25,7 +25,7 @@ export async function signIn(request: SignInRequest) {
 
   const admin = await mysqlPrisma.school.findFirst({
     where: {
-      login_id: validated.data.id,
+      loginId: validated.data.id,
     },
   });
 
@@ -36,7 +36,7 @@ export async function signIn(request: SignInRequest) {
     };
   }
 
-  const valid = await bcrypt.compare(validated.data.pw, admin.login_pw.trim());
+  const valid = await bcrypt.compare(validated.data.pw, admin.loginPw.trim());
 
   if (!valid) {
     return {
@@ -47,7 +47,7 @@ export async function signIn(request: SignInRequest) {
 
   const accessToken = await new SignJWT({
     id: validated.data.id,
-    type: admin.type,
+    type: admin.schoolType,
   })
     .setSubject(validated.data.id)
     .setProtectedHeader({ alg: "HS256" })
@@ -57,7 +57,7 @@ export async function signIn(request: SignInRequest) {
 
   const refreshToken = await new SignJWT({
     id: validated.data.id,
-    type: admin.type,
+    type: admin.schoolType,
   })
     .setSubject(validated.data.id)
     .setProtectedHeader({ alg: "HS256" })
@@ -73,6 +73,6 @@ export async function signIn(request: SignInRequest) {
   return {
     code: "SUCCESS" as const,
     message: "로그인 되었습니다.",
-    type: admin.type,
+    type: admin.schoolType,
   };
 }

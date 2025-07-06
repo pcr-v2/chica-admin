@@ -3,7 +3,7 @@ name: Deploy Chica-admin
 on:
   push:
     tags:
-      - "v*"
+      - "v*" # v로 시작하는 태그 (예: v1.0.0)
 
 jobs:
   build-and-deploy:
@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Prisma Client with correct binaryTargets
-        run: npx prisma generate --schema=./prisma/schema.prisma
+      - name: Run prebuild script (prisma db pull + case format + generate)
+        run: npm run prebuild
 
       - name: Build project (standalone)
         run: npm run build

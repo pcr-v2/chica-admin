@@ -9,12 +9,12 @@ import downloadCsv from "@/utils/downloadCsv";
 import uploadCsv from "@/utils/uploadCsv";
 
 type TStudent = {
-  student_grade: string;
-  student_class: string;
-  student_number: string;
-  student_name: string;
-  student_gender: string;
-  student_status: boolean;
+  studentGrade: string;
+  studentClass: string;
+  studentNumber: string;
+  studentName: string;
+  studentGender: string;
+  studentStatus: boolean;
 };
 
 interface IProps {
@@ -45,12 +45,12 @@ export default function StudentCard(props: IProps) {
 
   const [student, setStudent] = useState<TStudent[]>([
     {
-      student_grade: "1",
-      student_class: "",
-      student_number: "",
-      student_name: "",
-      student_gender: "male",
-      student_status: true,
+      studentGrade: "1",
+      studentClass: "",
+      studentNumber: "",
+      studentName: "",
+      studentGender: "male",
+      studentStatus: true,
     },
   ]);
 
@@ -71,9 +71,8 @@ export default function StudentCard(props: IProps) {
 
           const updatedRes = res.map((el) => ({
             ...el,
-            student_status:
-              el.student_status === "Y" || el.student_status === "y",
-            student_gender: el.student_gender === "남" ? "male" : "female",
+            studentStatus: el.studentStatus === "Y" || el.studentStatus === "y",
+            student_gender: el.studentGender === "남" ? "male" : "female",
           }));
 
           console.log(updatedRes);
@@ -88,10 +87,10 @@ export default function StudentCard(props: IProps) {
         {student.map((el, idx) => {
           return (
             <div key={idx}>
-              {el.student_name}
-              {el.student_class}반{el.student_grade}학년
-              {el.student_number}번{el.student_gender}
-              {el.student_status.toString()}
+              {el.studentName}
+              {el.studentClass}반{el.studentGrade}학년
+              {el.studentNumber}번{el.studentGender}
+              {el.studentStatus.toString()}
             </div>
           );
         })}

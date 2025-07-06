@@ -24,17 +24,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Prisma DB pull & generate
-        run: |
-          npx prisma db pull --schema=./prisma/schema.prisma
-          npx prisma generate --schema=./prisma/schema.prisma
+      - name: Prisma generate
+        run: npx prisma generate --schema=./prisma/schema.prisma
 
       - name: Build project (standalone)
         run: npm run build
 
+      - name: Copy Prisma Client to standalone
+        run: |
+          mkdir -p .next/standalone/node_modules/.prisma
+          cp -r node_modules/.prisma/client .next/standalone/node_modules/.prisma/client
+
+          mkdir -p .next/standalone/node_modules/@prisma
+          cp -r node_modules/@prisma/client .next/standalone/node_modules/@prisma/client
+
       - name: Compress standalone output
         run: |
-          ls -la  # 디버깅용
           tar -czf standalone.tar.gz \
             .next/standalone \
             .next/static \

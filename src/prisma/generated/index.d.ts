@@ -4262,17 +4262,19 @@ export namespace Prisma {
 
   export type SchedulesAvgAggregateOutputType = {
     id: number | null
+    scheduleTargetGrade: number | null
   }
 
   export type SchedulesSumAggregateOutputType = {
     id: number | null
+    scheduleTargetGrade: number | null
   }
 
   export type SchedulesMinAggregateOutputType = {
     id: number | null
     schoolId: string | null
     scheduleName: string | null
-    scheduleTarget: string | null
+    scheduleTargetGrade: number | null
     scheduleAt: Date | null
     scheduleStatus: boolean | null
   }
@@ -4281,7 +4283,7 @@ export namespace Prisma {
     id: number | null
     schoolId: string | null
     scheduleName: string | null
-    scheduleTarget: string | null
+    scheduleTargetGrade: number | null
     scheduleAt: Date | null
     scheduleStatus: boolean | null
   }
@@ -4290,7 +4292,7 @@ export namespace Prisma {
     id: number
     schoolId: number
     scheduleName: number
-    scheduleTarget: number
+    scheduleTargetGrade: number
     scheduleAt: number
     scheduleStatus: number
     _all: number
@@ -4299,17 +4301,19 @@ export namespace Prisma {
 
   export type SchedulesAvgAggregateInputType = {
     id?: true
+    scheduleTargetGrade?: true
   }
 
   export type SchedulesSumAggregateInputType = {
     id?: true
+    scheduleTargetGrade?: true
   }
 
   export type SchedulesMinAggregateInputType = {
     id?: true
     schoolId?: true
     scheduleName?: true
-    scheduleTarget?: true
+    scheduleTargetGrade?: true
     scheduleAt?: true
     scheduleStatus?: true
   }
@@ -4318,7 +4322,7 @@ export namespace Prisma {
     id?: true
     schoolId?: true
     scheduleName?: true
-    scheduleTarget?: true
+    scheduleTargetGrade?: true
     scheduleAt?: true
     scheduleStatus?: true
   }
@@ -4327,7 +4331,7 @@ export namespace Prisma {
     id?: true
     schoolId?: true
     scheduleName?: true
-    scheduleTarget?: true
+    scheduleTargetGrade?: true
     scheduleAt?: true
     scheduleStatus?: true
     _all?: true
@@ -4423,7 +4427,7 @@ export namespace Prisma {
     id: number
     schoolId: string
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date
     scheduleStatus: boolean
     _count: SchedulesCountAggregateOutputType | null
@@ -4451,7 +4455,7 @@ export namespace Prisma {
     id?: boolean
     schoolId?: boolean
     scheduleName?: boolean
-    scheduleTarget?: boolean
+    scheduleTargetGrade?: boolean
     scheduleAt?: boolean
     scheduleStatus?: boolean
     school?: boolean | SchoolDefaultArgs<ExtArgs>
@@ -4463,12 +4467,12 @@ export namespace Prisma {
     id?: boolean
     schoolId?: boolean
     scheduleName?: boolean
-    scheduleTarget?: boolean
+    scheduleTargetGrade?: boolean
     scheduleAt?: boolean
     scheduleStatus?: boolean
   }
 
-  export type SchedulesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "scheduleName" | "scheduleTarget" | "scheduleAt" | "scheduleStatus", ExtArgs["result"]["schedules"]>
+  export type SchedulesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "scheduleName" | "scheduleTargetGrade" | "scheduleAt" | "scheduleStatus", ExtArgs["result"]["schedules"]>
   export type SchedulesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     school?: boolean | SchoolDefaultArgs<ExtArgs>
   }
@@ -4482,7 +4486,7 @@ export namespace Prisma {
       id: number
       schoolId: string
       scheduleName: string
-      scheduleTarget: string
+      scheduleTargetGrade: number
       scheduleAt: Date
       scheduleStatus: boolean
     }, ExtArgs["result"]["schedules"]>
@@ -4858,7 +4862,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Schedules", 'Int'>
     readonly schoolId: FieldRef<"Schedules", 'String'>
     readonly scheduleName: FieldRef<"Schedules", 'String'>
-    readonly scheduleTarget: FieldRef<"Schedules", 'String'>
+    readonly scheduleTargetGrade: FieldRef<"Schedules", 'Int'>
     readonly scheduleAt: FieldRef<"Schedules", 'DateTime'>
     readonly scheduleStatus: FieldRef<"Schedules", 'Boolean'>
   }
@@ -6363,6 +6367,7 @@ export namespace Prisma {
     studentName: string | null
     studentGender: $Enums.StudentStudentGender | null
     studentStatus: boolean | null
+    createdAt: Date | null
   }
 
   export type StudentMaxAggregateOutputType = {
@@ -6374,6 +6379,7 @@ export namespace Prisma {
     studentName: string | null
     studentGender: $Enums.StudentStudentGender | null
     studentStatus: boolean | null
+    createdAt: Date | null
   }
 
   export type StudentCountAggregateOutputType = {
@@ -6385,6 +6391,7 @@ export namespace Prisma {
     studentName: number
     studentGender: number
     studentStatus: number
+    createdAt: number
     _all: number
   }
 
@@ -6408,6 +6415,7 @@ export namespace Prisma {
     studentName?: true
     studentGender?: true
     studentStatus?: true
+    createdAt?: true
   }
 
   export type StudentMaxAggregateInputType = {
@@ -6419,6 +6427,7 @@ export namespace Prisma {
     studentName?: true
     studentGender?: true
     studentStatus?: true
+    createdAt?: true
   }
 
   export type StudentCountAggregateInputType = {
@@ -6430,6 +6439,7 @@ export namespace Prisma {
     studentName?: true
     studentGender?: true
     studentStatus?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -6528,6 +6538,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus: boolean
+    createdAt: Date
     _count: StudentCountAggregateOutputType | null
     _avg: StudentAvgAggregateOutputType | null
     _sum: StudentSumAggregateOutputType | null
@@ -6558,6 +6569,7 @@ export namespace Prisma {
     studentName?: boolean
     studentGender?: boolean
     studentStatus?: boolean
+    createdAt?: boolean
     brushed?: boolean | Student$brushedArgs<ExtArgs>
     school?: boolean | SchoolDefaultArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
@@ -6574,9 +6586,10 @@ export namespace Prisma {
     studentName?: boolean
     studentGender?: boolean
     studentStatus?: boolean
+    createdAt?: boolean
   }
 
-  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "studentGrade" | "studentClass" | "studentNumber" | "studentName" | "studentGender" | "studentStatus", ExtArgs["result"]["student"]>
+  export type StudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "studentGrade" | "studentClass" | "studentNumber" | "studentName" | "studentGender" | "studentStatus" | "createdAt", ExtArgs["result"]["student"]>
   export type StudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     brushed?: boolean | Student$brushedArgs<ExtArgs>
     school?: boolean | SchoolDefaultArgs<ExtArgs>
@@ -6598,6 +6611,7 @@ export namespace Prisma {
       studentName: string
       studentGender: $Enums.StudentStudentGender
       studentStatus: boolean
+      createdAt: Date
     }, ExtArgs["result"]["student"]>
     composites: {}
   }
@@ -6977,6 +6991,7 @@ export namespace Prisma {
     readonly studentName: FieldRef<"Student", 'String'>
     readonly studentGender: FieldRef<"Student", 'StudentStudentGender'>
     readonly studentStatus: FieldRef<"Student", 'Boolean'>
+    readonly createdAt: FieldRef<"Student", 'DateTime'>
   }
     
 
@@ -7412,7 +7427,7 @@ export namespace Prisma {
     id: 'id',
     schoolId: 'schoolId',
     scheduleName: 'scheduleName',
-    scheduleTarget: 'scheduleTarget',
+    scheduleTargetGrade: 'scheduleTargetGrade',
     scheduleAt: 'scheduleAt',
     scheduleStatus: 'scheduleStatus'
   };
@@ -7448,7 +7463,8 @@ export namespace Prisma {
     studentNumber: 'studentNumber',
     studentName: 'studentName',
     studentGender: 'studentGender',
-    studentStatus: 'studentStatus'
+    studentStatus: 'studentStatus',
+    createdAt: 'createdAt'
   };
 
   export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -7487,8 +7503,7 @@ export namespace Prisma {
 
   export const SchedulesOrderByRelevanceFieldEnum: {
     schoolId: 'schoolId',
-    scheduleName: 'scheduleName',
-    scheduleTarget: 'scheduleTarget'
+    scheduleName: 'scheduleName'
   };
 
   export type SchedulesOrderByRelevanceFieldEnum = (typeof SchedulesOrderByRelevanceFieldEnum)[keyof typeof SchedulesOrderByRelevanceFieldEnum]
@@ -7770,7 +7785,7 @@ export namespace Prisma {
     id?: IntFilter<"Schedules"> | number
     schoolId?: StringFilter<"Schedules"> | string
     scheduleName?: StringFilter<"Schedules"> | string
-    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleTargetGrade?: IntFilter<"Schedules"> | number
     scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
     scheduleStatus?: BoolFilter<"Schedules"> | boolean
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
@@ -7780,7 +7795,7 @@ export namespace Prisma {
     id?: SortOrder
     schoolId?: SortOrder
     scheduleName?: SortOrder
-    scheduleTarget?: SortOrder
+    scheduleTargetGrade?: SortOrder
     scheduleAt?: SortOrder
     scheduleStatus?: SortOrder
     school?: SchoolOrderByWithRelationInput
@@ -7794,7 +7809,7 @@ export namespace Prisma {
     NOT?: SchedulesWhereInput | SchedulesWhereInput[]
     schoolId?: StringFilter<"Schedules"> | string
     scheduleName?: StringFilter<"Schedules"> | string
-    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleTargetGrade?: IntFilter<"Schedules"> | number
     scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
     scheduleStatus?: BoolFilter<"Schedules"> | boolean
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
@@ -7804,7 +7819,7 @@ export namespace Prisma {
     id?: SortOrder
     schoolId?: SortOrder
     scheduleName?: SortOrder
-    scheduleTarget?: SortOrder
+    scheduleTargetGrade?: SortOrder
     scheduleAt?: SortOrder
     scheduleStatus?: SortOrder
     _count?: SchedulesCountOrderByAggregateInput
@@ -7821,7 +7836,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Schedules"> | number
     schoolId?: StringWithAggregatesFilter<"Schedules"> | string
     scheduleName?: StringWithAggregatesFilter<"Schedules"> | string
-    scheduleTarget?: StringWithAggregatesFilter<"Schedules"> | string
+    scheduleTargetGrade?: IntWithAggregatesFilter<"Schedules"> | number
     scheduleAt?: DateTimeWithAggregatesFilter<"Schedules"> | Date | string
     scheduleStatus?: BoolWithAggregatesFilter<"Schedules"> | boolean
   }
@@ -7945,6 +7960,7 @@ export namespace Prisma {
     studentName?: StringFilter<"Student"> | string
     studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
     studentStatus?: BoolFilter<"Student"> | boolean
+    createdAt?: DateTimeFilter<"Student"> | Date | string
     brushed?: BrushedListRelationFilter
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
@@ -7958,6 +7974,7 @@ export namespace Prisma {
     studentName?: SortOrder
     studentGender?: SortOrder
     studentStatus?: SortOrder
+    createdAt?: SortOrder
     brushed?: BrushedOrderByRelationAggregateInput
     school?: SchoolOrderByWithRelationInput
     _relevance?: StudentOrderByRelevanceInput
@@ -7975,6 +7992,7 @@ export namespace Prisma {
     studentName?: StringFilter<"Student"> | string
     studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
     studentStatus?: BoolFilter<"Student"> | boolean
+    createdAt?: DateTimeFilter<"Student"> | Date | string
     brushed?: BrushedListRelationFilter
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }, "id">
@@ -7988,6 +8006,7 @@ export namespace Prisma {
     studentName?: SortOrder
     studentGender?: SortOrder
     studentStatus?: SortOrder
+    createdAt?: SortOrder
     _count?: StudentCountOrderByAggregateInput
     _avg?: StudentAvgOrderByAggregateInput
     _max?: StudentMaxOrderByAggregateInput
@@ -8007,6 +8026,7 @@ export namespace Prisma {
     studentName?: StringWithAggregatesFilter<"Student"> | string
     studentGender?: EnumStudentStudentGenderWithAggregatesFilter<"Student"> | $Enums.StudentStudentGender
     studentStatus?: BoolWithAggregatesFilter<"Student"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Student"> | Date | string
   }
 
   export type BrushedCreateInput = {
@@ -8161,7 +8181,7 @@ export namespace Prisma {
 
   export type SchedulesCreateInput = {
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
     school: SchoolCreateNestedOneWithoutSchedulesInput
@@ -8171,14 +8191,14 @@ export namespace Prisma {
     id?: number
     schoolId: string
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
   }
 
   export type SchedulesUpdateInput = {
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
     school?: SchoolUpdateOneRequiredWithoutSchedulesNestedInput
@@ -8188,7 +8208,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     schoolId?: StringFieldUpdateOperationsInput | string
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -8197,14 +8217,14 @@ export namespace Prisma {
     id?: number
     schoolId: string
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
   }
 
   export type SchedulesUpdateManyMutationInput = {
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -8213,7 +8233,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     schoolId?: StringFieldUpdateOperationsInput | string
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -8357,6 +8377,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
     brushed?: BrushedCreateNestedManyWithoutStudentInput
     school: SchoolCreateNestedOneWithoutStudentInput
   }
@@ -8370,6 +8391,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
     brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
   }
 
@@ -8381,6 +8403,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushed?: BrushedUpdateManyWithoutStudentNestedInput
     school?: SchoolUpdateOneRequiredWithoutStudentNestedInput
   }
@@ -8394,6 +8417,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
   }
 
@@ -8406,6 +8430,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
   }
 
   export type StudentUpdateManyMutationInput = {
@@ -8416,6 +8441,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentUncheckedUpdateManyInput = {
@@ -8427,6 +8453,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -8677,20 +8704,21 @@ export namespace Prisma {
     id?: SortOrder
     schoolId?: SortOrder
     scheduleName?: SortOrder
-    scheduleTarget?: SortOrder
+    scheduleTargetGrade?: SortOrder
     scheduleAt?: SortOrder
     scheduleStatus?: SortOrder
   }
 
   export type SchedulesAvgOrderByAggregateInput = {
     id?: SortOrder
+    scheduleTargetGrade?: SortOrder
   }
 
   export type SchedulesMaxOrderByAggregateInput = {
     id?: SortOrder
     schoolId?: SortOrder
     scheduleName?: SortOrder
-    scheduleTarget?: SortOrder
+    scheduleTargetGrade?: SortOrder
     scheduleAt?: SortOrder
     scheduleStatus?: SortOrder
   }
@@ -8699,13 +8727,14 @@ export namespace Prisma {
     id?: SortOrder
     schoolId?: SortOrder
     scheduleName?: SortOrder
-    scheduleTarget?: SortOrder
+    scheduleTargetGrade?: SortOrder
     scheduleAt?: SortOrder
     scheduleStatus?: SortOrder
   }
 
   export type SchedulesSumOrderByAggregateInput = {
     id?: SortOrder
+    scheduleTargetGrade?: SortOrder
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -8899,6 +8928,7 @@ export namespace Prisma {
     studentName?: SortOrder
     studentGender?: SortOrder
     studentStatus?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StudentAvgOrderByAggregateInput = {
@@ -8915,6 +8945,7 @@ export namespace Prisma {
     studentName?: SortOrder
     studentGender?: SortOrder
     studentStatus?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StudentMinOrderByAggregateInput = {
@@ -8926,6 +8957,7 @@ export namespace Prisma {
     studentName?: SortOrder
     studentGender?: SortOrder
     studentStatus?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StudentSumOrderByAggregateInput = {
@@ -9436,6 +9468,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
     school: SchoolCreateNestedOneWithoutStudentInput
   }
 
@@ -9448,6 +9481,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
   }
 
   export type StudentCreateOrConnectWithoutBrushedInput = {
@@ -9474,6 +9508,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     school?: SchoolUpdateOneRequiredWithoutStudentNestedInput
   }
 
@@ -9486,6 +9521,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SchoolCreateWithoutContentsInput = {
@@ -9699,7 +9735,7 @@ export namespace Prisma {
 
   export type SchedulesCreateWithoutSchoolInput = {
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
   }
@@ -9707,7 +9743,7 @@ export namespace Prisma {
   export type SchedulesUncheckedCreateWithoutSchoolInput = {
     id?: number
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
   }
@@ -9730,6 +9766,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
     brushed?: BrushedCreateNestedManyWithoutStudentInput
   }
 
@@ -9741,6 +9778,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
     brushed?: BrushedUncheckedCreateNestedManyWithoutStudentInput
   }
 
@@ -9805,7 +9843,7 @@ export namespace Prisma {
     id?: IntFilter<"Schedules"> | number
     schoolId?: StringFilter<"Schedules"> | string
     scheduleName?: StringFilter<"Schedules"> | string
-    scheduleTarget?: StringFilter<"Schedules"> | string
+    scheduleTargetGrade?: IntFilter<"Schedules"> | number
     scheduleAt?: DateTimeFilter<"Schedules"> | Date | string
     scheduleStatus?: BoolFilter<"Schedules"> | boolean
   }
@@ -9838,6 +9876,7 @@ export namespace Prisma {
     studentName?: StringFilter<"Student"> | string
     studentGender?: EnumStudentStudentGenderFilter<"Student"> | $Enums.StudentStudentGender
     studentStatus?: BoolFilter<"Student"> | boolean
+    createdAt?: DateTimeFilter<"Student"> | Date | string
   }
 
   export type BrushedCreateWithoutStudentInput = {
@@ -9990,7 +10029,7 @@ export namespace Prisma {
   export type SchedulesCreateManySchoolInput = {
     id?: number
     scheduleName: string
-    scheduleTarget: string
+    scheduleTargetGrade: number
     scheduleAt: Date | string
     scheduleStatus?: boolean
   }
@@ -10003,6 +10042,7 @@ export namespace Prisma {
     studentName: string
     studentGender: $Enums.StudentStudentGender
     studentStatus?: boolean
+    createdAt?: Date | string
   }
 
   export type ContentsUpdateWithoutSchoolInput = {
@@ -10030,7 +10070,7 @@ export namespace Prisma {
 
   export type SchedulesUpdateWithoutSchoolInput = {
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -10038,7 +10078,7 @@ export namespace Prisma {
   export type SchedulesUncheckedUpdateWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -10046,7 +10086,7 @@ export namespace Prisma {
   export type SchedulesUncheckedUpdateManyWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
     scheduleName?: StringFieldUpdateOperationsInput | string
-    scheduleTarget?: StringFieldUpdateOperationsInput | string
+    scheduleTargetGrade?: IntFieldUpdateOperationsInput | number
     scheduleAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scheduleStatus?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -10059,6 +10099,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushed?: BrushedUpdateManyWithoutStudentNestedInput
   }
 
@@ -10070,6 +10111,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushed?: BrushedUncheckedUpdateManyWithoutStudentNestedInput
   }
 
@@ -10081,6 +10123,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     studentGender?: EnumStudentStudentGenderFieldUpdateOperationsInput | $Enums.StudentStudentGender
     studentStatus?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BrushedCreateManyStudentInput = {

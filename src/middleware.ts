@@ -73,7 +73,6 @@ export default async function middleware(req: NextRequest) {
     const { payload } = await jwtVerify(accessToken.value, secretKey);
 
     const userType = payload.type as string | undefined;
-    console.log("verified.payload", payload);
 
     // 마스터 권한 필요한 경로 접근 제어
     if (MASTER_PATHS.some((path) => pathname.startsWith(path))) {

@@ -1,29 +1,11 @@
 "use server";
 
-import bcrypt from "bcryptjs";
-import { jwtVerify } from "jose";
-import { cookies } from "next/headers";
-import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
-
-import { addSchoolSchema } from "@/app/actions/school/addSchoolSchema";
 import { mysqlPrisma } from "@/libs/prisma";
 import customDayjs from "@/utils/customDayjs";
 
 export type GetSchoolListResponse = Awaited<ReturnType<typeof getSchoolList>>;
 
 export async function getSchoolList() {
-  const cookieStore = await cookies();
-
-  const accessToken = cookieStore.get("CHICA_ADMIN_ACCESS_TOKEN")?.value;
-
-  if (accessToken == null) {
-    return {
-      code: "UNAUTHORIZED",
-      message: "인증이 필요합니다.",
-    };
-  }
-
   const result = await mysqlPrisma.school.findMany({
     where: {
       schoolStatus: { not: false },

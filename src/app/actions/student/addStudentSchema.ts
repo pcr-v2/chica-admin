@@ -10,3 +10,17 @@ export const csvStudentsBlukRegistSchema = z.array(
     studentStatus: z.enum(["Y", "N", "y", "n", ""]),
   }),
 );
+
+export const addStudentSchema = z.object({
+  schoolId: z.string(),
+  students: z.array(
+    z.object({
+      studentName: z.string(),
+      studentGrade: z.number(),
+      studentClass: z.string(),
+      studentNumber: z.number(),
+      studentGender: z.enum(["male", "female"]),
+      studentStatus: z.boolean(),
+    }),
+  ),
+});

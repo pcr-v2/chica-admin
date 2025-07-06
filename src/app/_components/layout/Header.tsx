@@ -15,9 +15,8 @@ interface IProps {
 
 export default function Header(props: IProps) {
   const { me } = props;
-  console.log("me", me);
   const nowPath = usePathname();
-
+  // console.log("me", me);
   const handleLogout = async () => {
     toast.success("로그아웃 되었습니다.");
     await signOut();

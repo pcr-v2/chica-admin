@@ -1,11 +1,13 @@
 "use client";
 
+import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import MasterSchoolSelect from "@/app/(main)/student/add/MasterSchoolSelect";
 import StudentCard from "@/app/(main)/student/add/StudentCard";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { School_type } from "@/prisma/generated/prisma";
+import { addStudent } from "@/app/actions/student/addStudentAction";
 
 interface IProps {
   me: GetMeResponse;
@@ -26,8 +28,50 @@ export default function StudentAddForm(props: IProps) {
     }
   }, [me]);
 
+  const handleAdd = async () => {
+    const res = await addStudent({
+      schoolId: "1ad52d51-798d-41d0-b09e-3517238fc7b7",
+      students: [
+        {
+          studentName: "추가1중학교 학생1",
+          studentClass: "1반",
+          studentGrade: 1,
+          studentNumber: 1,
+          studentGender: "male",
+          studentStatus: true,
+        },
+        {
+          studentName: "추가1중학교 학생2",
+          studentClass: "1반",
+          studentGrade: 1,
+          studentNumber: 2,
+          studentGender: "female",
+          studentStatus: true,
+        },
+        {
+          studentName: "추가1중학교 학생3",
+          studentClass: "1반",
+          studentGrade: 1,
+          studentNumber: 3,
+          studentGender: "male",
+          studentStatus: true,
+        },
+      ],
+    });
+
+    if (res.code === "SUCCESS") {
+      toast.success(res.message);
+      // onSuccess();
+    } else {
+      toast.error(res.message);
+    }
+  };
+
   return (
     <div>
+      <Button variant="contained" fullWidth onClick={handleAdd}>
+        학생등록 테스트
+      </Button>
       {me.data?.type === "master" && (
         <MasterSchoolSelect selectSchoolId={(value) => setSchoolId(value)} />
       )}

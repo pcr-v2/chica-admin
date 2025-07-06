@@ -38,13 +38,13 @@ model Holiday {
 }
 
 model Schedules {
-  id             Int      @id @default(autoincrement())
-  schoolId       String   @map("school_id") @db.Char(36)
-  scheduleName   String   @map("schedule_name") @db.VarChar(255)
-  scheduleTarget String   @map("schedule_target") @db.VarChar(255)
-  scheduleAt     DateTime @map("schedule_at") @db.Date
-  scheduleStatus Boolean  @default(true) @map("schedule_status")
-  school         School   @relation(fields: [schoolId], references: [id], onDelete: Cascade, map: "Schedules_ibfk_1")
+  id                  Int      @id @default(autoincrement())
+  schoolId            String   @map("school_id") @db.Char(36)
+  scheduleName        String   @map("schedule_name") @db.VarChar(255)
+  scheduleTargetGrade Int      @map("schedule_target_grade") @db.TinyInt
+  scheduleAt          DateTime @map("schedule_at") @db.Date
+  scheduleStatus      Boolean  @default(true) @map("schedule_status")
+  school              School   @relation(fields: [schoolId], references: [id], onDelete: Cascade, map: "Schedules_ibfk_1")
 
   @@index([schoolId], map: "school_id")
 }
@@ -78,6 +78,7 @@ model Student {
   studentName   String               @map("student_name") @db.VarChar(10)
   studentGender StudentStudentGender @map("student_gender")
   studentStatus Boolean              @default(true) @map("student_status")
+  createdAt     DateTime             @default(now()) @map("created_at") @db.DateTime(0)
   brushed       Brushed[]
   school        School               @relation(fields: [schoolId], references: [id], onDelete: Cascade, map: "Student_ibfk_1")
 

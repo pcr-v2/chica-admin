@@ -24,7 +24,10 @@ export default function MasterSchoolSelect(props: IProps) {
       {school?.result &&
         school?.result.map((el) => {
           return (
-            <div key={el.id} onClick={() => selectSchoolId(el.id as string)}>
+            <div
+              key={el.id}
+              onClick={() => selectSchoolId(el.schoolId as string)}
+            >
               {el.schoolName}
             </div>
           );

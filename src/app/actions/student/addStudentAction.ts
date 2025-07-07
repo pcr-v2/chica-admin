@@ -1,5 +1,6 @@
 "use server";
 
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 import { addStudentSchema } from "@/app/actions/student/addStudentSchema";
@@ -31,6 +32,7 @@ export async function addStudent(request: AddStudentRequest) {
       await trx.student.createMany({
         data: students.map((student) => ({
           schoolId: schoolId,
+          studentId: uuidv4(),
           studentName: student.studentName,
           studentGrade: student.studentGrade,
           studentClass: student.studentClass,

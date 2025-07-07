@@ -33,7 +33,7 @@ export async function getSchool(request: GetSchoolRequest) {
 
   const result = await mysqlPrisma.school.findFirst({
     where: {
-      id: validated.data.schoolId,
+      schoolId: validated.data.schoolId,
       schoolStatus: { not: false },
       startAt: { lte: customDayjs().toISOString() },
       endAt: { gte: customDayjs().toISOString() },

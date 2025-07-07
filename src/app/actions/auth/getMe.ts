@@ -41,7 +41,7 @@ export async function getMe() {
     data: {
       type: admin.schoolType,
       loginId: admin.loginId,
-      schoolId: admin.id,
+      schoolId: admin.schoolId,
       schoolLevel: admin.schoolLevel,
       name: admin.teacherName,
     },

@@ -36,7 +36,7 @@ export async function addSchool(request: AddSchoolRequest) {
 
   const res = await mysqlPrisma.school.create({
     data: {
-      // schoolId: uuidv4(),
+      schoolId: uuidv4(),
       schoolName,
       loginId,
       loginPw: hashedPw,

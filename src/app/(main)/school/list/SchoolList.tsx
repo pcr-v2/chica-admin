@@ -2,7 +2,6 @@
 
 import { AddRounded } from "@mui/icons-material";
 import { Box, styled } from "@mui/material";
-import dayjs from "dayjs";
 import { useState } from "react";
 
 import SchoolAddForm from "@/app/(main)/school/list/SchoolAddForm";
@@ -49,12 +48,19 @@ export default function SchoolList(props: IProps) {
         })}
       </ListWrap>
 
-      {open && (
-        <Modal
-          children={<SchoolAddForm onSuccess={() => setOpen(false)} />}
-          onClose={() => setOpen(false)}
-        />
-      )}
+      <Modal
+        open={open}
+        children={
+          <SchoolAddForm
+            onSuccess={() => {
+              setOpen(false);
+              // revalidatePath("/school/list");
+              // router.refresh();
+            }}
+          />
+        }
+        onClose={() => setOpen(false)}
+      />
     </Wrapper>
   );
 }

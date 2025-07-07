@@ -13,7 +13,7 @@ export async function getSchoolList() {
       endAt: { gte: customDayjs().toISOString() },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
   });
 

@@ -3,15 +3,16 @@ import { Box, styled } from "@mui/material";
 import { ReactNode } from "react";
 
 interface IProps {
+  open: boolean;
   children: ReactNode;
   onClose: () => void;
 }
 
 export default function Modal(props: IProps) {
-  const { children, onClose } = props;
+  const { children, onClose, open } = props;
 
   return (
-    <Background>
+    <Background sx={{ display: open ? "flex" : "none" }}>
       <Content>
         {children}
         <CloseIcon onClick={onClose} />

@@ -1,6 +1,7 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
@@ -47,6 +48,8 @@ export async function addSchool(request: AddSchoolRequest) {
       schoolStatus,
     },
   });
+
+  revalidatePath("/school/list");
 
   if (!res) {
     return {

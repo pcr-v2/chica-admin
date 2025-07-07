@@ -18,22 +18,20 @@ jobs:
         with:
           node-version: "22.11.0"
 
-      - name: Create .env file for build (multi-line safe)
+      - name: Create .env file from base64 secret
         run: |
-          echo "${{ secrets.PROD_ENV }}" > .env
-          echo "====== .env created ======"
+          echo "${{ secrets.PROD_ENV_BASE64 }}" | base64 -d > .env
+          echo "✅ .env 파일 생성 완료"
           cat .env
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run prebuild (with debug logs)
+      - name: Run prebuild script (prisma db pull + generate)
         run: |
-          echo "===== START PREBUILD ====="
+          echo "✅ prebuild 시작"
           npm run prebuild || { echo '❌ prebuild 실패'; exit 1; }
-          echo "===== FINISH PREBUILD ====="
-          ls -al node_modules/.prisma/client
-          ls -al node_modules/@prisma/client
+          echo "✅ prebuild 완료"
 
       - name: Build project (standalone)
         run: npm run build
@@ -45,6 +43,10 @@ jobs:
 
           mkdir -p .next/standalone/node_modules/@prisma
           cp -r node_modules/@prisma/client .next/standalone/node_modules/@prisma/client
+
+          echo "✅ Prisma client 복사 완료"
+          ls -al .next/standalone/node_modules/.prisma/client
+          ls -al .next/standalone/node_modules/@prisma/client
 
       - name: Compress standalone output (without .env)
         run: |
@@ -79,11 +81,11 @@ jobs:
             tar -xzf ~/deploy/standalone.tar.gz -C ~/chica-admin --strip-components=0
             cd ~/chica-admin
 
-            echo "${{ secrets.PROD_ENV }}" > .env
-            echo "🔍 EC2 .env 내용:"
+            echo "${{ secrets.PROD_ENV_BASE64 }}" | base64 -d > .env
+            echo "✅ EC2에서 .env 내용:"
             cat .env
 
-            echo "🔍 Prisma Client 경로 확인:"
+            echo "✅ EC2에서 Prisma client 파일 확인:"
             ls -al .next/standalone/node_modules/.prisma/client
             ls -al .next/standalone/node_modules/@prisma/client
 
@@ -92,8 +94,9 @@ jobs:
             pm2 start .next/standalone/server.js --name chica-admin
             pm2 save
 
-            echo "📋 PM2 상태 확인:"
+            echo "📋 PM2 상태:"
             pm2 list
 
             echo "🧾 최근 로그:"
-            pm2 logs chica-admin --lines 50
+            pm2 logs chica-admin --lines 100 --nostream > pm2.log
+            cat pm2.log

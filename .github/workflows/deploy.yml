@@ -3,7 +3,7 @@ name: Deploy Chica-admin
 on:
   push:
     tags:
-      - "v*"
+      - "v*" # v로 시작하는 태그 (예: v1.0.0)
 
 jobs:
   build-and-deploy:
@@ -18,20 +18,14 @@ jobs:
         with:
           node-version: "22.11.0"
 
-      - name: Create .env file from base64 secret
-        run: |
-          echo "${{ secrets.PROD_ENV }}" | base64 -d > .env
-          echo "✅ .env 파일 생성 완료"
-          cat .env
+      - name: Create .env file for build
+        run: echo "${{ secrets.PROD_ENV }}" > .env
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run prebuild script (prisma db pull + generate)
-        run: |
-          echo "✅ prebuild 시작"
-          npm run prebuild || { echo '❌ prebuild 실패'; exit 1; }
-          echo "✅ prebuild 완료"
+      - name: Run prebuild script (prisma db pull + case format + generate)
+        run: npm run prebuild
 
       - name: Build project (standalone)
         run: npm run build
@@ -44,18 +38,15 @@ jobs:
           mkdir -p .next/standalone/node_modules/@prisma
           cp -r node_modules/@prisma/client .next/standalone/node_modules/@prisma/client
 
-          echo "✅ Prisma client 복사 완료"
-          ls -al .next/standalone/node_modules/.prisma/client
-          ls -al .next/standalone/node_modules/@prisma/client
-
-      - name: Compress standalone output (without .env)
+      - name: Compress standalone output
         run: |
           tar -czf standalone.tar.gz \
             .next/standalone \
             .next/static \
             public \
             package.json \
-            next.config.ts
+            next.config.ts \
+            .env
 
       - name: Upload build to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -76,27 +67,9 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             source $NVM_DIR/nvm.sh
             export PATH="$NVM_DIR/versions/node/v22.11.0/bin:$PATH"
-
             mkdir -p ~/chica-admin
             tar -xzf ~/deploy/standalone.tar.gz -C ~/chica-admin --strip-components=0
             cd ~/chica-admin
-
-            echo "${{ secrets.PROD_ENV_BASE64 }}" | base64 -d > .env
-            echo "✅ EC2에서 .env 내용:"
-            cat .env
-
-            echo "✅ EC2에서 Prisma client 파일 확인:"
-            ls -al .next/standalone/node_modules/.prisma/client
-            ls -al .next/standalone/node_modules/@prisma/client
-
-            echo "♻️ PM2 재시작"
             pm2 delete chica-admin || true
             pm2 start .next/standalone/server.js --name chica-admin
             pm2 save
-
-            echo "📋 PM2 상태:"
-            pm2 list
-
-            echo "🧾 최근 로그:"
-            pm2 logs chica-admin --lines 100 --nostream > pm2.log
-            cat pm2.log

@@ -5,6 +5,7 @@ import { Box, styled } from "@mui/material";
 import { useState } from "react";
 
 import SchoolAddForm from "@/app/(main)/school/list/SchoolAddForm";
+import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import Modal from "@/app/_components/common/Modal";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import customDayjs from "@/utils/customDayjs";

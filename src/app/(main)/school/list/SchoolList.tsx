@@ -7,6 +7,7 @@ import { useState } from "react";
 import SchoolAddForm from "@/app/(main)/school/list/SchoolAddForm";
 import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import Modal from "@/app/_components/common/Modal";
+import { getMeal } from "@/app/actions/meal/getMeal";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import customDayjs from "@/utils/customDayjs";
 
@@ -18,6 +19,9 @@ export default function SchoolList(props: IProps) {
   const { schoolList } = props;
 
   const [open, setOpen] = useState(false);
+
+  const [test, setTest] = useState<any>();
+  console.log(test);
 
   return (
     <Wrapper>
@@ -44,10 +48,30 @@ export default function SchoolList(props: IProps) {
                 계약 종료일 : {customDayjs(el.endAt).format("YYYY-MM-DD")}
               </Box>
               <Box sx={{}}>{el.schoolStatus.toString()}</Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "4px",
+                  backgroundColor: "#3196ff",
+                  padding: "4px 8px",
+                  cursor: "pointer",
+                  color: "#fff",
+                }}
+                onClick={async () => {
+                  const res = await getMeal(el);
+                  setTest(res);
+                }}
+              >
+                급식보기
+              </Box>
             </SingleRow>
           );
         })}
       </ListWrap>
+      {test}
 
       <Modal
         open={open}

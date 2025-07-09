@@ -1,5 +1,6 @@
 "use client";
 
+import { Box } from "@mui/material";
 import React from "react";
 
 import { GetStudentListResponse } from "@/app/actions/student/getStudentListAction";

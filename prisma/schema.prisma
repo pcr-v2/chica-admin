@@ -66,6 +66,9 @@ model School {
   schoolLevel  SchoolSchoolLevel @default(elementary) @map("school_level")
   createdAt    DateTime          @default(dbgenerated("(now())")) @map("created_at") @db.DateTime(0)
   schoolStatus Boolean           @default(true) @map("school_status")
+  officeCode   String            @map("office_code") @db.VarChar(3)
+  schoolCode   String            @map("school_code") @db.VarChar(10)
+  address      String            @db.VarChar(255)
   contents     Contents[]
   schedules    Schedules[]
   student      Student[]

@@ -167,7 +167,10 @@ exports.Prisma.SchoolScalarFieldEnum = {
   schoolType: 'schoolType',
   schoolLevel: 'schoolLevel',
   createdAt: 'createdAt',
-  schoolStatus: 'schoolStatus'
+  schoolStatus: 'schoolStatus',
+  officeCode: 'officeCode',
+  schoolCode: 'schoolCode',
+  address: 'address'
 };
 
 exports.Prisma.StudentScalarFieldEnum = {
@@ -221,7 +224,10 @@ exports.Prisma.SchoolOrderByRelevanceFieldEnum = {
   teacherName: 'teacherName',
   teacherEmail: 'teacherEmail',
   teacherPhone: 'teacherPhone',
-  schoolLogo: 'schoolLogo'
+  schoolLogo: 'schoolLogo',
+  officeCode: 'officeCode',
+  schoolCode: 'schoolCode',
+  address: 'address'
 };
 
 exports.Prisma.StudentOrderByRelevanceFieldEnum = {

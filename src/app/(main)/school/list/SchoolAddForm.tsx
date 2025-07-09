@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Autocomplete,
   Box,
   Button,
   FormControlLabel,
@@ -11,13 +12,30 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
+import SearchAutocomplete from "@/app/_components/common/SearchAutoComplete";
 import { Toggle } from "@/app/_components/common/Toggle";
 import { addSchool } from "@/app/actions/school/addSchoolAction";
+import {
+  getSchoolCode,
+  SchoolCodeOption,
+} from "@/app/actions/school/getSchoolCode";
+
+// type SchoolOption = {
+//   name: string;
+//   code: string;
+//   officeCode: string;
+//   address: string;
+//   eduOfficeName: string;
+// };
 
 type TSchool = {
   schoolName: string;
+  schoolCode: string;
+  officeCode: string;
+  address: string;
   loginId: string;
   loginPw: string;
   teacherName: string;
@@ -39,9 +57,12 @@ export default function SchoolAddForm(props: IProps) {
     schoolName: "",
     loginId: "",
     loginPw: "",
+    schoolCode: "",
+    officeCode: "",
     teacherName: "",
     teacherEmail: "",
     teacherPhone: "",
+    address: "",
     endAt: "",
     schoolStatus: true,
     schoolLevel: "elementary",
@@ -65,14 +86,32 @@ export default function SchoolAddForm(props: IProps) {
       <FormCard>
         <InputWrap>
           <Label>학교 이름</Label>
-          <Input
-            value={school.schoolName}
-            onChange={(e) => {
-              setSchool({ ...school, schoolName: e.target.value });
+
+          <SearchAutocomplete
+            onChange={(value) => {
+              if (value) {
+                const [schoolName, address] = value.name.split("-");
+
+                setSchool({
+                  ...school,
+                  schoolCode: value.code,
+                  officeCode: value.officeCode,
+                  schoolName: schoolName,
+                  address: address,
+                });
+              }
             }}
-            type="text"
           />
         </InputWrap>
+
+        {/* <InputWrap>
+          <SchoolAutoComplete
+            options={options}
+            onChange={(id) => {
+              setSelectedSchoolId(id);
+            }}
+          />
+        </InputWrap> */}
         <InputWrap>
           <Label>아이디</Label>
           <Input

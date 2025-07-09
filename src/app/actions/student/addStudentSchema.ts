@@ -7,7 +7,6 @@ export const csvStudentsBlukRegistSchema = z.array(
     studentClass: z.string(),
     studentNumber: z.string(),
     studentGender: z.string(),
-    studentStatus: z.enum(["Y", "N", "y", "n", ""]),
   }),
 );
 

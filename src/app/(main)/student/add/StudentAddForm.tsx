@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import StudentCard from "@/app/(main)/student/add/StudentCard";
 import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
+import { fetchTestMealData } from "@/app/actions/meal/getMeal";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import { addStudent } from "@/app/actions/student/addStudentAction";
 import { csvStudentsBlukRegistSchema } from "@/app/actions/student/addStudentSchema";
@@ -20,7 +21,6 @@ const CSV_DEFAULT_DATAS = [
     반: "3",
     번호: "24",
     성별: "남",
-    학생사용여부: "Y",
   },
   {
     학생이름: "정소민",
@@ -28,7 +28,6 @@ const CSV_DEFAULT_DATAS = [
     반: "3",
     번호: "24",
     성별: "남",
-    학생사용여부: "Y",
   },
 ];
 
@@ -91,6 +90,15 @@ export default function StudentAddForm(props: IProps) {
     }
   };
 
+  useEffect(() => {
+    const load = async () => {
+      const result = await fetchTestMealData();
+      console.log("급식 API 결과:", result);
+      // setMeal(result);
+    };
+    load();
+  }, []);
+
   return (
     <>
       {/* <Button variant="contained" fullWidth onClick={handleAdd}>
@@ -134,8 +142,8 @@ export default function StudentAddForm(props: IProps) {
 
               const updatedRes = res.map((el) => ({
                 ...el,
-                studentStatus:
-                  el.studentStatus === "Y" || el.studentStatus === "y",
+                // studentStatus:
+                //   el.studentStatus === "Y" || el.studentStatus === "y",
                 student_gender: el.studentGender === "남" ? "male" : "female",
               }));
 

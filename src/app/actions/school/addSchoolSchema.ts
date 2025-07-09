@@ -14,4 +14,7 @@ export const addSchoolSchema = z.object({
   schoolLevel: z.enum(["elementary", "middle", "high"], {
     required_error: "학교 레벨을 선택해주세요.",
   }),
+  schoolCode: z.string({ required_error: "학교 코드를 입력해주세요." }),
+  officeCode: z.string({ required_error: "교육청 코드를 입력해주세요." }),
+  address: z.string({ required_error: "학교 주소를 입력해주세요." }),
 });

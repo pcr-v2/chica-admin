@@ -5258,6 +5258,9 @@ export namespace Prisma {
     schoolLevel: $Enums.SchoolSchoolLevel | null
     createdAt: Date | null
     schoolStatus: boolean | null
+    officeCode: string | null
+    schoolCode: string | null
+    address: string | null
   }
 
   export type SchoolMaxAggregateOutputType = {
@@ -5276,6 +5279,9 @@ export namespace Prisma {
     schoolLevel: $Enums.SchoolSchoolLevel | null
     createdAt: Date | null
     schoolStatus: boolean | null
+    officeCode: string | null
+    schoolCode: string | null
+    address: string | null
   }
 
   export type SchoolCountAggregateOutputType = {
@@ -5294,6 +5300,9 @@ export namespace Prisma {
     schoolLevel: number
     createdAt: number
     schoolStatus: number
+    officeCode: number
+    schoolCode: number
+    address: number
     _all: number
   }
 
@@ -5322,6 +5331,9 @@ export namespace Prisma {
     schoolLevel?: true
     createdAt?: true
     schoolStatus?: true
+    officeCode?: true
+    schoolCode?: true
+    address?: true
   }
 
   export type SchoolMaxAggregateInputType = {
@@ -5340,6 +5352,9 @@ export namespace Prisma {
     schoolLevel?: true
     createdAt?: true
     schoolStatus?: true
+    officeCode?: true
+    schoolCode?: true
+    address?: true
   }
 
   export type SchoolCountAggregateInputType = {
@@ -5358,6 +5373,9 @@ export namespace Prisma {
     schoolLevel?: true
     createdAt?: true
     schoolStatus?: true
+    officeCode?: true
+    schoolCode?: true
+    address?: true
     _all?: true
   }
 
@@ -5463,6 +5481,9 @@ export namespace Prisma {
     schoolLevel: $Enums.SchoolSchoolLevel
     createdAt: Date
     schoolStatus: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     _count: SchoolCountAggregateOutputType | null
     _avg: SchoolAvgAggregateOutputType | null
     _sum: SchoolSumAggregateOutputType | null
@@ -5500,6 +5521,9 @@ export namespace Prisma {
     schoolLevel?: boolean
     createdAt?: boolean
     schoolStatus?: boolean
+    officeCode?: boolean
+    schoolCode?: boolean
+    address?: boolean
     contents?: boolean | School$contentsArgs<ExtArgs>
     schedules?: boolean | School$schedulesArgs<ExtArgs>
     student?: boolean | School$studentArgs<ExtArgs>
@@ -5524,9 +5548,12 @@ export namespace Prisma {
     schoolLevel?: boolean
     createdAt?: boolean
     schoolStatus?: boolean
+    officeCode?: boolean
+    schoolCode?: boolean
+    address?: boolean
   }
 
-  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "schoolName" | "loginId" | "loginPw" | "teacherName" | "teacherEmail" | "teacherPhone" | "schoolLogo" | "startAt" | "endAt" | "schoolType" | "schoolLevel" | "createdAt" | "schoolStatus", ExtArgs["result"]["school"]>
+  export type SchoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "schoolName" | "loginId" | "loginPw" | "teacherName" | "teacherEmail" | "teacherPhone" | "schoolLogo" | "startAt" | "endAt" | "schoolType" | "schoolLevel" | "createdAt" | "schoolStatus" | "officeCode" | "schoolCode" | "address", ExtArgs["result"]["school"]>
   export type SchoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contents?: boolean | School$contentsArgs<ExtArgs>
     schedules?: boolean | School$schedulesArgs<ExtArgs>
@@ -5557,6 +5584,9 @@ export namespace Prisma {
       schoolLevel: $Enums.SchoolSchoolLevel
       createdAt: Date
       schoolStatus: boolean
+      officeCode: string
+      schoolCode: string
+      address: string
     }, ExtArgs["result"]["school"]>
     composites: {}
   }
@@ -5944,6 +5974,9 @@ export namespace Prisma {
     readonly schoolLevel: FieldRef<"School", 'SchoolSchoolLevel'>
     readonly createdAt: FieldRef<"School", 'DateTime'>
     readonly schoolStatus: FieldRef<"School", 'Boolean'>
+    readonly officeCode: FieldRef<"School", 'String'>
+    readonly schoolCode: FieldRef<"School", 'String'>
+    readonly address: FieldRef<"School", 'String'>
   }
     
 
@@ -7506,7 +7539,10 @@ export namespace Prisma {
     schoolType: 'schoolType',
     schoolLevel: 'schoolLevel',
     createdAt: 'createdAt',
-    schoolStatus: 'schoolStatus'
+    schoolStatus: 'schoolStatus',
+    officeCode: 'officeCode',
+    schoolCode: 'schoolCode',
+    address: 'address'
   };
 
   export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
@@ -7584,7 +7620,10 @@ export namespace Prisma {
     teacherName: 'teacherName',
     teacherEmail: 'teacherEmail',
     teacherPhone: 'teacherPhone',
-    schoolLogo: 'schoolLogo'
+    schoolLogo: 'schoolLogo',
+    officeCode: 'officeCode',
+    schoolCode: 'schoolCode',
+    address: 'address'
   };
 
   export type SchoolOrderByRelevanceFieldEnum = (typeof SchoolOrderByRelevanceFieldEnum)[keyof typeof SchoolOrderByRelevanceFieldEnum]
@@ -7919,6 +7958,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFilter<"School"> | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFilter<"School"> | Date | string
     schoolStatus?: BoolFilter<"School"> | boolean
+    officeCode?: StringFilter<"School"> | string
+    schoolCode?: StringFilter<"School"> | string
+    address?: StringFilter<"School"> | string
     contents?: ContentsListRelationFilter
     schedules?: SchedulesListRelationFilter
     student?: StudentListRelationFilter
@@ -7940,6 +7982,9 @@ export namespace Prisma {
     schoolLevel?: SortOrder
     createdAt?: SortOrder
     schoolStatus?: SortOrder
+    officeCode?: SortOrder
+    schoolCode?: SortOrder
+    address?: SortOrder
     contents?: ContentsOrderByRelationAggregateInput
     schedules?: SchedulesOrderByRelationAggregateInput
     student?: StudentOrderByRelationAggregateInput
@@ -7965,6 +8010,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFilter<"School"> | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFilter<"School"> | Date | string
     schoolStatus?: BoolFilter<"School"> | boolean
+    officeCode?: StringFilter<"School"> | string
+    schoolCode?: StringFilter<"School"> | string
+    address?: StringFilter<"School"> | string
     contents?: ContentsListRelationFilter
     schedules?: SchedulesListRelationFilter
     student?: StudentListRelationFilter
@@ -7986,6 +8034,9 @@ export namespace Prisma {
     schoolLevel?: SortOrder
     createdAt?: SortOrder
     schoolStatus?: SortOrder
+    officeCode?: SortOrder
+    schoolCode?: SortOrder
+    address?: SortOrder
     _count?: SchoolCountOrderByAggregateInput
     _avg?: SchoolAvgOrderByAggregateInput
     _max?: SchoolMaxOrderByAggregateInput
@@ -8012,6 +8063,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelWithAggregatesFilter<"School"> | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeWithAggregatesFilter<"School"> | Date | string
     schoolStatus?: BoolWithAggregatesFilter<"School"> | boolean
+    officeCode?: StringWithAggregatesFilter<"School"> | string
+    schoolCode?: StringWithAggregatesFilter<"School"> | string
+    address?: StringWithAggregatesFilter<"School"> | string
   }
 
   export type StudentWhereInput = {
@@ -8325,6 +8379,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
@@ -8346,6 +8403,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
@@ -8366,6 +8426,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
@@ -8387,6 +8450,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
@@ -8408,6 +8474,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
   }
 
   export type SchoolUpdateManyMutationInput = {
@@ -8425,6 +8494,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
   }
 
   export type SchoolUncheckedUpdateManyInput = {
@@ -8443,6 +8515,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
   }
 
   export type StudentCreateInput = {
@@ -8902,6 +8977,9 @@ export namespace Prisma {
     schoolLevel?: SortOrder
     createdAt?: SortOrder
     schoolStatus?: SortOrder
+    officeCode?: SortOrder
+    schoolCode?: SortOrder
+    address?: SortOrder
   }
 
   export type SchoolAvgOrderByAggregateInput = {
@@ -8924,6 +9002,9 @@ export namespace Prisma {
     schoolLevel?: SortOrder
     createdAt?: SortOrder
     schoolStatus?: SortOrder
+    officeCode?: SortOrder
+    schoolCode?: SortOrder
+    address?: SortOrder
   }
 
   export type SchoolMinOrderByAggregateInput = {
@@ -8942,6 +9023,9 @@ export namespace Prisma {
     schoolLevel?: SortOrder
     createdAt?: SortOrder
     schoolStatus?: SortOrder
+    officeCode?: SortOrder
+    schoolCode?: SortOrder
+    address?: SortOrder
   }
 
   export type SchoolSumOrderByAggregateInput = {
@@ -9638,6 +9722,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -9658,6 +9745,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -9693,6 +9783,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -9713,6 +9806,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -9733,6 +9829,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -9753,6 +9852,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -9788,6 +9890,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -9808,6 +9913,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -10023,6 +10131,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
   }
@@ -10043,6 +10154,9 @@ export namespace Prisma {
     schoolLevel?: $Enums.SchoolSchoolLevel
     createdAt?: Date | string
     schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -10104,6 +10218,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
   }
@@ -10124,6 +10241,9 @@ export namespace Prisma {
     schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
   }

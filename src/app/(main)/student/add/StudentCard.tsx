@@ -1,12 +1,7 @@
 "use client";
 
-import { Box, Button, styled } from "@mui/material";
-import React, { useState } from "react";
-
-import Input from "@/app/_components/common/Input";
-import { csvStudentsBlukRegistSchema } from "@/app/actions/student/addStudentSchema";
-import downloadCsv from "@/utils/downloadCsv";
-import uploadCsv from "@/utils/uploadCsv";
+import { Box, styled } from "@mui/material";
+import { useState } from "react";
 
 type TStudent = {
   studentGrade: string;

@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import StudentCard from "@/app/(main)/student/add/StudentCard";
 import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { fetchTestMealData } from "@/app/actions/meal/getMeal";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import { addStudent } from "@/app/actions/student/addStudentAction";
 import { csvStudentsBlukRegistSchema } from "@/app/actions/student/addStudentSchema";
@@ -89,15 +88,6 @@ export default function StudentAddForm(props: IProps) {
       toast.error(res.message);
     }
   };
-
-  useEffect(() => {
-    const load = async () => {
-      const result = await fetchTestMealData();
-      console.log("급식 API 결과:", result);
-      // setMeal(result);
-    };
-    load();
-  }, []);
 
   return (
     <>

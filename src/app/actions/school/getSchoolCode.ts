@@ -5,6 +5,7 @@
 export type SchoolCodeOption = {
   code: string;
   officeCode: string;
+  schoolAnniversary: string;
   name: string;
 };
 
@@ -21,10 +22,11 @@ export const getSchoolCode = async (schoolName: string) => {
 
   const data = await res.json();
   const rows = data.schoolInfo?.[1]?.row ?? [];
-
+  // console.log("rows", rows);
   return rows.map((school: any) => ({
     code: school.SD_SCHUL_CODE,
     officeCode: school.ATPT_OFCDC_SC_CODE,
-    name: `${school.SCHUL_NM}-${school.ORG_RDNMA}`,
+    schoolAnniversary: school.FOAS_MEMRD,
+    name: `${school.SCHUL_NM}(${school.ORG_RDNMA})`,
   }));
 };

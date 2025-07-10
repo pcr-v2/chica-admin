@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import StudentCard from "@/app/(main)/student/add/StudentCard";
 import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
+import Modal from "@/app/_components/common/Modal";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import { addStudent } from "@/app/actions/student/addStudentAction";
@@ -39,6 +40,7 @@ export default function StudentAddForm(props: IProps) {
   const { me, schoolList } = props;
 
   const [schoolId, setSchoolId] = useState<string | null>();
+  const [bulkRegist, setBulkRegist] = useState(false);
 
   useEffect(() => {
     if (!me.data) {
@@ -116,6 +118,9 @@ export default function StudentAddForm(props: IProps) {
         )}
 
         <BtnWrap>
+          <Button variant="contained" onClick={() => setBulkRegist(true)}>
+            일괄등록
+          </Button>
           <Button
             variant="contained"
             onClick={() => downloadCsv(CSV_DEFAULT_DATAS, "학생등록양식")}
@@ -145,6 +150,12 @@ export default function StudentAddForm(props: IProps) {
             업로드 테스트
           </Button>
         </BtnWrap>
+
+        <Modal
+          children={<div>asdf</div>}
+          open={bulkRegist}
+          onClose={() => setBulkRegist(false)}
+        />
       </TopContents>
 
       {schoolId != null && (

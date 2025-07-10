@@ -24,16 +24,20 @@ export function RootToast({
   return (
     <Toaster
       position="top-center"
+      containerStyle={{
+        width: "auto",
+        maxWidth: "none",
+      }}
       toastOptions={{
         icon: <InfoImg />,
         style: {
           fontSize: 16,
-          width: "100%",
           fontWeight: 500,
           color: "#fff",
-          display: "flex",
-          maxWidth: "400px",
-          minWidth: "300px",
+          display: "inline-flex",
+          whiteSpace: "nowrap",
+          padding: "8px 16px",
+          maxWidth: "none",
           lineHeight: "160%",
           textAlign: "center",
           alignItems: "center",
@@ -63,6 +67,5 @@ const InfoImg = styled(Info)(() => {
   return {
     width: "24px",
     height: "24px",
-    // fontSize: 12,
   };
 });

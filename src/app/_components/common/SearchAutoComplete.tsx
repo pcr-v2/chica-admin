@@ -16,10 +16,9 @@ interface IProps {
   debounceTime?: number;
 }
 
-export default function SearchAutocomplete({
-  onChange,
-  debounceTime = 500,
-}: IProps) {
+export default function SearchAutocomplete(props: IProps) {
+  const { onChange, debounceTime = 500 } = props;
+
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<SchoolCodeOption[]>([]);
   const [value, setValue] = useState<SchoolCodeOption | null>(null);
@@ -54,17 +53,42 @@ export default function SearchAutocomplete({
       disablePortal
       popupIcon={<ArrowDropDownIcon />}
       options={options}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option) => {
+        if (typeof option === "string") return option;
+        const [before] = option.name.split("(");
+        return before.trim();
+      }}
       isOptionEqualToValue={(option, value) => option.code === value.code}
       value={value}
       onInputChange={(e, newInput) => setInputValue(newInput)}
       onChange={(event, newValue) => handleChange(newValue)}
       noOptionsText="검색결과가 없습니다."
-      renderOption={(props, option) => (
-        <Box component="li" {...props} key={option.code}>
-          {option.name}
-        </Box>
-      )}
+      renderOption={(props, option) => {
+        const [before, ...afterParts] = option.name.split("(");
+        const after = afterParts.length ? "(" + afterParts.join("(") : "";
+
+        return (
+          <Box
+            component="li"
+            {...props}
+            key={`${option.code}+${option.name}`}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {before}
+            {after && (
+              <Box
+                key={`${option.code}+${option.name}+${option.officeCode}`}
+                sx={{ fontSize: 12, color: "#616161" }}
+              >
+                {after}
+              </Box>
+            )}
+          </Box>
+        );
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -79,11 +103,10 @@ export default function SearchAutocomplete({
 // StyledAutocomplete 스타일링
 const StyledAutocomplete = styled(AutocompleteSchool)<{}>(({ theme }) => ({
   width: "100%",
-  maxWidth: "400px",
   "& .MuiInputBase-root": {
     width: "100%",
     minHeight: 52,
-    borderRadius: 4,
+    borderRadius: "4px !important",
     "& fieldset": {
       borderColor: `${theme.palette.grey[400]} !important`,
     },

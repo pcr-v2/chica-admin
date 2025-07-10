@@ -9,6 +9,10 @@ import utc from "dayjs/plugin/utc";
 customDayjs.extend(utc);
 customDayjs.extend(timezone);
 customDayjs.extend(localeData);
+customDayjs.extend(utc);
+customDayjs.extend(timezone);
+
+customDayjs.tz.setDefault("Asia/Seoul");
 
 customDayjs.locale("ko"); // ✅ locale 설정
 

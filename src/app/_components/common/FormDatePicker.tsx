@@ -1,6 +1,5 @@
 import { styled, SxProps } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useRef } from "react";
 
 import customDayjs from "@/utils/customDayjs";
 
@@ -18,8 +17,6 @@ export type FormDatePickerProps = {
 
 export default function FormDatePicker(props: FormDatePickerProps) {
   const { name, value, onChange, sx } = props;
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const realValue = !value ? null : customDayjs(value).tz("Asia/Seoul");
 
@@ -39,16 +36,13 @@ export default function FormDatePicker(props: FormDatePickerProps) {
       value={realValue}
       onChange={setValue}
       slotProps={{
+        textField: {
+          readOnly: true,
+          onKeyDown: (e) => e.preventDefault(),
+        },
         popper: {
-          placement: "top-end", // 기본값: bottom, 원하는 위치 지정
-          modifiers: [
-            {
-              name: "offset",
-              options: {
-                offset: [0, 8], // [가로, 세로] 오프셋
-              },
-            },
-          ],
+          placement: "top-end",
+          modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
         },
       }}
       minDate={customDayjs().tz("Asia/Seoul").add(1, "day")}
@@ -62,6 +56,9 @@ const CustomDatePicker = styled(DatePicker)(() => {
       padding: 0,
     },
     "& .MuiPickersInputBase-root": {
+      fontSize: 16,
+      padding: "12px",
+      backgroundColor: "#fff",
       "&:hover fieldset": {
         borderColor: "rgba(0,0,0,0.3)",
       },
@@ -71,9 +68,6 @@ const CustomDatePicker = styled(DatePicker)(() => {
       "&.Mui-focused fieldset": {
         border: "1px solid #3196ff",
       },
-      padding: "12px",
-      fontSize: 16,
-      backgroundColor: "#fff",
     },
     "& .MuiInputAdornment-root": {
       fontSize: 9,

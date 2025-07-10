@@ -16,5 +16,6 @@ export const addSchoolSchema = z.object({
   }),
   schoolCode: z.string({ required_error: "학교 코드를 입력해주세요." }),
   officeCode: z.string({ required_error: "교육청 코드를 입력해주세요." }),
+  schoolAnniversary: z.string({ required_error: "개교기념이을 입력해주세요" }),
   address: z.string({ required_error: "학교 주소를 입력해주세요." }),
 });

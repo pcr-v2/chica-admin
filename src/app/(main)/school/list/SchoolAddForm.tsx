@@ -22,6 +22,13 @@ import {
   getSchoolCode,
   SchoolCodeOption,
 } from "@/app/actions/school/getSchoolCode";
+import {
+  formatPhoneNumber,
+  isValidEmail,
+  isValidLoginId,
+  isValidPassword,
+  isValidTeacherName,
+} from "@/utils/regExp";
 
 // type SchoolOption = {
 //   name: string;
@@ -43,6 +50,7 @@ type TSchool = {
   teacherEmail: string;
   endAt: string;
   schoolStatus: boolean;
+  schoolAnniversary: string;
   schoolLevel: "elementary" | "middle" | "high";
 };
 
@@ -64,15 +72,67 @@ export default function SchoolAddForm(props: IProps) {
     teacherPhone: "",
     address: "",
     endAt: "",
+    schoolAnniversary: "",
     schoolStatus: true,
     schoolLevel: "elementary",
   });
 
   const handleAdd = async () => {
+    const requiredFields: { key: keyof TSchool; label: string }[] = [
+      { key: "schoolName", label: "학교 이름" },
+      // { key: "schoolCode", label: "학교 코드" },
+      // { key: "officeCode", label: "교육청 코드" },
+      { key: "loginId", label: "아이디" },
+      { key: "loginPw", label: "비밀번호" },
+      { key: "teacherName", label: "매니저 이름" },
+      { key: "teacherEmail", label: "매니저 이메일" },
+      { key: "teacherPhone", label: "매니저 전화번호" },
+      // { key: "address", label: "주소" },
+      { key: "endAt", label: "종료일" },
+    ];
+
+    for (const field of requiredFields) {
+      const value = school[field.key];
+      if (!value || String(value).trim() === "") {
+        toast.error(`${field.label}을(를) 입력해주세요.`);
+        return;
+      }
+    }
+
+    // 유효성 추가 체크
+    if (!isValidLoginId(school.loginId)) {
+      toast.error("아이디는 영문+숫자만 가능합니다.");
+      return;
+    }
+
+    if (!isValidPassword(school.loginPw)) {
+      toast.error(
+        "비밀번호는 숫자+특수문자를 포함해 8자 이상 12자 이하로 설정해주세요.",
+      );
+      return;
+    }
+
+    if (!isValidTeacherName(school.teacherName)) {
+      toast.error(
+        "매니저 이름은 영문/한글+숫자 조합, 2자 이상 10자 이하로 입력해주세요.",
+      );
+      return;
+    }
+
+    if (!isValidEmail(school.teacherEmail)) {
+      toast.error("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
+
+    const onlyNums = school.teacherPhone.replace(/\D/g, "");
+    if (onlyNums.length !== 11) {
+      toast.error("전화번호는 11자리 숫자로 입력해주세요.");
+      return;
+    }
+
     console.log(school);
 
     const res = await addSchool(school);
-
     if (res.code === "SUCCESS") {
       toast.success(res.message);
       onSuccess();
@@ -90,28 +150,21 @@ export default function SchoolAddForm(props: IProps) {
           <SearchAutocomplete
             onChange={(value) => {
               if (value) {
-                const [schoolName, address] = value.name.split("-");
+                const [schoolName, address] = value.name.split("(");
 
                 setSchool({
                   ...school,
                   schoolCode: value.code,
                   officeCode: value.officeCode,
                   schoolName: schoolName,
-                  address: address,
+                  schoolAnniversary: value.schoolAnniversary,
+                  address: address.replace(")", ""),
                 });
               }
             }}
           />
         </InputWrap>
 
-        {/* <InputWrap>
-          <SchoolAutoComplete
-            options={options}
-            onChange={(id) => {
-              setSelectedSchoolId(id);
-            }}
-          />
-        </InputWrap> */}
         <InputWrap>
           <Label>아이디</Label>
           <Input
@@ -129,7 +182,7 @@ export default function SchoolAddForm(props: IProps) {
             onChange={(e) => {
               setSchool({ ...school, loginPw: e.target.value });
             }}
-            type="text"
+            type="password"
           />
         </InputWrap>
         <InputWrap>
@@ -147,7 +200,10 @@ export default function SchoolAddForm(props: IProps) {
           <Input
             value={school.teacherEmail}
             onChange={(e) => {
-              setSchool({ ...school, teacherEmail: e.target.value });
+              const value = e.target.value;
+              setSchool({ ...school, teacherEmail: value });
+
+              // setEmailValid(isValidEmail(value) || value === "");
             }}
             type="text"
           />
@@ -157,7 +213,8 @@ export default function SchoolAddForm(props: IProps) {
           <Input
             value={school.teacherPhone}
             onChange={(e) => {
-              setSchool({ ...school, teacherPhone: e.target.value });
+              const formatted = formatPhoneNumber(e.target.value);
+              setSchool({ ...school, teacherPhone: formatted });
             }}
             type="text"
           />

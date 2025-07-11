@@ -57,6 +57,8 @@ async function refresh(req: NextRequest) {
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  if (pathname === "/alive") return NextResponse.next();
+
   // 공개 경로는 그냥 통과
   if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();

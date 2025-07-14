@@ -1,5 +1,7 @@
 import React from "react";
 
+import VideoContainer from "@/app/(main)/video/VideoContainer";
+
 export default function page() {
-  return <div>영상관리</div>;
+  return <VideoContainer />;
 }

@@ -69,6 +69,7 @@ model School {
   officeCode   String            @map("office_code") @db.VarChar(3)
   schoolCode   String            @map("school_code") @db.VarChar(10)
   address      String            @db.VarChar(255)
+  board        Board[]
   contents     Contents[]
   schedules    Schedules[]
   student      Student[]
@@ -89,6 +90,20 @@ model Student {
   school        School               @relation(fields: [schoolId], references: [schoolId], onDelete: Cascade, onUpdate: NoAction, map: "Student_ibfk_1")
 
   @@index([schoolId], map: "fk_student_school")
+}
+
+model Board {
+  id        Int         @id @default(autoincrement())
+  content   String      @db.Text
+  schoolId  Int         @map("school_id")
+  comment   String?     @db.Text
+  createdAt DateTime?   @default(now()) @db.DateTime(0)
+  updatedAt DateTime?   @db.DateTime(0)
+  deletedAt DateTime?   @db.DateTime(0)
+  status    BoardStatus @default(UNANSWERED)
+  school    School      @relation(fields: [schoolId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Board_ibfk_1")
+
+  @@index([schoolId], map: "school_id")
 }
 
 enum BrushedBrushedStatus {
@@ -122,4 +137,12 @@ enum SchoolSchoolLevel {
   high
 
   @@map("School_school_level")
+}
+
+enum BoardStatus {
+  UNANSWERED
+  ANSWERED
+  DELETED
+
+  @@map("Board_status")
 }

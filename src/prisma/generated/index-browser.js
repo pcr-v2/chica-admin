@@ -186,6 +186,17 @@ exports.Prisma.StudentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.BoardScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  schoolId: 'schoolId',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  status: 'status'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -236,6 +247,11 @@ exports.Prisma.StudentOrderByRelevanceFieldEnum = {
   studentClass: 'studentClass',
   studentName: 'studentName'
 };
+
+exports.Prisma.BoardOrderByRelevanceFieldEnum = {
+  content: 'content',
+  comment: 'comment'
+};
 exports.BrushedBrushedStatus = exports.$Enums.BrushedBrushedStatus = {
   No: 'No',
   Ok: 'Ok',
@@ -261,13 +277,20 @@ exports.StudentStudentGender = exports.$Enums.StudentStudentGender = {
   female: 'female'
 };
 
+exports.BoardStatus = exports.$Enums.BoardStatus = {
+  UNANSWERED: 'UNANSWERED',
+  ANSWERED: 'ANSWERED',
+  DELETED: 'DELETED'
+};
+
 exports.Prisma.ModelName = {
   Brushed: 'Brushed',
   Contents: 'Contents',
   Holiday: 'Holiday',
   Schedules: 'Schedules',
   School: 'School',
-  Student: 'Student'
+  Student: 'Student',
+  Board: 'Board'
 };
 
 /**

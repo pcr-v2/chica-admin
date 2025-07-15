@@ -7613,34 +7613,34 @@ export namespace Prisma {
 
   export type BoardAvgAggregateOutputType = {
     id: number | null
-    schoolId: number | null
   }
 
   export type BoardSumAggregateOutputType = {
     id: number | null
-    schoolId: number | null
   }
 
   export type BoardMinAggregateOutputType = {
     id: number | null
     content: string | null
-    schoolId: number | null
+    schoolId: string | null
     comment: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
     status: $Enums.BoardStatus | null
+    title: string | null
   }
 
   export type BoardMaxAggregateOutputType = {
     id: number | null
     content: string | null
-    schoolId: number | null
+    schoolId: string | null
     comment: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
     status: $Enums.BoardStatus | null
+    title: string | null
   }
 
   export type BoardCountAggregateOutputType = {
@@ -7652,18 +7652,17 @@ export namespace Prisma {
     updatedAt: number
     deletedAt: number
     status: number
+    title: number
     _all: number
   }
 
 
   export type BoardAvgAggregateInputType = {
     id?: true
-    schoolId?: true
   }
 
   export type BoardSumAggregateInputType = {
     id?: true
-    schoolId?: true
   }
 
   export type BoardMinAggregateInputType = {
@@ -7675,6 +7674,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     status?: true
+    title?: true
   }
 
   export type BoardMaxAggregateInputType = {
@@ -7686,6 +7686,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     status?: true
+    title?: true
   }
 
   export type BoardCountAggregateInputType = {
@@ -7697,6 +7698,7 @@ export namespace Prisma {
     updatedAt?: true
     deletedAt?: true
     status?: true
+    title?: true
     _all?: true
   }
 
@@ -7789,12 +7791,13 @@ export namespace Prisma {
   export type BoardGroupByOutputType = {
     id: number
     content: string
-    schoolId: number
+    schoolId: string
     comment: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
     status: $Enums.BoardStatus
+    title: string
     _count: BoardCountAggregateOutputType | null
     _avg: BoardAvgAggregateOutputType | null
     _sum: BoardSumAggregateOutputType | null
@@ -7825,6 +7828,7 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     status?: boolean
+    title?: boolean
     school?: boolean | SchoolDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["board"]>
 
@@ -7839,9 +7843,10 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     status?: boolean
+    title?: boolean
   }
 
-  export type BoardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "schoolId" | "comment" | "createdAt" | "updatedAt" | "deletedAt" | "status", ExtArgs["result"]["board"]>
+  export type BoardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "schoolId" | "comment" | "createdAt" | "updatedAt" | "deletedAt" | "status" | "title", ExtArgs["result"]["board"]>
   export type BoardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     school?: boolean | SchoolDefaultArgs<ExtArgs>
   }
@@ -7854,12 +7859,13 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       content: string
-      schoolId: number
+      schoolId: string
       comment: string | null
       createdAt: Date | null
       updatedAt: Date | null
       deletedAt: Date | null
       status: $Enums.BoardStatus
+      title: string
     }, ExtArgs["result"]["board"]>
     composites: {}
   }
@@ -8232,12 +8238,13 @@ export namespace Prisma {
   interface BoardFieldRefs {
     readonly id: FieldRef<"Board", 'Int'>
     readonly content: FieldRef<"Board", 'String'>
-    readonly schoolId: FieldRef<"Board", 'Int'>
+    readonly schoolId: FieldRef<"Board", 'String'>
     readonly comment: FieldRef<"Board", 'String'>
     readonly createdAt: FieldRef<"Board", 'DateTime'>
     readonly updatedAt: FieldRef<"Board", 'DateTime'>
     readonly deletedAt: FieldRef<"Board", 'DateTime'>
     readonly status: FieldRef<"Board", 'BoardStatus'>
+    readonly title: FieldRef<"Board", 'String'>
   }
     
 
@@ -8705,7 +8712,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
-    status: 'status'
+    status: 'status',
+    title: 'title'
   };
 
   export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]
@@ -8788,7 +8796,9 @@ export namespace Prisma {
 
   export const BoardOrderByRelevanceFieldEnum: {
     content: 'content',
-    comment: 'comment'
+    schoolId: 'schoolId',
+    comment: 'comment',
+    title: 'title'
   };
 
   export type BoardOrderByRelevanceFieldEnum = (typeof BoardOrderByRelevanceFieldEnum)[keyof typeof BoardOrderByRelevanceFieldEnum]
@@ -9181,7 +9191,7 @@ export namespace Prisma {
     contents?: ContentsListRelationFilter
     schedules?: SchedulesListRelationFilter
     student?: StudentListRelationFilter
-  }, "schoolId" | "id">
+  }, "schoolId" | "id" | "schoolId">
 
   export type SchoolOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9325,12 +9335,13 @@ export namespace Prisma {
     NOT?: BoardWhereInput | BoardWhereInput[]
     id?: IntFilter<"Board"> | number
     content?: StringFilter<"Board"> | string
-    schoolId?: IntFilter<"Board"> | number
+    schoolId?: StringFilter<"Board"> | string
     comment?: StringNullableFilter<"Board"> | string | null
     createdAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     deletedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     status?: EnumBoardStatusFilter<"Board"> | $Enums.BoardStatus
+    title?: StringFilter<"Board"> | string
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
 
@@ -9343,6 +9354,7 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    title?: SortOrder
     school?: SchoolOrderByWithRelationInput
     _relevance?: BoardOrderByRelevanceInput
   }
@@ -9353,12 +9365,13 @@ export namespace Prisma {
     OR?: BoardWhereInput[]
     NOT?: BoardWhereInput | BoardWhereInput[]
     content?: StringFilter<"Board"> | string
-    schoolId?: IntFilter<"Board"> | number
+    schoolId?: StringFilter<"Board"> | string
     comment?: StringNullableFilter<"Board"> | string | null
     createdAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     deletedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     status?: EnumBoardStatusFilter<"Board"> | $Enums.BoardStatus
+    title?: StringFilter<"Board"> | string
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }, "id">
 
@@ -9371,6 +9384,7 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    title?: SortOrder
     _count?: BoardCountOrderByAggregateInput
     _avg?: BoardAvgOrderByAggregateInput
     _max?: BoardMaxOrderByAggregateInput
@@ -9384,12 +9398,13 @@ export namespace Prisma {
     NOT?: BoardScalarWhereWithAggregatesInput | BoardScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Board"> | number
     content?: StringWithAggregatesFilter<"Board"> | string
-    schoolId?: IntWithAggregatesFilter<"Board"> | number
+    schoolId?: StringWithAggregatesFilter<"Board"> | string
     comment?: StringNullableWithAggregatesFilter<"Board"> | string | null
     createdAt?: DateTimeNullableWithAggregatesFilter<"Board"> | Date | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Board"> | Date | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Board"> | Date | string | null
     status?: EnumBoardStatusWithAggregatesFilter<"Board"> | $Enums.BoardStatus
+    title?: StringWithAggregatesFilter<"Board"> | string
   }
 
   export type BrushedCreateInput = {
@@ -9861,18 +9876,20 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
     school: SchoolCreateNestedOneWithoutBoardInput
   }
 
   export type BoardUncheckedCreateInput = {
     id?: number
     content: string
-    schoolId: number
+    schoolId: string
     comment?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
   }
 
   export type BoardUpdateInput = {
@@ -9882,29 +9899,32 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
     school?: SchoolUpdateOneRequiredWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
-    schoolId?: IntFieldUpdateOperationsInput | number
+    schoolId?: StringFieldUpdateOperationsInput | string
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type BoardCreateManyInput = {
     id?: number
     content: string
-    schoolId: number
+    schoolId: string
     comment?: string | null
     createdAt?: Date | string | null
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
   }
 
   export type BoardUpdateManyMutationInput = {
@@ -9914,17 +9934,19 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type BoardUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
-    schoolId?: IntFieldUpdateOperationsInput | number
+    schoolId?: StringFieldUpdateOperationsInput | string
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -10512,11 +10534,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     status?: SortOrder
+    title?: SortOrder
   }
 
   export type BoardAvgOrderByAggregateInput = {
     id?: SortOrder
-    schoolId?: SortOrder
   }
 
   export type BoardMaxOrderByAggregateInput = {
@@ -10528,6 +10550,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     status?: SortOrder
+    title?: SortOrder
   }
 
   export type BoardMinOrderByAggregateInput = {
@@ -10539,11 +10562,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     status?: SortOrder
+    title?: SortOrder
   }
 
   export type BoardSumOrderByAggregateInput = {
     id?: SortOrder
-    schoolId?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11457,6 +11480,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
   }
 
   export type BoardUncheckedCreateWithoutSchoolInput = {
@@ -11467,6 +11491,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
   }
 
   export type BoardCreateOrConnectWithoutSchoolInput = {
@@ -11587,12 +11612,13 @@ export namespace Prisma {
     NOT?: BoardScalarWhereInput | BoardScalarWhereInput[]
     id?: IntFilter<"Board"> | number
     content?: StringFilter<"Board"> | string
-    schoolId?: IntFilter<"Board"> | number
+    schoolId?: StringFilter<"Board"> | string
     comment?: StringNullableFilter<"Board"> | string | null
     createdAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     updatedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     deletedAt?: DateTimeNullableFilter<"Board"> | Date | string | null
     status?: EnumBoardStatusFilter<"Board"> | $Enums.BoardStatus
+    title?: StringFilter<"Board"> | string
   }
 
   export type ContentsUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -11960,6 +11986,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     status?: $Enums.BoardStatus
+    title: string
   }
 
   export type ContentsCreateManySchoolInput = {
@@ -11997,6 +12024,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type BoardUncheckedUpdateWithoutSchoolInput = {
@@ -12007,6 +12035,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type BoardUncheckedUpdateManyWithoutSchoolInput = {
@@ -12017,6 +12046,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumBoardStatusFieldUpdateOperationsInput | $Enums.BoardStatus
+    title?: StringFieldUpdateOperationsInput | string
   }
 
   export type ContentsUpdateWithoutSchoolInput = {

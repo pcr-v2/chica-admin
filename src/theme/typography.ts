@@ -27,7 +27,7 @@ const responsiveFontSizes = ({ md, lH }: { md: number; lH: number }) => {
 
 const typography = {
   // fontFamily: notoSans,
-  fontFamily: "NanumSquareRound, Noto Sans, sans-serif",
+  fontFamily: "SpoqaHanSansNeo, sans-serif",
   htmlFontSize: 16,
   fontSize: 16,
   fontWeightRegular: 400,

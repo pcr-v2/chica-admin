@@ -85,6 +85,8 @@ export default async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
+    console.log(error);
+
     if (error instanceof JWTExpired && refreshToken != null) {
       return refresh(req);
     }

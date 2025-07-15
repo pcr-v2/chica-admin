@@ -3,7 +3,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-import { addStudentSchema } from "@/app/actions/student/addStudentSchema";
+import { addStudentSchema } from "@/app/actions/student/studentSchema";
 import { mysqlPrisma } from "@/libs/prisma";
 
 export type AddStudentRequest = z.infer<typeof addStudentSchema>;

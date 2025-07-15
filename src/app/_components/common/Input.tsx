@@ -13,11 +13,12 @@ import { useState } from "react";
 
 type IProps = TextFieldProps & {
   value: string;
+  showCancel?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function Input(props: IProps) {
-  const { type = "text", value, onChange } = props;
+  const { type = "text", value, onChange, showCancel = false } = props;
 
   const [showPassword, setShowPassword] = useState(type !== "password");
 
@@ -41,7 +42,7 @@ export default function Input(props: IProps) {
           disableUnderline: true,
           endAdornment: value.length > 0 && (
             <InputAdornment position="end">
-              {type !== "password" && (
+              {showCancel && (
                 <Cancel
                   onClick={() => onChange(createSyntheticEvent("", props.id!))}
                 />
@@ -65,7 +66,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   "& input.MuiInputBase-input": {
     fontSize: 16,
     padding: "12px",
-    fontFamily: "spoqa",
   },
   "& .MuiFilledInput-root": {
     borderRadius: 4,

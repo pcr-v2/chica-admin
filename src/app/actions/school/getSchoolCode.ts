@@ -1,4 +1,3 @@
-// app/actions/school/getSchoolCode.ts
 "use server";
 
 // getSchoolCode.ts

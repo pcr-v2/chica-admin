@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { getSchoolSchema } from "@/app/actions/school/getSchoolSchema";
+import { getSchoolSchema } from "@/app/actions/school/schoolSchema";
 import { mysqlPrisma } from "@/libs/prisma";
 import customDayjs from "@/utils/customDayjs";
 

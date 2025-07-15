@@ -7,7 +7,6 @@ const MuiButton: Components<Theme> = {
         borderRadius: "32px",
         textTransform: "none",
         fontWeight: 800,
-        fontFamily: "NanumSquareRound",
         boxShadow: "none",
         "&:hover": {
           boxShadow: "none",

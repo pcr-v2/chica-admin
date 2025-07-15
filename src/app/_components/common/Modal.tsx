@@ -1,6 +1,7 @@
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, styled } from "@mui/material";
-import { ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ReactNode, useEffect } from "react";
 
 interface IProps {
   open: boolean;
@@ -11,17 +12,44 @@ interface IProps {
 export default function Modal(props: IProps) {
   const { children, onClose, open } = props;
 
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
   return (
-    <Background sx={{ display: open ? "flex" : "none" }}>
-      <Content>
-        {children}
-        <CloseIcon onClick={onClose} />
-      </Content>
-    </Background>
+    <AnimatePresence>
+      {open && (
+        <Background
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <Content
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+          >
+            {children}
+            <CloseIcon onClick={onClose} />
+          </Content>
+        </Background>
+      )}
+    </AnimatePresence>
   );
 }
 
-const Background = styled(Box)(() => {
+const Background = styled(motion.div)(() => {
   return {
     inset: 0,
     width: "100%",
@@ -33,7 +61,7 @@ const Background = styled(Box)(() => {
   };
 });
 
-const Content = styled(Box)(() => {
+const Content = styled(motion.div)(() => {
   return {
     width: "100%",
     margin: "auto",

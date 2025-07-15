@@ -46,6 +46,7 @@ const VideoContainer: FC = () => {
 
     setActiveId(null);
   }, []);
+
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
   }, []);

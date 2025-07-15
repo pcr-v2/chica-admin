@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 
-import { getStudentListSchema } from "@/app/actions/student/getStudentListSchema";
+import { getStudentListSchema } from "@/app/actions/student/studentSchema";
 import { mysqlPrisma } from "@/libs/prisma";
 import { Prisma } from "@/prisma/generated";
 

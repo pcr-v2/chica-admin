@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const getSchoolSchema = z.object({
+  schoolId: z.string({ required_error: "학교 아이디가 없습니다." }),
+});
+
 export const addSchoolSchema = z.object({
   schoolName: z.string({ required_error: "학교 이름을 입력해 주세요." }),
   loginId: z.string({ required_error: "아이디를 입력해 주세요." }),

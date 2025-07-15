@@ -69,7 +69,7 @@ export const MENUS: MenuItem[] = [
   },
   {
     label: "CS관리",
-    path: "/master-cs",
+    path: "/cs/list",
     icon: SupportAgentIcon,
     allowRoles: ["master"],
     children: [],

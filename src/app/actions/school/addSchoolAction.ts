@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-import { addSchoolSchema } from "@/app/actions/school/addSchoolSchema";
+import { addSchoolSchema } from "@/app/actions/school/schoolSchema";
 import { mysqlPrisma } from "@/libs/prisma";
 import customDayjs from "@/utils/customDayjs";
 
@@ -88,6 +88,7 @@ export async function addSchool(request: AddSchoolRequest): Promise<{
     });
 
     revalidatePath("/school/list");
+
     return result;
   } catch (e) {
     console.error(e);

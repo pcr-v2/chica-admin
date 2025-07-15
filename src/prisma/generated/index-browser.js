@@ -194,7 +194,8 @@ exports.Prisma.BoardScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  status: 'status'
+  status: 'status',
+  title: 'title'
 };
 
 exports.Prisma.SortOrder = {
@@ -250,7 +251,9 @@ exports.Prisma.StudentOrderByRelevanceFieldEnum = {
 
 exports.Prisma.BoardOrderByRelevanceFieldEnum = {
   content: 'content',
-  comment: 'comment'
+  schoolId: 'schoolId',
+  comment: 'comment',
+  title: 'title'
 };
 exports.BrushedBrushedStatus = exports.$Enums.BrushedBrushedStatus = {
   No: 'No',

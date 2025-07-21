@@ -4,7 +4,7 @@ import { Box, Chip, styled } from "@mui/material";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-import WriteCs, { TCs } from "@/app/(main)/cs/list/WriteCs";
+import WriteCs, { TCs } from "@/app/(main)/cs/components/WriteCs";
 import Badge from "@/app/_components/common/Badge";
 import Modal from "@/app/_components/common/Modal";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
@@ -16,7 +16,7 @@ interface IProps {
   csList: GetCsListResponse;
 }
 
-export default function CsListContainer(props: IProps) {
+export default function CsContainer(props: IProps) {
   const { me, csList } = props;
 
   const [open, setOpen] = useState(false);

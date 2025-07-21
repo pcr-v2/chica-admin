@@ -69,7 +69,7 @@ export const MENUS: MenuItem[] = [
   },
   {
     label: "CS관리",
-    path: "/cs/list",
+    path: "/cs",
     icon: SupportAgentIcon,
     allowRoles: ["master"],
     children: [],
@@ -119,7 +119,7 @@ export const MENUS: MenuItem[] = [
   },
   {
     label: "고객센터",
-    path: "/cs/list",
+    path: "/cs",
     icon: SupportAgentIcon,
     allowRoles: ["teacher"],
     children: [],

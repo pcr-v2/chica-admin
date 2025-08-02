@@ -79,7 +79,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     padding: "10px 12px",
   },
   "& .MuiFilledInput-root": {
-    borderRadius: 4,
+    borderRadius: 8,
     overflow: "hidden",
     border: "1px solid",
     borderColor: theme.palette.mode === "light" ? "#d9d9d9" : "#747D8A",

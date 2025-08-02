@@ -56,17 +56,17 @@ const CustomDatePicker = styled(DatePicker)(() => {
       padding: 0,
     },
     "& .MuiPickersInputBase-root": {
-      fontSize: 16,
-      padding: "12px",
+      fontSize: 14,
+      padding: "10px 12px",
       backgroundColor: "#fff",
       "&:hover fieldset": {
-        borderColor: "rgba(0,0,0,0.3)",
+        borderColor: "#d9d9d9",
       },
       "& fieldset": {
-        borderColor: "rgba(0,0,0,0.3)",
+        borderColor: "#d9d9d9",
       },
       "&.Mui-focused fieldset": {
-        border: "1px solid #3196ff",
+        border: "1px solid #32C794",
       },
     },
     "& .MuiInputAdornment-root": {

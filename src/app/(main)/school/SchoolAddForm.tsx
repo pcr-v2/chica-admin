@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, Radio, RadioGroup, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  Radio,
+  RadioGroup,
+  RadioProps,
+  styled,
+} from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -159,25 +166,6 @@ export default function SchoolAddForm(props: IProps) {
               }}
             />
           </Section>
-
-          <Box
-            sx={{
-              gap: "8px",
-              width: "20%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <TitleSpan>학교 상태</TitleSpan>
-            <Toggle
-              label={""}
-              checked={school.schoolStatus}
-              onChange={(e) => {
-                setSchool({ ...school, schoolStatus: e });
-              }}
-            />
-          </Box>
         </Box>
         <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
           <Section>
@@ -205,40 +193,42 @@ export default function SchoolAddForm(props: IProps) {
         </Box>
         <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
           <Section>
-            <TitleSpan>담당자</TitleSpan>
+            <TitleSpan>담당자 이름</TitleSpan>
             <Input
               value={school.teacherName}
               onChange={(e) => {
                 setSchool({ ...school, teacherName: e.target.value });
               }}
               type="text"
-              placeholder="담당자"
+              placeholder="담당자 이름"
             />
           </Section>
-          <Section>
-            <TitleSpan>비밀번호</TitleSpan>
-            <Input
-              value={school.teacherEmail}
-              onChange={(e) => {
-                const value = e.target.value;
-                setSchool({ ...school, teacherEmail: value });
 
-                // setEmailValid(isValidEmail(value) || value === "");
+          <Section>
+            <TitleSpan>담당자 전화번호</TitleSpan>
+            <Input
+              value={school.teacherPhone}
+              onChange={(e) => {
+                const formatted = formatPhoneNumber(e.target.value);
+                setSchool({ ...school, teacherPhone: formatted });
               }}
               type="text"
-              placeholder="이메일"
+              placeholder="010-1234-5678"
             />
           </Section>
         </Box>
         <Section>
-          <TitleSpan>담당자 전화번호</TitleSpan>
+          <TitleSpan>이메일</TitleSpan>
           <Input
-            value={school.teacherPhone}
+            value={school.teacherEmail}
             onChange={(e) => {
-              const formatted = formatPhoneNumber(e.target.value);
-              setSchool({ ...school, teacherPhone: formatted });
+              const value = e.target.value;
+              setSchool({ ...school, teacherEmail: value });
+
+              // setEmailValid(isValidEmail(value) || value === "");
             }}
             type="text"
+            placeholder="이메일"
           />
         </Section>
 
@@ -267,7 +257,93 @@ export default function SchoolAddForm(props: IProps) {
             />
           </Box>
         </Section>
+        <Section>
+          <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
+            <Section>
+              <TitleSpan>학교 레벨</TitleSpan>
+              <RadioWrap
+                defaultValue="elementary"
+                value={school.schoolLevel}
+                onChange={(e) =>
+                  setSchool({
+                    ...school,
+                    schoolLevel: e.target.value as
+                      | "elementary"
+                      | "middle"
+                      | "high",
+                  })
+                }
+              >
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: "16px" }}
+                >
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  >
+                    <CustomRadio value="elementary" />초
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  >
+                    <CustomRadio value="middle" />중
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  >
+                    <CustomRadio value="high" />고
+                  </Box>
+                </Box>
+              </RadioWrap>
+            </Section>
+
+            <Box
+              sx={{
+                gap: "8px",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                // justifyContent: "space-between",
+              }}
+            >
+              <TitleSpan>학교 상태</TitleSpan>
+              <Toggle
+                label={""}
+                checked={school.schoolStatus}
+                onChange={(e) => {
+                  setSchool({ ...school, schoolStatus: e });
+                }}
+              />
+            </Box>
+          </Box>
+        </Section>
       </ContentWrap>
+
+      <BtnWrap>
+        <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={() => {}}>
+          취소
+        </Btn>
+        <Btn
+          onClick={() => {
+            // if (title.length > 0 && content.length > 0) {
+            //   handleRegist({ title, content });
+            //   return;
+            // }
+          }}
+          sx={{
+            backgroundColor:
+              // title.length > 0 && content.length > 0 ? "#32C794" :
+              // "#f1f2f3",
+              "#32C794",
+            color:
+              //  title.length > 0 && content.length > 0 ? "#fff" :
+              // "#D5D7DB",
+              "#fff",
+          }}
+        >
+          저장
+        </Btn>
+      </BtnWrap>
+
       {/* <FormCard>
         <InputWrap>
           <Label>학교 이름</Label>
@@ -438,33 +514,80 @@ const TitleSpan = styled("span")(() => {
   };
 });
 
-const FormCard = styled(Box)(() => {
+const BtnWrap = styled(Box)(() => {
   return {
-    width: "100%",
+    gap: "16px",
     display: "flex",
-    padding: "24px",
-    borderRadius: "12px",
-    flexDirection: "column",
+    justifyContent: "end",
+    padding: "16px 12px 16px 24px",
   };
 });
 
-const InputWrap = styled(Box)(() => {
+const Btn = styled(Box)(() => {
   return {
-    gap: "4px",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
+    fontSize: 16,
+    width: "88px",
+    fontWeight: 500,
+    cursor: "pointer",
+    color: "#464B53",
+    padding: "8px 12px",
+    textAlign: "center",
+    borderRadius: "8px",
   };
 });
 
-const Label = styled("span")(() => {
-  return {
-    fontSize: 12,
-    color: "#616161",
-    lineHeight: "140%",
-    letterSpacing: "-0.12px",
-  };
-});
+const CustomRadio = styled((props: RadioProps) => (
+  <Radio disableRipple {...props} />
+))(({ theme }) => ({
+  padding: 0,
+  margin: 0,
+  width: 24,
+  height: 24,
+  position: "relative",
+  "&:hover": {
+    backgroundColor: "transparent",
+  },
+  "& .MuiSvgIcon-root": {
+    display: "none", // 기본 원 숨기기
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+
+  // ✅ 디폴트 상태
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    border: "1px solid #d9d9d9", // 디폴트 보더 컬러
+    backgroundColor: "#fff",
+    boxSizing: "border-box",
+    transition: "all 0.2s linear",
+  },
+
+  // ✅ 체크된 상태
+  "&.Mui-checked": {
+    "&::before": {
+      backgroundColor: "#32C794",
+      borderColor: "#13BA81",
+    },
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      width: 20,
+      height: 20,
+      backgroundImage: 'url("/images/icons/radio-icon.svg")',
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "contain",
+      transform: "translate(-50%, -50%)",
+    },
+  },
+}));
 
 const RadioWrap = styled(RadioGroup)(() => {
   return {

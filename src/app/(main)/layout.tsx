@@ -26,7 +26,6 @@ export default function Mainlayout(props: IProps) {
 
       <RightPannel>
         <Header me={me!} />
-
         <ContentPage>{children}</ContentPage>
       </RightPannel>
     </Wrapper>
@@ -44,22 +43,23 @@ const Wrapper = styled(Box)(() => {
 
 const RightPannel = styled(Box)(() => {
   return {
+    gap: "14px",
     width: "100%",
     display: "flex",
-    height: "100dvh",
-    overflowY: "auto",
-    overflowX: "hidden",
+    overflow: "hidden",
+    padding: "0px 32px",
     flexDirection: "column",
-    padding: "0px 32px 0px",
     backgroundColor: "#F7F8FA",
+    height: "calc(100dvh)",
   };
 });
 
 const ContentPage = styled(Box)(() => {
   return {
     flex: 1,
+    overflowY: "auto",
+    overflowX: "hidden",
     width: "100%",
-    paddingTop: "92px",
     paddingBottom: "40px",
   };
 });

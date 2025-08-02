@@ -53,8 +53,8 @@ export default function Table() {
 const Wrapper = styled(Box)(() => {
   return {
     width: "100%",
+    height: "100%",
     overflowY: "auto",
-    // minHeight: "420px",
     maxHeight: "320px",
     borderRadius: "10px",
     backgroundColor: "#fff",

@@ -62,6 +62,7 @@ export const data = {
 // ✅ 차트 옵션
 export const options = {
   responsive: true,
+  maintainAspectRatio: false, // 이게 있어야 부모 높이에 따라 반응함
   plugins: {
     legend: {
       display: false,
@@ -93,5 +94,9 @@ export const options = {
 };
 
 export function BarChart() {
-  return <Bar options={options} data={data} />;
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <Bar options={options} data={data} />
+    </div>
+  );
 }

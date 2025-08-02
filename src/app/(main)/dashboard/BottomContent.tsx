@@ -33,9 +33,12 @@ const Wrapper = styled(Box)(() => {
 const TableWrap = styled(Box)(() => {
   return {
     gap: "24px",
-    width: "100%",
     display: "flex",
     flexDirection: "column",
+
+    maxWidth: "786.5px",
+    width: "calc(50% - 20px)",
+    aspectRatio: "786.5 / 374",
   };
 });
 

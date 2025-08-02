@@ -20,7 +20,8 @@ interface IProps {
 export default function Header(props: IProps) {
   const { me } = props;
   const nowPath = usePathname();
-  // console.log("me", me);
+  console.log("me", me);
+
   const handleLogout = async () => {
     toast.success("로그아웃 되었습니다.");
     await signOut();
@@ -55,10 +56,8 @@ export default function Header(props: IProps) {
 
 const Wrapper = styled(Box)(() => {
   return {
-    top: 0,
     width: "100%",
     display: "flex",
-    position: "fixed",
     padding: "28px 0px 12px",
     backgroundColor: "#F7F8FA",
     justifyContent: "space-between",

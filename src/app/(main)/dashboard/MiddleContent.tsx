@@ -22,12 +22,15 @@ export default function MiddleContent(props: IProps) {
 const Wrapper = styled(Box)(() => {
   return {
     gap: "40px",
-    width: "100%",
     display: "flex",
     padding: "24px",
     borderRadius: "24px",
     flexDirection: "column",
     backgroundColor: "#fff",
+
+    maxWidth: "786.5px",
+    width: "calc(50% - 20px)",
+    aspectRatio: "786.5 / 487",
   };
 });
 

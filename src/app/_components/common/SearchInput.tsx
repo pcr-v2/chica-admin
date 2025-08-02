@@ -11,23 +11,15 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import SearchIcon from "@/public/images/icons/cs-search-icon.svg";
+
 type IProps = TextFieldProps & {
   value: string;
-  showCancel?: boolean;
-  maxLength?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function Input(props: IProps) {
-  const {
-    type = "text",
-    value,
-    onChange,
-    showCancel = false,
-    maxLength,
-  } = props;
-
-  const [showPassword, setShowPassword] = useState(type !== "password");
+export default function SearchInput(props: IProps) {
+  const { type = "text", value, onChange } = props;
 
   function createSyntheticEvent(value: string, id: string) {
     return {
@@ -39,31 +31,17 @@ export default function Input(props: IProps) {
     <StyledTextField
       {...props}
       variant="filled"
-      type={type === "password" && !showPassword ? "password" : "text"}
+      type="text"
       value={value}
       onChange={onChange}
       autoComplete="off"
       slotProps={{
         inputLabel: { shrink: true },
         input: {
-          inputProps: {
-            maxLength: maxLength,
-          },
           disableUnderline: true,
-          endAdornment: value.length > 0 && (
+          startAdornment: (
             <InputAdornment position="end">
-              {showCancel && (
-                <Cancel
-                  onClick={() => onChange(createSyntheticEvent("", props.id!))}
-                />
-              )}
-
-              {type === "password" &&
-                (!showPassword ? (
-                  <Eye onClick={() => setShowPassword(true)} />
-                ) : (
-                  <OffEye onClick={() => setShowPassword(false)} />
-                ))}
+              <SearchIconSt />
             </InputAdornment>
           ),
         },
@@ -75,34 +53,37 @@ export default function Input(props: IProps) {
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& input.MuiInputBase-input": {
     fontSize: 14,
+    fontWeight: 400,
     color: "#464B53",
-    padding: "10px 12px",
+    padding: "10px 12px 10px 6px",
   },
   "& .MuiFilledInput-root": {
-    borderRadius: 4,
+    padding: 0,
+    borderRadius: 8,
     overflow: "hidden",
-    border: "1px solid",
+    border: "0px solid",
+    backgroundColor: "#F7F8FA",
     borderColor: theme.palette.mode === "light" ? "#d9d9d9" : "#747D8A",
-    backgroundColor: "#fff",
     transition: theme.transitions.create([
       "box-shadow",
       "border-color",
       "background-color",
     ]),
-    "&:hover": { backgroundColor: "#fff" },
+    "&:hover": { backgroundColor: "#F7F8FA" },
 
     "&.Mui-focused": {
-      borderWidth: "1px",
-      backgroundColor: "#fff",
+      borderWidth: "0px",
       borderColor: "#32C794",
+      backgroundColor: "#fff",
+      outline: "1px solid #32C794",
     },
   },
 }));
 
-const Cancel = styled(CancelIcon)(() => ({
-  width: "24px",
-  height: "24px",
-  cursor: "pointer",
+const SearchIconSt = styled(SearchIcon)<{ isopen: string }>(({ isopen }) => ({
+  width: "18px",
+  height: "18px",
+  path: {
+    fill: "#747D8A",
+  },
 }));
-const Eye = styled(VisibilityIcon)(() => ({ cursor: "pointer" }));
-const OffEye = styled(VisibilityOffIcon)(() => ({ cursor: "pointer" }));

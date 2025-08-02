@@ -39,6 +39,7 @@ export default function Table() {
             <TableRowItem>
               <Icon>{el.gender === "male" ? <Male /> : <Female />}</Icon>
             </TableRowItem>
+
             <TableRowItem>{el.grade}학년</TableRowItem>
             <TableRowItem>{el.class}반</TableRowItem>
             <TableRowItem>{el.number}번</TableRowItem>

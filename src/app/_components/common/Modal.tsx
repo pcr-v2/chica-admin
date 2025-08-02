@@ -1,16 +1,18 @@
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Box, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useEffect } from "react";
 
+import CloseIcon from "@/public/images/icons/close-green.png";
+
 interface IProps {
   open: boolean;
+  maxWidth?: number;
   children: ReactNode;
   onClose: () => void;
 }
 
 export default function Modal(props: IProps) {
-  const { children, onClose, open } = props;
+  const { children, onClose, open, maxWidth = 500 } = props;
 
   useEffect(() => {
     if (!open) return;
@@ -35,13 +37,16 @@ export default function Modal(props: IProps) {
           transition={{ duration: 0.25 }}
         >
           <Content
+            style={{
+              maxWidth,
+            }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.25 }}
           >
             {children}
-            <CloseIcon onClick={onClose} />
+            <CloseIconSt src={CloseIcon.src} onClick={onClose} />
           </Content>
         </Background>
       )}
@@ -57,7 +62,7 @@ const Background = styled(motion.div)(() => {
     display: "flex",
     minHeight: "100dvh",
     position: "absolute",
-    background: "rgba(0, 0, 0, 0.40)",
+    background: "rgba(0, 0, 0, 0.60)",
   };
 });
 
@@ -65,11 +70,9 @@ const Content = styled(motion.div)(() => {
   return {
     width: "100%",
     margin: "auto",
-    maxWidth: "500px",
+    display: "flex",
     borderRadius: "12px",
     position: "relative",
-    display: "flex",
-    padding: "24px",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -78,13 +81,18 @@ const Content = styled(motion.div)(() => {
   };
 });
 
-const CloseIcon = styled(CloseRoundedIcon)(() => {
+const CloseIconSt = styled("img")(() => {
   return {
-    top: 24,
-    right: 24,
-    width: "24px",
-    height: "24px",
+    top: 17,
+    right: 12,
+    width: "28px",
+    height: "28px",
     cursor: "pointer",
     position: "absolute",
+    path: {
+      justifyContent: "center",
+      display: "flex",
+      alignItems: "center",
+    },
   };
 });

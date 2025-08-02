@@ -29,6 +29,21 @@ export async function getCsList(request: GetCsListRequest) {
           not: "DELETED",
         },
       },
+      select: {
+        comment: true,
+        content: true,
+        title: true,
+        id: true,
+        createdAt: true,
+        status: true,
+        schoolId: true,
+        updatedAt: true,
+        school: {
+          select: {
+            schoolName: true,
+          },
+        },
+      },
     });
 
     if (masterResult == null) {
@@ -50,6 +65,21 @@ export async function getCsList(request: GetCsListRequest) {
       schoolId: schoolId,
       status: {
         not: "DELETED",
+      },
+    },
+    select: {
+      comment: true,
+      content: true,
+      title: true,
+      id: true,
+      createdAt: true,
+      status: true,
+      schoolId: true,
+      updatedAt: true,
+      school: {
+        select: {
+          schoolName: true,
+        },
       },
     },
     orderBy: {

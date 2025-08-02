@@ -2,6 +2,7 @@ import { FunctionComponent, ReactNode, SVGProps } from "react";
 
 import SideContents from "@/public/images/icons/sidebar/side-contents.svg";
 import SideCs from "@/public/images/icons/sidebar/side-cs.svg";
+import SideHome from "@/public/images/icons/sidebar/side-home.svg";
 import SideSchedule from "@/public/images/icons/sidebar/side-schedule.svg";
 import SideSchool from "@/public/images/icons/sidebar/side-school.svg";
 import SideStudentAdd from "@/public/images/icons/sidebar/side-student-add.svg";
@@ -43,8 +44,15 @@ export const MENUS: MenuItem[] = [
   //   ],
   // },
   {
+    label: "대시보드",
+    path: "/dashboard",
+    icon: SideHome,
+    allowRoles: ["master"],
+    children: [],
+  },
+  {
     label: "학교 관리",
-    path: "/school/list",
+    path: "/school",
     icon: SideSchool,
     allowRoles: ["master"],
     children: [],
@@ -70,7 +78,7 @@ export const MENUS: MenuItem[] = [
     ],
   },
   {
-    label: "CS관리",
+    label: "고객센터",
     path: "/cs",
     icon: SideCs,
     allowRoles: ["master"],
@@ -88,7 +96,7 @@ export const MENUS: MenuItem[] = [
   {
     label: "대시보드",
     path: "/dashboard",
-    icon: SideSchool,
+    icon: SideHome,
     allowRoles: ["teacher"],
     children: [],
   },

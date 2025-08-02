@@ -2,30 +2,48 @@
 
 import { Chip, styled } from "@mui/material";
 
+type StatusType = "ANSWERED" | "UNANSWERED" | "DELETED";
+
 interface IProps {
   label: string;
-  color:
-    | "default"
-    | "error"
-    | "info"
-    | "primary"
-    | "success"
-    | "secondary"
-    | "warning";
+  status: StatusType;
 }
 
 export default function Badge(props: IProps) {
-  const { label, color } = props;
+  const { label, status } = props;
 
-  return <ChipST color={color} label={label} />;
+  return <ChipST label={label} status={status} />;
 }
 
-const ChipST = styled(Chip)(() => {
+const ChipST = styled(Chip, {
+  shouldForwardProp: (prop) => prop !== "status",
+})<{ status: StatusType }>(({ status }) => {
+  let backgroundColor = "#999";
+  let textColor = "#fff";
+
+  switch (status) {
+    case "ANSWERED":
+      backgroundColor = "#EBFAFF"; // 초록
+      textColor = "#48A4FF";
+      break;
+    case "UNANSWERED":
+      backgroundColor = "#F1F2F3"; // 주황
+      textColor = "#ACB3BC";
+      break;
+    case "DELETED":
+      backgroundColor = "#F44336"; // 빨강
+      textColor = "#fff";
+      break;
+  }
+
   return {
-    fontSize: 14,
-    padding: "8px",
-    color: "#fff",
-    fontWeight: 500,
-    letterSpacing: "-0.12px",
+    fontSize: 16,
+    width: "80px",
+    fontWeight: 600,
+    backgroundColor,
+    color: textColor,
+    "& .MuiChip-label": {
+      padding: "4px 12px",
+    },
   };
 });

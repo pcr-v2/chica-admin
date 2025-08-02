@@ -2,7 +2,7 @@
 
 import { Box, styled } from "@mui/material";
 
-import Table from "@/app/(main)/dashboard/_components/Table";
+import Table from "@/app/(main)/dashboard/components/Table";
 
 export default function BottomContent() {
   return (

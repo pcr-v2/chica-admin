@@ -5,8 +5,8 @@ import { Box, styled } from "@mui/material";
 import BottomContent from "@/app/(main)/dashboard/BottomContent";
 import MiddleContent from "@/app/(main)/dashboard/MiddleContent";
 import TopContent from "@/app/(main)/dashboard/TopContent";
-import { BarChart } from "@/app/(main)/dashboard/_components/BarChart";
-import ChartLine from "@/app/(main)/dashboard/_components/LineChart";
+import { BarChart } from "@/app/(main)/dashboard/components/BarChart";
+import ChartLine from "@/app/(main)/dashboard/components/LineChart";
 
 export default function DashboardContainer() {
   return (

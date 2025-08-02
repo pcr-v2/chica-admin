@@ -1,27 +1,14 @@
 "use client";
 
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  styled,
-} from "@mui/material";
+import { Box, Button, Radio, RadioGroup, styled } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import SchoolAutoComplete from "@/app/_components/common/AutoComplete";
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
 import SearchAutocomplete from "@/app/_components/common/SearchAutoComplete";
 import { Toggle } from "@/app/_components/common/Toggle";
 import { addSchool } from "@/app/actions/school/addSchoolAction";
-import {
-  getSchoolCode,
-  SchoolCodeOption,
-} from "@/app/actions/school/getSchoolCode";
 import {
   formatPhoneNumber,
   isValidEmail,
@@ -143,26 +130,149 @@ export default function SchoolAddForm(props: IProps) {
 
   return (
     <Wrapper>
-      <FormCard>
+      <Title>학교등록</Title>
+      <ContentWrap>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            gap: "16px",
+            alignItems: "center",
+          }}
+        >
+          <Section>
+            <TitleSpan>학교명</TitleSpan>
+            <SearchAutocomplete
+              onChange={(value) => {
+                if (value) {
+                  const [schoolName, address] = value.name.split("(");
+
+                  setSchool({
+                    ...school,
+                    schoolCode: value.code,
+                    officeCode: value.officeCode,
+                    schoolName: schoolName,
+                    schoolAnniversary: value.schoolAnniversary,
+                    address: address.replace(")", ""),
+                  });
+                }
+              }}
+            />
+          </Section>
+
+          <Box
+            sx={{
+              gap: "8px",
+              width: "20%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <TitleSpan>학교 상태</TitleSpan>
+            <Toggle
+              label={""}
+              checked={school.schoolStatus}
+              onChange={(e) => {
+                setSchool({ ...school, schoolStatus: e });
+              }}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
+          <Section>
+            <TitleSpan>아이디</TitleSpan>
+            <Input
+              value={school.loginId}
+              onChange={(e) => {
+                setSchool({ ...school, loginId: e.target.value });
+              }}
+              placeholder="아이디"
+              type="text"
+            />
+          </Section>
+          <Section>
+            <TitleSpan>비밀번호</TitleSpan>
+            <Input
+              value={school.loginPw}
+              onChange={(e) => {
+                setSchool({ ...school, loginPw: e.target.value });
+              }}
+              placeholder="비밀번호"
+              type="password"
+            />
+          </Section>
+        </Box>
+        <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
+          <Section>
+            <TitleSpan>담당자</TitleSpan>
+            <Input
+              value={school.teacherName}
+              onChange={(e) => {
+                setSchool({ ...school, teacherName: e.target.value });
+              }}
+              type="text"
+              placeholder="담당자"
+            />
+          </Section>
+          <Section>
+            <TitleSpan>비밀번호</TitleSpan>
+            <Input
+              value={school.teacherEmail}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSchool({ ...school, teacherEmail: value });
+
+                // setEmailValid(isValidEmail(value) || value === "");
+              }}
+              type="text"
+              placeholder="이메일"
+            />
+          </Section>
+        </Box>
+        <Section>
+          <TitleSpan>담당자 전화번호</TitleSpan>
+          <Input
+            value={school.teacherPhone}
+            onChange={(e) => {
+              const formatted = formatPhoneNumber(e.target.value);
+              setSchool({ ...school, teacherPhone: formatted });
+            }}
+            type="text"
+          />
+        </Section>
+
+        <Section>
+          <TitleSpan>사용기한</TitleSpan>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              gap: "16px",
+              alignItems: "center",
+            }}
+          >
+            <FormDatePicker
+              value={school.endAt}
+              onChange={(e) => {
+                setSchool({ ...school, endAt: e.target.value as string });
+              }}
+            />
+            <span>~</span>
+            <FormDatePicker
+              value={school.endAt}
+              onChange={(e) => {
+                setSchool({ ...school, endAt: e.target.value as string });
+              }}
+            />
+          </Box>
+        </Section>
+      </ContentWrap>
+      {/* <FormCard>
         <InputWrap>
           <Label>학교 이름</Label>
 
-          <SearchAutocomplete
-            onChange={(value) => {
-              if (value) {
-                const [schoolName, address] = value.name.split("(");
-
-                setSchool({
-                  ...school,
-                  schoolCode: value.code,
-                  officeCode: value.officeCode,
-                  schoolName: schoolName,
-                  schoolAnniversary: value.schoolAnniversary,
-                  address: address.replace(")", ""),
-                });
-              }
-            }}
-          />
+          
         </InputWrap>
 
         <InputWrap>
@@ -275,7 +385,7 @@ export default function SchoolAddForm(props: IProps) {
         onClick={handleAdd}
       >
         등록
-      </Button>
+      </Button> */}
     </Wrapper>
   );
 }
@@ -285,6 +395,46 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "flex",
     flexDirection: "column",
+  };
+});
+
+const Title = styled(Box)(() => {
+  return {
+    width: "100%",
+    fontSize: 20,
+    fontWeight: 600,
+    color: "#13BA81",
+    textAlign: "start",
+    backgroundColor: "#EDFCF7",
+    padding: "16px 12px 16px 24px",
+    borderRadius: "12px 12px 0px 0px",
+  };
+});
+
+const ContentWrap = styled(Box)(() => {
+  return {
+    gap: "24px",
+    width: "100%",
+    display: "flex",
+    padding: "28px",
+    flexDirection: "column",
+  };
+});
+
+const Section = styled(Box)(() => {
+  return {
+    gap: "8px",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  };
+});
+
+const TitleSpan = styled("span")(() => {
+  return {
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#747D8A",
   };
 });
 

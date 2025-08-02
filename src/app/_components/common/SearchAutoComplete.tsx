@@ -51,7 +51,8 @@ export default function SearchAutocomplete(props: IProps) {
   return (
     <StyledAutocomplete
       disablePortal
-      popupIcon={<ArrowDropDownIcon />}
+      popupIcon={null}
+      clearIcon={null}
       options={options}
       getOptionLabel={(option) => {
         if (typeof option === "string") return option;
@@ -63,6 +64,38 @@ export default function SearchAutocomplete(props: IProps) {
       onInputChange={(e, newInput) => setInputValue(newInput)}
       onChange={(event, newValue) => handleChange(newValue)}
       noOptionsText="검색결과가 없습니다."
+      slotProps={{
+        popper: {
+          modifiers: [
+            {
+              name: "offset",
+              options: {
+                offset: [0, 28], // [x축, y축] — 아래로 8px 띄우기
+              },
+            },
+          ],
+        },
+        listbox: {
+          sx: {
+            padding: "12px",
+            textAlign: "start",
+            backgroundColor: "#fff",
+            "& li": {
+              padding: "4px 8px",
+              borderRadius: "8px",
+              justifyContent: "start",
+              "&:hover": {
+                color: "#13BA81 !important",
+                backgroundColor: "rgba(110, 219, 181, 0.12) !important",
+              },
+              "&.Mui-focused": {
+                color: "#13BA81 !important",
+                backgroundColor: "rgba(110, 219, 181, 0.12) !important",
+              },
+            },
+          },
+        },
+      }}
       renderOption={(props, option) => {
         const [before, ...afterParts] = option.name.split("(");
         const after = afterParts.length ? "(" + afterParts.join("(") : "";
@@ -73,15 +106,33 @@ export default function SearchAutocomplete(props: IProps) {
             {...props}
             key={`${option.code}+${option.name}`}
             sx={{
+              gap: "4px",
+              width: "100%",
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "start",
             }}
           >
-            {before}
+            <Box
+              key={`${option.code}+${option.name}-${option.schoolAnniversary}`}
+              sx={{
+                whiteSpace: "nowrap",
+                flexShrink: 0, // ✅ 줄이지 마
+              }}
+            >
+              {before}
+            </Box>
             {after && (
               <Box
                 key={`${option.code}+${option.name}+${option.officeCode}`}
-                sx={{ fontSize: 12, color: "#616161" }}
+                sx={{
+                  fontSize: 12,
+                  color: "#747D8A",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  flexGrow: 1, // ✅ 남는 공간 다 차지
+                  minWidth: 0, // ✅ 필수: ellipsis 작동 조건
+                }}
               >
                 {after}
               </Box>
@@ -90,7 +141,7 @@ export default function SearchAutocomplete(props: IProps) {
         );
       }}
       renderInput={(params) => (
-        <TextField
+        <StyledTextField
           {...params}
           placeholder="학교명을 입력하세요"
           variant="outlined"
@@ -101,21 +152,61 @@ export default function SearchAutocomplete(props: IProps) {
 }
 
 // StyledAutocomplete 스타일링
-const StyledAutocomplete = styled(AutocompleteSchool)<{}>(({ theme }) => ({
+const StyledAutocomplete = styled(AutocompleteSchool)(({ theme }) => ({
   width: "100%",
-  "& .MuiInputBase-root": {
-    width: "100%",
-    minHeight: 52,
-    borderRadius: "4px !important",
+  height: "61px !important",
+  borderRadius: "8px !important",
+  "& .MuiAutocomplete-root": {
+    borderRadius: "8px !important",
+  },
+
+  "& .MuiOutlinedInput-root": {
+    height: "41px !important",
+    minHeight: "41px !important",
+    borderRadius: "8px !important",
+    padding: "0 !important",
+
+    "& .MuiAutocomplete-input": {
+      height: "71px !important",
+      padding: "30px 12px 10px", // 글씨 수직 정렬 맞춤
+    },
+
     "& fieldset": {
-      borderColor: `${theme.palette.grey[400]} !important`,
+      minHeight: "61px !important",
+      borderRadius: "8px !important",
+      borderColor: `#d9d9d9 !important`,
     },
+
     "&:hover fieldset": {
-      borderColor: `${theme.palette.grey[400]} !important`,
+      borderRadius: "8px !important",
+      borderColor: `#d9d9d9 !important`,
     },
+
     "&.Mui-focused fieldset": {
-      borderColor: `#3196ff !important`,
+      borderRadius: "8px !important",
+      borderColor: `#32C794 !important`,
     },
+  },
+
+  "&.MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root": {
+    borderRadius: "8px !important",
+  },
+
+  "&.MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root": {
+    paddingRight: "36px !important", // 아이콘 공간 확보
+    borderRadius: "8px !important",
+  },
+
+  // popup icon 자체 크기 줄이고 싶을 때
+  "& .MuiAutocomplete-popupIndicator": {
+    // padding: "0 6px",
+    // fontSize: "20px",
+  },
+
+  // clear icon 스타일 조정
+  "& .MuiAutocomplete-clearIndicator": {
+    // padding: "0 6px",
+    // fontSize: "20px",
   },
 }));
 
@@ -130,3 +221,32 @@ function useDebounce<T>(value: T, delay: number): T {
 
   return debouncedValue;
 }
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& input.MuiInputBase-input": {
+    fontSize: 14,
+    color: "#464B53",
+    padding: "10px 12px",
+  },
+  minHeight: "61px !important",
+
+  "& .MuiFilledInput-root": {
+    borderRadius: 8,
+    overflow: "hidden",
+    border: "1px solid",
+    borderColor: theme.palette.mode === "light" ? "#d9d9d9" : "#747D8A",
+    backgroundColor: "#fff",
+    transition: theme.transitions.create([
+      "box-shadow",
+      "border-color",
+      "background-color",
+    ]),
+    "&:hover": { backgroundColor: "#fff" },
+
+    "&.Mui-focused": {
+      borderWidth: "1px",
+      backgroundColor: "#fff",
+      borderColor: "#32C794",
+    },
+  },
+}));

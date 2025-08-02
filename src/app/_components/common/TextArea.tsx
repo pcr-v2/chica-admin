@@ -14,6 +14,7 @@ export default function TextArea(props: IProps) {
   return (
     <TextAreaST
       value={value}
+      maxLength={400}
       onChange={onChange}
       id="custom-textarea"
       name="custom-textarea"
@@ -24,19 +25,19 @@ export default function TextArea(props: IProps) {
 
 const TextAreaST = styled("textarea")(() => {
   return {
-    fontSize: 16,
+    fontSize: 14,
     width: "100%",
     resize: "none",
     padding: "12px",
     fontWeight: 400,
-    minHeight: "300px",
-    maxHeight: "300px",
+    minHeight: "150px",
+    maxHeight: "150px",
     color: "#424242",
     overflowY: "auto",
-    border: "1px solid rgba(0,0,0,0.3)",
+    border: "1px solid #d9d9d9",
     borderRadius: "4px",
     "&:focus": {
-      border: "1px solid #3196ff",
+      border: "1px solid #32C794",
       outline: "none",
     },
   };

@@ -1,16 +1,17 @@
 "use server";
 
+import dayjs from "dayjs";
+
 import { mysqlPrisma } from "@/libs/prisma";
-import customDayjs from "@/utils/customDayjs";
 
 export type GetSchoolListResponse = Awaited<ReturnType<typeof getSchoolList>>;
 
 export async function getSchoolList() {
   const result = await mysqlPrisma.school.findMany({
     where: {
-      schoolStatus: { not: false },
-      startAt: { lte: customDayjs().toISOString() },
-      endAt: { gte: customDayjs().toISOString() },
+      // schoolStatus: { not: false },
+      // startAt: { lte: dayjs().toDate() },
+      // endAt: { gte: dayjs().toDate() },
     },
     orderBy: {
       createdAt: "asc",

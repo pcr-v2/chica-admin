@@ -1,11 +1,9 @@
-import React from "react";
-
-import SchoolList from "@/app/(main)/school/list/SchoolList";
+import SchoolContainer from "@/app/(main)/school/SchoolContainer";
 import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 
 export const dynamic = "force-dynamic";
 export default async function Page() {
   const res = await getSchoolList();
 
-  return <SchoolList schoolList={res} />;
+  return <SchoolContainer schoolList={res} />;
 }

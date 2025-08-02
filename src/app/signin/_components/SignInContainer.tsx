@@ -37,11 +37,7 @@ export default function SignInContainer() {
     if (result.code === "SUCCESS") {
       // 로그인 성공 시 페이지 이동 등
       toast.success("로그인 되었습니다.");
-      if (result.type === "master") {
-        router.push("/school/list");
-      } else {
-        router.push("/dashboard");
-      }
+      router.push("/dashboard");
     } else {
       toast.error(result.message);
     }

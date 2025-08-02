@@ -6,7 +6,8 @@ import { useState } from "react";
 
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMenusByRole, MenuItem, UserRole } from "@/config/menu";
-import BlueLogo from "@/public/images/logo/blue-logo.png";
+import SideArrow from "@/public/images/icons/sidebar/side-arrow.svg";
+import SideLogo from "@/public/images/logo/side-logo.svg";
 
 interface IProps {
   me: GetMeResponse;
@@ -30,11 +31,16 @@ export default function SideBar(props: IProps) {
 
   return (
     <Wrapper>
-      <Logo src={BlueLogo.src} alt="logo" />
+      <LogoWrap>
+        <Logo />
 
+        <LogoText>양치킹</LogoText>
+      </LogoWrap>
       <Menus>
         {getMenusByRole(me?.data?.type as UserRole).map((parentMenu) => {
           const Icon = parentMenu.icon;
+
+          const isActive = nowPath === parentMenu.path;
 
           const isOpen =
             openMenu === parentMenu.path ||
@@ -47,17 +53,21 @@ export default function SideBar(props: IProps) {
             <Box key={parentMenu.label} sx={{ width: "100%" }}>
               <SingleMenuWrap onClick={() => toggleMenu(parentMenu)}>
                 <IconLabel>
-                  <Icon sx={{ color: "#374151" }} />
-                  <ParentMenu
-                  // isactive={(
-                  //   openMenu &&
-                  //   parentMenu?.children &&
-                  //   parentMenu?.children?.length <= 0
-                  // ).toString()}
-                  >
+                  {Icon && (
+                    <StyledIcon isactive={isActive.toString()}>
+                      <Icon
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                        }}
+                      />
+                    </StyledIcon>
+                  )}
+                  <ParentMenu isactive={isActive.toString()}>
                     {parentMenu.label}
                   </ParentMenu>
                 </IconLabel>
+
                 {parentMenu.children && parentMenu.children.length > 0 && (
                   <Arrow
                     animate={{ rotate: isOpen ? 0 : 180 }}
@@ -84,15 +94,31 @@ export default function SideBar(props: IProps) {
                           flexDirection: "column",
                         }}
                       >
-                        {parentMenu.children.map((child) => (
-                          <ChildItem
-                            key={child.path}
-                            isactive={(nowPath === child.path).toString()}
-                            onClick={() => router.push(child.path)}
-                          >
-                            {child.label}
-                          </ChildItem>
-                        ))}
+                        {parentMenu.children.map((child) => {
+                          const Icon = child.icon;
+
+                          const isActive = nowPath === child.path;
+
+                          return (
+                            <ChildItem
+                              key={child.path}
+                              isactive={(nowPath === child.path).toString()}
+                              onClick={() => router.push(child.path)}
+                            >
+                              {Icon && (
+                                <StyledIcon isactive={isActive.toString()}>
+                                  <Icon
+                                    style={{
+                                      width: "28px",
+                                      height: "28px",
+                                    }}
+                                  />
+                                </StyledIcon>
+                              )}
+                              {child.label}
+                            </ChildItem>
+                          );
+                        })}
                       </Box>
                     </ChildMenuWrap>
                   )}
@@ -106,24 +132,40 @@ export default function SideBar(props: IProps) {
 }
 
 const Wrapper = styled(Box)(() => ({
-  gap: "48px",
+  gap: "28px",
   width: "100%",
   display: "flex",
-  padding: "24px",
-  maxWidth: "240px",
-  alignItems: "start",
-  minHeight: "100dvh",
+  maxWidth: "243px",
+  // alignItems: "start",
+  // minHeight: "100dvh",
+  padding: "28px 24px",
   flexDirection: "column",
-  justifyContent: "start",
-  borderRight: "1px solid #d9d9d9",
+  // justifyContent: "start",
 }));
 
-const Logo = styled("img")(() => ({
-  width: "180px",
+const LogoWrap = styled(Box)(() => {
+  return {
+    gap: "12px",
+    display: "flex",
+    alignItems: "center",
+  };
+});
+
+const Logo = styled(SideLogo)(() => ({
+  width: "28px",
+  height: "28px",
 }));
+
+const LogoText = styled("span")(() => {
+  return {
+    fontSize: 24,
+    fontWeight: 500,
+    color: "#32C794",
+  };
+});
 
 const Menus = styled(Box)(() => ({
-  gap: "16px",
+  gap: "12px",
   width: "100%",
   display: "flex",
   alignItems: "center",
@@ -135,35 +177,33 @@ const SingleMenuWrap = styled(Box)(() => ({
   width: "100%",
   display: "flex",
   cursor: "pointer",
-  padding: "8px 12px",
   borderRadius: "8px",
   alignItems: "center",
+  padding: "10px 8px 10px 12px",
   justifyContent: "space-between",
   "&:hover": {
-    backgroundColor: "#f2f8ff",
+    backgroundColor: "#EDFCF7",
   },
 }));
 
-const ParentMenu = styled(Box)(() => {
+const ParentMenu = styled(Box)<{ isactive: string }>(({ isactive }) => {
   return {
-    fontSize: 16,
-    fontWeight: 500,
-    color: "#374151",
-    lineHeight: "140%",
-    letterSpacing: "-0.24px",
+    fontSize: 18,
+    fontWeight: 400,
+    color: isactive === "true" ? "#13BA81" : "#747D8A",
   };
 });
 
 const IconLabel = styled(Box)(() => ({
-  gap: "12px",
+  gap: "6px",
   display: "flex",
   alignItems: "center",
   justifyContent: "start",
 }));
 
-const Arrow = styled(motion.create(KeyboardArrowDownRoundedIcon))(() => ({
-  width: "24px",
-  height: "24px",
+const Arrow = styled(motion.create(SideArrow))(() => ({
+  width: "20px",
+  height: "20px",
   cursor: "pointer",
 }));
 
@@ -171,18 +211,31 @@ const ChildMenuWrap = styled(motion.create("div"))(() => ({
   gap: "8px",
   display: "flex",
   overflow: "hidden",
-  paddingLeft: "40px",
   flexDirection: "column",
 }));
 
 const ChildItem = styled(Box)<{ isactive: string }>(({ isactive }) => ({
-  fontWeight: isactive === "true" ? 500 : 400,
-  fontSize: "14px",
+  gap: "4px",
+  fontSize: 18,
+  fontWeight: 400,
+  display: "flex",
   cursor: "pointer",
-  padding: "8px 12px",
-  borderRadius: "12px",
-  color: isactive === "true" ? "#3963d5" : "#374151",
+  borderRadius: "8px",
+  alignItems: "center",
+  padding: "10px 8px 10px 44px",
+  color: isactive === "true" ? "#13BA81" : "#747D8A",
   "&:hover": {
-    backgroundColor: "#f2f8ff",
+    backgroundColor: "#EDFCF7",
   },
+}));
+
+const StyledIcon = styled("svg", {
+  shouldForwardProp: (prop) => prop !== "isactive",
+})<{ isactive: string }>(({ isactive }) => ({
+  width: "32px",
+  height: "32px",
+  path: {
+    fill: isactive === "true" ? "#13BA81" : "#747D8A",
+  },
+  transition: "0.2s ease",
 }));

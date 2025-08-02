@@ -42,6 +42,8 @@ export default function StudentAddForm(props: IProps) {
   const [schoolId, setSchoolId] = useState<string | null>();
   const [bulkRegist, setBulkRegist] = useState(false);
 
+  const [student, setStudent] = useState<any[]>([]);
+
   useEffect(() => {
     if (!me.data) {
       return;
@@ -54,33 +56,8 @@ export default function StudentAddForm(props: IProps) {
 
   const handleAdd = async () => {
     const res = await addStudent({
-      schoolId: "1ad52d51-798d-41d0-b09e-3517238fc7b7",
-      students: [
-        {
-          studentName: "추가11중학교 학생1",
-          studentClass: "11반",
-          studentGrade: 3,
-          studentNumber: 1,
-          studentGender: "male",
-          studentStatus: true,
-        },
-        {
-          studentName: "추가11중학교 학생2",
-          studentClass: "11반",
-          studentGrade: 3,
-          studentNumber: 2,
-          studentGender: "female",
-          studentStatus: true,
-        },
-        {
-          studentName: "추가11중학교 학생3",
-          studentClass: "11반",
-          studentGrade: 3,
-          studentNumber: 3,
-          studentGender: "male",
-          studentStatus: true,
-        },
-      ],
+      schoolId: "21a01ae2-2f60-4f7c-bcae-9fa4fc287564",
+      students: student,
     });
 
     if (res.code === "SUCCESS") {
@@ -90,6 +67,8 @@ export default function StudentAddForm(props: IProps) {
       toast.error(res.message);
     }
   };
+
+  console.log("student", student);
 
   return (
     <>
@@ -133,18 +112,19 @@ export default function StudentAddForm(props: IProps) {
             onClick={async () => {
               const res = await uploadCsv(csvStudentsBlukRegistSchema);
 
-              console.log("res", res);
-
               const updatedRes = res.map((el) => ({
                 ...el,
                 // studentStatus:
                 //   el.studentStatus === "Y" || el.studentStatus === "y",
-                student_gender: el.studentGender === "남" ? "male" : "female",
+                studentGender: el.studentGender === "남" ? "male" : "female",
+                studentGrade: Number(el.studentGrade),
+                studentNumber: Number(el.studentNumber),
+                studentStatus: true,
               }));
 
-              console.log(updatedRes);
+              console.log("updatedRes", updatedRes);
 
-              // setStudent([...student, ...updatedRes]);
+              setStudent([...student, ...updatedRes]);
             }}
           >
             업로드 테스트
@@ -157,6 +137,22 @@ export default function StudentAddForm(props: IProps) {
           onClose={() => setBulkRegist(false)}
         />
       </TopContents>
+
+      <Button
+        onClick={handleAdd}
+        sx={{ width: "100%", height: "60px" }}
+        variant="contained"
+      >
+        등록버튼
+      </Button>
+
+      <div
+        style={{ width: "100%", border: "1px solid purple", marginTop: "40px" }}
+      >
+        {student.map((el, idx) => {
+          return <div key={idx}>{el.studentName}</div>;
+        })}
+      </div>
 
       {schoolId != null && (
         <StudentCard

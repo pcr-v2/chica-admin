@@ -1,13 +1,14 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 import { signIn } from "@/app/actions/auth/SignInAction";
 import SignInForm from "@/app/signin/_components/SignInForm";
-import BtbLogo from "@/public/images/logo/blue-logo.png";
+import AdminLogo from "@/public/images/logo/admin-logo.png";
 
 type THandleEvent =
   | ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -15,6 +16,8 @@ type THandleEvent =
 
 export default function SignInContainer() {
   const router = useRouter();
+
+  const currentYear = dayjs().get("year");
 
   const [loginValue, setLoginValue] = useState({ id: "", pw: "" });
 
@@ -46,7 +49,7 @@ export default function SignInContainer() {
 
   return (
     <Wrapper>
-      <Logo src={BtbLogo.src} alt="logo" />
+      <Logo src={AdminLogo.src} alt="logo" />
 
       <SignInForm
         loginValue={loginValue}
@@ -58,15 +61,10 @@ export default function SignInContainer() {
 
       <BottomContent>
         <Btn onClick={handleSignIn}>로그인</Btn>
-
-        {/* <AccountWrap>
-          <SpanST onClick={() => {}}>계정찾기</SpanST>
-          <Divider />
-          <SpanST onClick={() => router.push("/signup")}>회원가입</SpanST>
-        </AccountWrap> */}
       </BottomContent>
+
       <CopyRightSpan>
-        © 2025 Build the Bridge. All rights reserved.
+        © {currentYear} BUILD THE BRIDGE. All rights reserved.
       </CopyRightSpan>
     </Wrapper>
   );
@@ -85,7 +83,7 @@ const Wrapper = styled(Box)(() => {
 
 const Logo = styled("img")(() => {
   return {
-    width: "360px",
+    width: "180px",
     marginBottom: "40px",
   };
 });
@@ -103,47 +101,18 @@ const BottomContent = styled(Box)(() => {
   };
 });
 
-const AccountWrap = styled(Box)(() => {
-  return {
-    gap: "24px",
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-});
-
 const Btn = styled(Box)(() => {
   return {
-    fontSize: 16,
+    fontSize: 20,
     width: "100%",
     color: "#fff",
-    fontWeight: 500,
+    fontWeight: 600,
     maxWidth: "360px",
     cursor: "pointer",
-    lineHeight: "160%",
     textAlign: "center",
     borderRadius: "8px",
-    padding: "12px 24px",
-    letterSpacing: "-0.32px",
-    backgroundColor: "#3196ff",
-  };
-});
-
-const SpanST = styled("span")(() => {
-  return {
-    fontSize: 14,
-    fontWeight: 400,
-    cursor: "pointer",
-    color: "#9e9e9e",
-  };
-});
-
-const Divider = styled(Box)(() => {
-  return {
-    width: "0.5px",
-    height: "14px",
-    backgroundColor: "#9e9e9e",
+    padding: "14px 20px",
+    backgroundColor: "#32C794",
   };
 });
 

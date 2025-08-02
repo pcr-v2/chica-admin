@@ -1,9 +1,11 @@
-import FaceIcon from "@mui/icons-material/Face";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import PeopleIcon from "@mui/icons-material/People";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import SchoolIcon from "@mui/icons-material/School";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import { FunctionComponent, ReactNode, SVGProps } from "react";
+
+import SideContents from "@/public/images/icons/sidebar/side-contents.svg";
+import SideCs from "@/public/images/icons/sidebar/side-cs.svg";
+import SideSchedule from "@/public/images/icons/sidebar/side-schedule.svg";
+import SideSchool from "@/public/images/icons/sidebar/side-school.svg";
+import SideStudentAdd from "@/public/images/icons/sidebar/side-student-add.svg";
+import SideStudent from "@/public/images/icons/sidebar/side-student.svg";
 
 // ✅ 1. 사용자 타입 정의
 export type UserRole = "master" | "teacher";
@@ -12,7 +14,7 @@ export type UserRole = "master" | "teacher";
 export interface MenuItem {
   label: string;
   path: string;
-  icon?: any; // 실제 아이콘 컴포넌트 import 후 사용
+  icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
   allowRoles: UserRole[];
   children?: MenuItem[];
 }
@@ -43,26 +45,26 @@ export const MENUS: MenuItem[] = [
   {
     label: "학교 관리",
     path: "/school/list",
-    icon: SchoolIcon,
+    icon: SideSchool,
     allowRoles: ["master"],
     children: [],
   },
   {
     label: "학생 관리",
     path: "/student",
-    icon: FaceIcon,
+    icon: SideStudent,
     allowRoles: ["master"],
     children: [
       {
         label: "학생 리스트",
         path: "/student/list",
-        icon: null,
+        icon: SideStudent,
         allowRoles: ["master"],
       },
       {
         label: "신규학생 등록",
         path: "/student/add",
-        icon: null,
+        icon: SideStudentAdd,
         allowRoles: ["master"],
       },
     ],
@@ -70,14 +72,14 @@ export const MENUS: MenuItem[] = [
   {
     label: "CS관리",
     path: "/cs",
-    icon: SupportAgentIcon,
+    icon: SideCs,
     allowRoles: ["master"],
     children: [],
   },
   {
-    label: "영상 관리",
+    label: "콘텐츠 관리",
     path: "/master-video",
-    icon: OndemandVideoIcon,
+    icon: SideContents,
     allowRoles: ["master"],
     children: [],
   },
@@ -86,41 +88,48 @@ export const MENUS: MenuItem[] = [
   {
     label: "대시보드",
     path: "/dashboard",
-    icon: QueryStatsIcon,
+    icon: SideSchool,
     allowRoles: ["teacher"],
     children: [],
   },
   {
     label: "학생관리",
     path: "/student",
-    icon: FaceIcon,
+    icon: SideStudent,
     allowRoles: ["teacher"],
     children: [
       {
         label: "학생 리스트",
         path: "/student/list",
-        icon: null,
+        icon: SideStudent,
         allowRoles: ["teacher"],
       },
       {
         label: "학생 등록",
         path: "/student/add",
-        icon: null,
+        icon: SideStudentAdd,
         allowRoles: ["teacher"],
       },
     ],
   },
   {
-    label: "영상 관리",
+    label: "일정 관리",
+    path: "/schedule",
+    icon: SideSchedule,
+    allowRoles: ["teacher"],
+    children: [],
+  },
+  {
+    label: "콘텐츠 관리",
     path: "/video",
-    icon: OndemandVideoIcon,
+    icon: SideContents,
     allowRoles: ["teacher"],
     children: [],
   },
   {
     label: "고객센터",
     path: "/cs",
-    icon: SupportAgentIcon,
+    icon: SideCs,
     allowRoles: ["teacher"],
     children: [],
   },
@@ -129,6 +138,31 @@ export const MENUS: MenuItem[] = [
 // ✅ 4. 유저 타입별 메뉴 필터링 함수
 export function getMenusByRole(role: UserRole): MenuItem[] {
   return MENUS.filter((menu) => menu.allowRoles.includes(role));
+}
+
+export function getCurrentMenuItem(
+  pathname: string,
+  role: UserRole,
+): MenuItem | null {
+  const menus = getMenusByRole(role);
+
+  for (const menu of menus) {
+    if (pathname === menu.path || pathname.startsWith(menu.path + "/")) {
+      if (menu.children && menu.children.length > 0) {
+        for (const child of menu.children) {
+          if (
+            pathname === child.path ||
+            pathname.startsWith(child.path + "/")
+          ) {
+            return child;
+          }
+        }
+      }
+      return menu;
+    }
+  }
+
+  return null;
 }
 
 export function getCurrentMenuLabel(

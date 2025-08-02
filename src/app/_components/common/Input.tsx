@@ -64,14 +64,15 @@ export default function Input(props: IProps) {
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& input.MuiInputBase-input": {
-    fontSize: 16,
-    padding: "12px",
+    fontSize: 18,
+    color: "#464B53",
+    padding: "12px 12px",
   },
   "& .MuiFilledInput-root": {
     borderRadius: 4,
     overflow: "hidden",
     border: "1px solid",
-    borderColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.3)" : "#2D3843",
+    borderColor: theme.palette.mode === "light" ? "#d9d9d9" : "#747D8A",
     backgroundColor: "#fff",
     transition: theme.transitions.create([
       "box-shadow",
@@ -83,15 +84,15 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     "&.Mui-focused": {
       borderWidth: "1px",
       backgroundColor: "#fff",
-      borderColor: theme.palette.primary.main,
+      borderColor: "#32C794",
     },
   },
 }));
 
 const Cancel = styled(CancelIcon)(() => ({
-  cursor: "pointer",
   width: "24px",
   height: "24px",
+  cursor: "pointer",
 }));
 const Eye = styled(VisibilityIcon)(() => ({ cursor: "pointer" }));
 const OffEye = styled(VisibilityOffIcon)(() => ({ cursor: "pointer" }));

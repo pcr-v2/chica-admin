@@ -22,13 +22,20 @@ export default function SignInForm(props: IProps) {
 
   return (
     <Wrapper>
-      <Input id="id" type="text" value={id} onChange={onChange} />
+      <Input
+        id="id"
+        type="text"
+        value={id}
+        onChange={onChange}
+        placeholder="아이디"
+      />
       <Input
         id="pw"
         type="password"
         value={pw}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        placeholder="비밀번호"
       />
     </Wrapper>
   );

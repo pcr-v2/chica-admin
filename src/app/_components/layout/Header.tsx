@@ -1,13 +1,17 @@
 "use client";
 
-import LogoutIcon from "@mui/icons-material/Logout";
 import { Box, styled } from "@mui/material";
 import { usePathname } from "next/navigation";
 import toast from "react-hot-toast";
 
 import { signOut } from "@/app/actions/auth/SignOutAction";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { getCurrentMenuLabel, UserRole } from "@/config/menu";
+import {
+  getCurrentMenuItem,
+  getCurrentMenuLabel,
+  UserRole,
+} from "@/config/menu";
+import LogoutIcon from "@/public/images/icons/header/header-logout.svg";
 
 interface IProps {
   me: GetMeResponse;
@@ -24,14 +28,24 @@ export default function Header(props: IProps) {
 
   const lable = getCurrentMenuLabel(nowPath, me?.data?.type as UserRole);
 
+  const currentMenu = getCurrentMenuItem(nowPath, me?.data?.type as UserRole);
+  const Icon = currentMenu?.icon;
+
   return (
     <Wrapper>
-      <PathLabel>{lable}</PathLabel>
+      <PathLabel>
+        {Icon && (
+          <IconWrapper>
+            <Icon />
+          </IconWrapper>
+        )}
+        {lable}
+      </PathLabel>
 
       <UserMenu>
         <UserName>
           {me?.data?.type === "master" && "마스터 "}
-          {me?.data?.name}님
+          {me?.data?.name}-선생님
         </UserName>
         <Logout onClick={handleLogout} />
       </UserMenu>
@@ -41,18 +55,19 @@ export default function Header(props: IProps) {
 
 const Wrapper = styled(Box)(() => {
   return {
+    top: 0,
     width: "100%",
     display: "flex",
-    padding: "12px 24px",
-    backgroundColor: "#fff",
+    position: "fixed",
+    padding: "28px 0px 12px",
+    backgroundColor: "#F7F8FA",
     justifyContent: "space-between",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
   };
 });
 
 const UserMenu = styled(Box)(() => {
   return {
-    gap: "12px",
+    gap: "8px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -61,25 +76,41 @@ const UserMenu = styled(Box)(() => {
 
 const PathLabel = styled("span")(() => {
   return {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 500,
-    lineHeight: "150%",
+    display: "flex",
+    color: "#464B53",
+    alignItems: "center",
     letterSpacing: "-0.18px",
   };
 });
 
 const UserName = styled("span")(() => {
   return {
-    fontSize: 18,
-    lineHeight: "150%",
-    letterSpacing: "-0.18px",
+    fontSize: 22,
+    fontWeight: 600,
+    color: "#747D8A",
   };
 });
 
 const Logout = styled(LogoutIcon)(() => {
   return {
-    width: "24px",
-    height: "24px",
+    width: "28px",
+    height: "28px",
+    path: { fill: "#464B53" },
     cursor: "pointer",
   };
+});
+
+const IconWrapper = styled("span")({
+  marginRight: "12px",
+  alignItems: "center",
+  display: "inline-flex",
+  svg: {
+    width: 32,
+    height: 32,
+  },
+  path: {
+    fill: "#464B53",
+  },
 });

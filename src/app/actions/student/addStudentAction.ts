@@ -10,7 +10,7 @@ export type AddStudentRequest = z.infer<typeof addStudentSchema>;
 
 export async function addStudent(request: AddStudentRequest) {
   const validated = addStudentSchema.safeParse(request);
-
+  console.log("request", request);
   if (!validated.success) {
     return {
       code: "VALIDATION_ERROR" as const,
@@ -26,6 +26,8 @@ export async function addStudent(request: AddStudentRequest) {
       message: "학교 아이디가 존재하지 않습니다.",
     };
   }
+
+  console.log("students", students);
 
   try {
     mysqlPrisma.$transaction(async (trx) => {

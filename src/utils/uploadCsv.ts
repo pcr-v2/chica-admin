@@ -8,12 +8,12 @@ import { z } from "zod";
  */
 const mapHeadersKoreanToEnglish = (header: string) => {
   const headerMap: { [key: string]: string } = {
-    학생이름: "student_name",
-    학년: "student_grade",
-    반: "student_class",
-    번호: "student_number",
-    성별: "student_gender",
-    학생사용여부: "student_status",
+    학생이름: "studentName",
+    학년: "studentGrade",
+    반: "studentClass",
+    번호: "studentNumber",
+    성별: "studentGender",
+    학생사용여부: "studentStatus",
   };
   return headerMap[header] || header;
 };

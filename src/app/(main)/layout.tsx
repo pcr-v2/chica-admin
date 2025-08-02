@@ -47,8 +47,11 @@ const RightPannel = styled(Box)(() => {
     width: "100%",
     display: "flex",
     height: "100dvh",
-    overflow: "hidden",
+    overflowY: "auto",
+    overflowX: "hidden",
     flexDirection: "column",
+    padding: "0px 32px 0px",
+    backgroundColor: "#F7F8FA",
   };
 });
 
@@ -56,10 +59,7 @@ const ContentPage = styled(Box)(() => {
   return {
     flex: 1,
     width: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
-    padding: "32px 24px",
-    // backgroundColor: "#fafafa",
-    // minHeight: "calc(100dvh - 51px)",
+    paddingTop: "92px",
+    paddingBottom: "40px",
   };
 });

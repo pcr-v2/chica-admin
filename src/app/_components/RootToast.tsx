@@ -48,7 +48,7 @@ export function RootToast({
         success: {
           style: {
             color: "#fff",
-            backgroundColor: "#43A047",
+            backgroundColor: "#3196FF",
           },
         },
         error: {

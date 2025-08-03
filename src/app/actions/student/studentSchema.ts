@@ -34,3 +34,8 @@ export const getStudentListSchema = z.object({
 export const getGradeClassSchema = z.object({
   schoolId: z.string({ required_error: "학교 아이디가 없습니다." }),
 });
+
+export const updateStudentStatusSchema = z.object({
+  studentId: z.string({ required_error: "학생 아이디가 없습니다." }),
+  studentStatus: z.boolean({ required_error: "학생 상태가 없습니다." }),
+});

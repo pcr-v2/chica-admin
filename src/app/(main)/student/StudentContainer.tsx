@@ -10,6 +10,7 @@ import MasterSchoolFilter from "@/app/(main)/student/components/MasterSchoolFilt
 import SingleAddForm from "@/app/(main)/student/components/SingleAddForm";
 import StudentClassFilter from "@/app/(main)/student/components/StudentClassFilter";
 import StudentGradeFilter from "@/app/(main)/student/components/StudentGradeFilter";
+import StudentTable from "@/app/(main)/student/components/StudentTable";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
 import SearchInput from "@/app/_components/common/SearchInput";
@@ -175,28 +176,6 @@ export default function StudentContainer(props: IProps) {
     setOpen({ show: false, type: null });
   };
 
-  const handleBulkAdd = async (students: AddStudentRequest["students"]) => {
-    if (selectedSchool == null) {
-      toast.error("학교를 선택해 주세요.");
-      return;
-    }
-
-    const res = await addStudent({
-      schoolId:
-        me.data?.type === "master"
-          ? selectedSchool
-          : (me.data?.schoolId as string),
-      students,
-    });
-
-    if (res.code === "SUCCESS") {
-      toast.success(res.message);
-      // onSuccess();
-    } else {
-      toast.error(res.message);
-    }
-  };
-
   return (
     <Wrapper>
       <CountTab
@@ -259,6 +238,8 @@ export default function StudentContainer(props: IProps) {
             </RegistBtn>
           </Box>
         </SearchWrap>
+
+        <StudentTable list={studentList.result} />
       </ContentWrap>
 
       <Modal

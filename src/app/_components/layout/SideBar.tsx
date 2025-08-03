@@ -51,8 +51,11 @@ export default function SideBar(props: IProps) {
 
           return (
             <Box key={parentMenu.label} sx={{ width: "100%" }}>
-              <SingleMenuWrap onClick={() => toggleMenu(parentMenu)}>
-                <IconLabel>
+              <SingleMenuWrap
+                onClick={() => toggleMenu(parentMenu)}
+                isactive={isActive.toString()}
+              >
+                <IconLabel sx={{}}>
                   {Icon && (
                     <StyledIcon isactive={isActive.toString()}>
                       <Icon
@@ -173,13 +176,14 @@ const Menus = styled(Box)(() => ({
   justifyContent: "start",
 }));
 
-const SingleMenuWrap = styled(Box)(() => ({
+const SingleMenuWrap = styled(Box)<{ isactive: string }>(({ isactive }) => ({
   width: "100%",
   display: "flex",
   cursor: "pointer",
   borderRadius: "8px",
   alignItems: "center",
   padding: "10px 8px 10px 12px",
+  backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
   justifyContent: "space-between",
   "&:hover": {
     backgroundColor: "#EDFCF7",

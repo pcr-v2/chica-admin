@@ -33,6 +33,23 @@ export async function getStudentList(request: GetStudentListRequest) {
 
   const result = await mysqlPrisma.student.findMany({
     where: { AND: where },
+
+    select: {
+      id: true,
+      schoolId: true,
+      studentGrade: true,
+      studentClass: true,
+      studentNumber: true,
+      studentGender: true,
+      studentName: true,
+      studentStatus: true,
+      studentId: true,
+      school: {
+        select: {
+          schoolName: true,
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 

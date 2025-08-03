@@ -29,7 +29,7 @@ export async function getStudentList(request: GetStudentListRequest) {
     });
   }
 
-  where.push({ studentStatus: true });
+  // where.push({ studentStatus: true });
 
   const result = await mysqlPrisma.student.findMany({
     where: { AND: where },

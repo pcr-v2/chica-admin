@@ -10,7 +10,7 @@ import Modal from "@/app/_components/common/Modal";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import { addStudent } from "@/app/actions/student/addStudentAction";
-import { csvStudentsBlukRegistSchema } from "@/app/actions/student/studentSchema";
+import { csvStudentsBulkRegistSchema } from "@/app/actions/student/studentSchema";
 import downloadCsv from "@/utils/downloadCsv";
 import uploadCsv from "@/utils/uploadCsv";
 
@@ -110,7 +110,7 @@ export default function StudentAddForm(props: IProps) {
           <Button
             variant="contained"
             onClick={async () => {
-              const res = await uploadCsv(csvStudentsBlukRegistSchema);
+              const res = await uploadCsv(csvStudentsBulkRegistSchema);
 
               const updatedRes = res.map((el) => ({
                 ...el,

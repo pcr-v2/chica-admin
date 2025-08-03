@@ -8,6 +8,7 @@ import {
   RadioProps,
   styled,
 } from "@mui/material";
+import dayjs from "dayjs";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -42,6 +43,7 @@ type TSchool = {
   teacherName: string;
   teacherPhone: string;
   teacherEmail: string;
+  startAt: string;
   endAt: string;
   schoolStatus: boolean;
   schoolAnniversary: string;
@@ -49,11 +51,12 @@ type TSchool = {
 };
 
 interface IProps {
+  onClose: () => void;
   onSuccess: () => void;
 }
 
 export default function SchoolAddForm(props: IProps) {
-  const { onSuccess } = props;
+  const { onSuccess, onClose } = props;
 
   const [school, setSchool] = useState<TSchool>({
     schoolName: "",
@@ -65,6 +68,7 @@ export default function SchoolAddForm(props: IProps) {
     teacherEmail: "",
     teacherPhone: "",
     address: "",
+    startAt: "",
     endAt: "",
     schoolAnniversary: "",
     schoolStatus: true,
@@ -126,13 +130,31 @@ export default function SchoolAddForm(props: IProps) {
 
     console.log(school);
 
-    const res = await addSchool(school);
-    if (res.code === "SUCCESS") {
-      toast.success(res.message);
-      onSuccess();
-    } else {
-      toast.error(res.message);
-    }
+    // const res = await addSchool(school);
+    // if (res.code === "SUCCESS") {
+    //   toast.success(res.message);
+    //   onSuccess();
+    // } else {
+    //   toast.error(res.message);
+    // }
+  };
+
+  const isFormComplete = () => {
+    const requiredFields: (keyof TSchool)[] = [
+      "schoolName",
+      "loginId",
+      "loginPw",
+      "teacherName",
+      "teacherEmail",
+      "teacherPhone",
+      "endAt",
+    ];
+
+    return requiredFields.every((key) => {
+      const value = school[key];
+      if (typeof value === "boolean") return true;
+      return !!value && String(value).trim().length > 0;
+    });
   };
 
   return (
@@ -239,13 +261,19 @@ export default function SchoolAddForm(props: IProps) {
               width: "100%",
               display: "flex",
               gap: "16px",
+              height: 41,
               alignItems: "center",
             }}
           >
             <FormDatePicker
-              value={school.endAt}
+              value={
+                school.startAt === ""
+                  ? dayjs().format("YYYY-MM-DD")
+                  : school.startAt
+              }
               onChange={(e) => {
-                setSchool({ ...school, endAt: e.target.value as string });
+                console.log("e.target.value", e.target.value);
+                setSchool({ ...school, startAt: e.target.value as string });
               }}
             />
             <span>~</span>
@@ -319,149 +347,20 @@ export default function SchoolAddForm(props: IProps) {
       </ContentWrap>
 
       <BtnWrap>
-        <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={() => {}}>
+        <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={onClose}>
           취소
         </Btn>
         <Btn
-          onClick={() => {
-            // if (title.length > 0 && content.length > 0) {
-            //   handleRegist({ title, content });
-            //   return;
-            // }
-          }}
+          onClick={handleAdd}
           sx={{
-            backgroundColor:
-              // title.length > 0 && content.length > 0 ? "#32C794" :
-              // "#f1f2f3",
-              "#32C794",
-            color:
-              //  title.length > 0 && content.length > 0 ? "#fff" :
-              // "#D5D7DB",
-              "#fff",
+            backgroundColor: isFormComplete() ? "#32C794" : "#f1f2f3",
+            color: isFormComplete() ? "#fff" : "#D5D7DB",
+            pointerEvents: isFormComplete() ? "auto" : "none",
           }}
         >
           저장
         </Btn>
       </BtnWrap>
-
-      {/* <FormCard>
-        <InputWrap>
-          <Label>학교 이름</Label>
-
-          
-        </InputWrap>
-
-        <InputWrap>
-          <Label>아이디</Label>
-          <Input
-            value={school.loginId}
-            onChange={(e) => {
-              setSchool({ ...school, loginId: e.target.value });
-            }}
-            type="text"
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label>비밀번호</Label>
-          <Input
-            value={school.loginPw}
-            onChange={(e) => {
-              setSchool({ ...school, loginPw: e.target.value });
-            }}
-            type="password"
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label>매니저 이름</Label>
-          <Input
-            value={school.teacherName}
-            onChange={(e) => {
-              setSchool({ ...school, teacherName: e.target.value });
-            }}
-            type="text"
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label>매니저 이메일</Label>
-          <Input
-            value={school.teacherEmail}
-            onChange={(e) => {
-              const value = e.target.value;
-              setSchool({ ...school, teacherEmail: value });
-
-              // setEmailValid(isValidEmail(value) || value === "");
-            }}
-            type="text"
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label>매니저 전화번호</Label>
-          <Input
-            value={school.teacherPhone}
-            onChange={(e) => {
-              const formatted = formatPhoneNumber(e.target.value);
-              setSchool({ ...school, teacherPhone: formatted });
-            }}
-            type="text"
-          />
-        </InputWrap>
-
-        <InputWrap>
-          <Label>종료일</Label>
-          <FormDatePicker
-            value={school.endAt}
-            onChange={(e) => {
-              setSchool({ ...school, endAt: e.target.value as string });
-            }}
-          />
-        </InputWrap>
-
-        <Box sx={{ display: "flex", alignItems: "center", gap: "24px" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Label>학교 상태</Label>
-            <Toggle
-              label={""}
-              checked={school.schoolStatus}
-              onChange={(e) => {
-                setSchool({ ...school, schoolStatus: e });
-              }}
-            />
-          </Box>
-          <Box>
-            <Label>학교 레벨</Label>
-            <RadioWrap
-              defaultValue="elementary"
-              value={school.schoolLevel}
-              onChange={(e) =>
-                setSchool({
-                  ...school,
-                  schoolLevel: e.target.value as
-                    | "elementary"
-                    | "middle"
-                    | "high",
-                })
-              }
-            >
-              <Box sx={{ display: "flex" }}>
-                초
-                <Radio value="elementary" />
-                중
-                <Radio value="middle" />
-                고
-                <Radio value="high" />
-              </Box>
-            </RadioWrap>
-          </Box>
-        </Box>
-      </FormCard>
-
-      <Button
-        variant="contained"
-        sx={{ width: "100%", borderRadius: "8px" }}
-        onClick={handleAdd}
-      >
-        등록
-      </Button> */}
     </Wrapper>
   );
 }

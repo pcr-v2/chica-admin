@@ -13,6 +13,8 @@ export const addSchoolSchema = z.object({
   teacherPhone: z.string({
     required_error: "매니저 전화번호를 입력해 주세요.",
   }),
+
+  startAt: z.string({ required_error: "시작일을 입력해 주세요." }),
   endAt: z.string({ required_error: "종료일을 입력해 주세요." }),
   schoolStatus: z.boolean({ required_error: "학교상태를 입력해 주세요." }),
   schoolLevel: z.enum(["elementary", "middle", "high"], {

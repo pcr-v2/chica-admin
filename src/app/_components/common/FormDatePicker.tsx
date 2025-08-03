@@ -44,6 +44,26 @@ export default function FormDatePicker(props: FormDatePickerProps) {
           placement: "top-end",
           modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
         },
+        layout: {
+          sx: {
+            ".Mui-selected": {
+              backgroundColor: "#32c794 !important",
+              filter: "brightness(1)",
+              color: "white",
+              ":focus": {
+                backgroundColor: "#32c794 !important",
+                filter: "brightness(1)",
+              },
+              ":active": {
+                backgroundColor: "#32c794 !important",
+              },
+
+              ":hover": {
+                backgroundColor: "#32c794 !important",
+              },
+            },
+          },
+        },
       }}
       minDate={customDayjs().tz("Asia/Seoul").add(1, "day")}
     />
@@ -52,12 +72,35 @@ export default function FormDatePicker(props: FormDatePickerProps) {
 
 const CustomDatePicker = styled(DatePicker)(() => {
   return {
+    "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#32c794", // 원하는 색상
+      height: "41px !important",
+    },
+    "& .MuiPickersOutlinedInput-notchedOutline": {
+      height: "41px !important",
+      // padding: "10px 12px",
+      borderColor: "transparent !important",
+      "& .Mui-focused": {
+        height: "41px !important",
+        border: "1px solid #32C794",
+      },
+      "&.Mui-focused fieldset": {
+        height: "41px !important",
+        border: "1px solid #32C794",
+        // borderColor: theme.palette.text02.main,
+      },
+      "&.Mui-focused:not fieldset": {
+        border: "1px solid #32C794",
+        // borderColor: theme.palette.text02.main,
+      },
+    },
     "& .MuiPickersSectionList-root": {
       padding: 0,
     },
     "& .MuiPickersInputBase-root": {
       fontSize: 14,
       padding: "10px 12px",
+      border: "1px solid #d9d9d9",
       backgroundColor: "#fff",
       "&:hover fieldset": {
         borderColor: "#d9d9d9",
@@ -67,6 +110,10 @@ const CustomDatePicker = styled(DatePicker)(() => {
       },
       "&.Mui-focused fieldset": {
         border: "1px solid #32C794",
+      },
+      "&.Mui-focused": {
+        height: "41px !important",
+        border: "1px solid #32C794 !important",
       },
     },
     "& .MuiInputAdornment-root": {

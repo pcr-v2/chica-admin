@@ -160,6 +160,7 @@ export default function SchoolContainer(props: IProps) {
               // revalidatePath("/school/list");
               // router.refresh();
             }}
+            onClose={() => setOpen(false)}
           />
         }
         onClose={() => setOpen(false)}

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
@@ -10,7 +11,7 @@ export type AddStudentRequest = z.infer<typeof addStudentSchema>;
 
 export async function addStudent(request: AddStudentRequest) {
   const validated = addStudentSchema.safeParse(request);
-  console.log("request", request);
+
   if (!validated.success) {
     return {
       code: "VALIDATION_ERROR" as const,
@@ -27,10 +28,37 @@ export async function addStudent(request: AddStudentRequest) {
     };
   }
 
-  console.log("students", students);
-
   try {
-    mysqlPrisma.$transaction(async (trx) => {
+    await mysqlPrisma.$transaction(async (trx) => {
+      // 중복 확인
+      const duplicates = await trx.student.findMany({
+        where: {
+          schoolId,
+          OR: students.map((student) => ({
+            studentGrade: student.studentGrade,
+            studentClass: student.studentClass,
+            studentNumber: student.studentNumber,
+            studentStatus: true,
+          })),
+        },
+        select: {
+          studentGrade: true,
+          studentClass: true,
+          studentNumber: true,
+        },
+      });
+
+      if (duplicates.length > 0) {
+        const dupInfo = duplicates
+          .map(
+            (d) =>
+              `${d.studentGrade}학년 ${d.studentClass}반 ${d.studentNumber}번`,
+          )
+          .join(", ");
+
+        throw new Error(`이미 존재하는 학생: ${dupInfo}`);
+      }
+
       await trx.student.createMany({
         data: students.map((student) => ({
           schoolId: schoolId,
@@ -45,14 +73,16 @@ export async function addStudent(request: AddStudentRequest) {
       });
     });
 
+    revalidatePath("/student");
+
     return {
       code: "SUCCESS" as const,
       message: "학생이 등록되었습니다.",
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       code: "STUDENT_REGIST_ERROR" as const,
-      message: "학생 등록 중 오류가 발생했습니다.",
+      message: error.message || "학생 등록 중 오류가 발생했습니다.",
     };
   }
 }

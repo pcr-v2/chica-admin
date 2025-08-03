@@ -63,18 +63,18 @@ export const MENUS: MenuItem[] = [
     icon: SideStudent,
     allowRoles: ["master"],
     children: [
-      {
-        label: "학생 리스트",
-        path: "/student/list",
-        icon: SideStudent,
-        allowRoles: ["master"],
-      },
-      {
-        label: "신규학생 등록",
-        path: "/student/add",
-        icon: SideStudentAdd,
-        allowRoles: ["master"],
-      },
+      // {
+      //   label: "학생 리스트",
+      //   path: "/student/list",
+      //   icon: SideStudent,
+      //   allowRoles: ["master"],
+      // },
+      // {
+      //   label: "신규학생 등록",
+      //   path: "/student/add",
+      //   icon: SideStudentAdd,
+      //   allowRoles: ["master"],
+      // },
     ],
   },
   {
@@ -106,18 +106,18 @@ export const MENUS: MenuItem[] = [
     icon: SideStudent,
     allowRoles: ["teacher"],
     children: [
-      {
-        label: "학생 리스트",
-        path: "/student/list",
-        icon: SideStudent,
-        allowRoles: ["teacher"],
-      },
-      {
-        label: "학생 등록",
-        path: "/student/add",
-        icon: SideStudentAdd,
-        allowRoles: ["teacher"],
-      },
+      // {
+      //   label: "학생 리스트",
+      //   path: "/student/list",
+      //   icon: SideStudent,
+      //   allowRoles: ["teacher"],
+      // },
+      // {
+      //   label: "학생 등록",
+      //   path: "/student/add",
+      //   icon: SideStudentAdd,
+      //   allowRoles: ["teacher"],
+      // },
     ],
   },
   {

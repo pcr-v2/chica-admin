@@ -87,7 +87,7 @@ export default async function uploadCsv<Z extends z.ZodSchema>(schema: Z) {
 
       return jsonObject;
     });
-    console.log("jsonArray", jsonArray);
+    // console.log("jsonArray", jsonArray);
     const result = schema.safeParse(jsonArray);
 
     if (!result.success) {

@@ -1,26 +1,43 @@
 "use client";
 
 import { Box, Button, styled } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Input from "@/app/_components/common/Input";
 import TextArea from "@/app/_components/common/TextArea";
+import { GetCsResponse } from "@/app/actions/cs/getCsAction";
 
 export type TCs = {
   title: string;
   content: string;
+  comment?: string; // ✅ 추가
 };
 
 interface IProps {
+  type: "master" | "teacher";
+  updatedData: GetCsResponse["result"];
+
   onClose: () => void;
   handleRegist: (value: TCs) => void;
 }
 
 export default function WriteCs(props: IProps) {
-  const { handleRegist, onClose } = props;
+  const { handleRegist, onClose, updatedData, type } = props;
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    if (updatedData != null) {
+      setTitle(updatedData.title);
+      setContent(updatedData.content);
+
+      if (updatedData.status === "ANSWERED" && updatedData.comment) {
+        setComment(updatedData.comment);
+      }
+    }
+  }, [updatedData]);
 
   return (
     <Wrapper>
@@ -30,29 +47,39 @@ export default function WriteCs(props: IProps) {
         <Section>
           <TitleSpan>제목</TitleSpan>
           <Input
+            disabled={type === "master" || updatedData?.status === "ANSWERED"}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력해주세요"
             maxLength={72}
           />
         </Section>
-        <Section>
-          <TitleSpan>문의내용</TitleSpan>
-          <TextArea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <MaxLengthBox>{content.length} / 400</MaxLengthBox>
-        </Section>
 
-        {/* <Button
-          variant="contained"
-          fullWidth
-          sx={{ borderRadius: "8px" }}
-          onClick={() => handleRegist({ title, content })}
-          >
-          등록하기
-          </Button> */}
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "0px" }}>
+          <Section>
+            <TitleSpan>문의내용</TitleSpan>
+            <TextArea
+              disabled={type === "master" || updatedData?.status === "ANSWERED"}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <MaxLengthBox>{content.length} / 400</MaxLengthBox>
+          </Section>
+          {(type === "master" || updatedData?.status === "ANSWERED") && (
+            <Section>
+              <TitleSpan>마스터 답변</TitleSpan>
+              <TextArea
+                disabled={updatedData?.status === "ANSWERED"}
+                maxLength={200}
+                style={{ minHeight: "100px", maxHeight: "100px" }}
+                // disabled={type === "master"}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <MaxLengthBox>{comment.length} / 200</MaxLengthBox>
+            </Section>
+          )}
+        </Box>
       </ContentWrap>
       <BtnWrap>
         <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={onClose}>
@@ -60,15 +87,32 @@ export default function WriteCs(props: IProps) {
         </Btn>
         <Btn
           onClick={() => {
-            if (title.length > 0 && content.length > 0) {
-              handleRegist({ title, content });
-              return;
+            const isTeacher = type === "teacher";
+            const isMaster = type === "master";
+
+            const isValidTeacher = title.length > 0 && content.length > 0;
+            const isValidMaster =
+              comment.length > 0 && updatedData?.status !== "ANSWERED";
+
+            if ((isTeacher && isValidTeacher) || (isMaster && isValidMaster)) {
+              handleRegist({ title, content, comment });
             }
           }}
           sx={{
             backgroundColor:
-              title.length > 0 && content.length > 0 ? "#32C794" : "#f1f2f3",
-            color: title.length > 0 && content.length > 0 ? "#fff" : "#D5D7DB",
+              (type === "teacher" && title.length > 0 && content.length > 0) ||
+              (type === "master" &&
+                comment.length > 0 &&
+                updatedData?.status !== "ANSWERED")
+                ? "#32C794"
+                : "#f1f2f3",
+            color:
+              (type === "teacher" && title.length > 0 && content.length > 0) ||
+              (type === "master" &&
+                comment.length > 0 &&
+                updatedData?.status !== "ANSWERED")
+                ? "#fff"
+                : "#D5D7DB",
           }}
         >
           저장

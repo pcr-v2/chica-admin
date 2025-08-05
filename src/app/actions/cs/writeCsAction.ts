@@ -42,7 +42,7 @@ export async function writeCs(request: WriteCsRequest) {
     };
   }
 
-  revalidatePath("/cs/list");
+  revalidatePath("/cs");
 
   return {
     code: "SUCCESS" as const,

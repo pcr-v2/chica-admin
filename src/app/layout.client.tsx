@@ -5,8 +5,11 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactNode } from "react";
 
+import QueryClientProviders from "@/app/QueryClientProviders";
 import { RootToast } from "@/app/_components/RootToast";
 import theme from "@/theme";
 
@@ -18,15 +21,20 @@ export default function ClientLayout(props: IProps) {
   const { children } = props;
 
   return (
-    <AppRouterCacheProvider options={{ enableCssLayer: false, prepend: false }}>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"ko"}>
-          <ChildrenWrap>{children}</ChildrenWrap>
-        </LocalizationProvider>
-        <CssBaseline />
-        <RootToast />
-      </ThemeProvider>
-    </AppRouterCacheProvider>
+    <QueryClientProviders>
+      <ReactQueryDevtools position="bottom" />
+      <AppRouterCacheProvider
+        options={{ enableCssLayer: false, prepend: false }}
+      >
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"ko"}>
+            <ChildrenWrap>{children}</ChildrenWrap>
+          </LocalizationProvider>
+          <CssBaseline />
+          <RootToast />
+        </ThemeProvider>
+      </AppRouterCacheProvider>
+    </QueryClientProviders>
   );
 }
 

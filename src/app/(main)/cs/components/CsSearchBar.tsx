@@ -1,42 +1,47 @@
 "use client";
 
-import { Box, InputAdornment, styled, TextField } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useState } from "react";
 
 import CsSearchFilter from "@/app/(main)/cs/components/CsSearchFilter";
-import Input from "@/app/_components/common/Input";
 import SearchInput from "@/app/_components/common/SearchInput";
-import SearchIcon from "@/public/images/icons/cs-search-icon.svg";
 
 interface IProps {
-  onClick: () => void;
+  onClickWrite: () => void;
+  selectedFilter: string;
+  onFilterChange: (value: string) => void;
+  searchValue: string;
+  onSearchChange: (value: string) => void;
 }
 
 export default function CsSearchBar(props: IProps) {
-  const { onClick } = props;
-
-  const [selected, setSelected] = useState("title");
-  const [searchValue, setSearchValue] = useState("");
+  const {
+    onClickWrite,
+    selectedFilter,
+    onFilterChange,
+    searchValue,
+    onSearchChange,
+  } = props;
 
   return (
     <Wrapper>
       <Box sx={{ gap: "16px", display: "flex", alignItems: "center" }}>
         <CsSearchFilter
-          selectedFilter={selected}
+          selectedFilter={selectedFilter}
           onChange={(value) => {
             console.log(value);
-            setSelected(value);
+            onFilterChange(value);
           }}
         />
 
         <SearchInput
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value)}
           placeholder="검색"
         />
       </Box>
 
-      <RegistBtn onClick={onClick}>글 작성</RegistBtn>
+      <RegistBtn onClick={onClickWrite}>글 작성</RegistBtn>
     </Wrapper>
   );
 }

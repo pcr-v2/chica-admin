@@ -3,22 +3,24 @@
 import { styled, TextareaAutosize } from "@mui/material";
 import { ChangeEvent } from "react";
 
-interface IProps {
+interface IProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   value: string;
+  maxLength?: number;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 export default function TextArea(props: IProps) {
-  const { value, onChange } = props;
+  const { value, maxLength = 400, onChange, ...rest } = props;
 
   return (
     <TextAreaST
       value={value}
-      maxLength={400}
+      maxLength={maxLength}
       onChange={onChange}
       id="custom-textarea"
       name="custom-textarea"
       placeholder="내용을 입력해주세요."
+      {...rest}
     />
   );
 }

@@ -4,7 +4,6 @@ import { z } from "zod";
 
 import { getCsListSchema } from "@/app/actions/cs/csSchema";
 import { mysqlPrisma } from "@/libs/prisma";
-import customDayjs from "@/utils/customDayjs";
 
 export type GetCsListResponse = Awaited<ReturnType<typeof getCsList>>;
 
@@ -43,6 +42,9 @@ export async function getCsList(request: GetCsListRequest) {
             schoolName: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
@@ -83,7 +85,7 @@ export async function getCsList(request: GetCsListRequest) {
       },
     },
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
   });
 

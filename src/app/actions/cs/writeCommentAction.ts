@@ -29,10 +29,11 @@ export async function writeComment(request: WriteCsRequest) {
   const writeCommentResult = await mysqlPrisma.board.update({
     where: {
       id: boardId,
-      schoolId,
+      // schoolId,
     },
     data: {
       comment,
+      status: "ANSWERED",
     },
   });
 

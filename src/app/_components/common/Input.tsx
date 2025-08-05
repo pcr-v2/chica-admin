@@ -96,6 +96,15 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
       backgroundColor: "#fff",
       borderColor: "#32C794",
     },
+    "&.Mui-disabled": {
+      backgroundColor: "#FAFAFA !important", // 기본 상태
+      // borderColor: "#d9d9d9",
+      color: "#747D8A",
+    },
+
+    "&.Mui-disabled:hover": {
+      backgroundColor: "#FAFAFA !important", // 호버 시에도 동일하게
+    },
   },
 }));
 

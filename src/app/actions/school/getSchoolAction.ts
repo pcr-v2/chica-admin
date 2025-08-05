@@ -35,8 +35,8 @@ export async function getSchool(request: GetSchoolRequest) {
     where: {
       schoolId: validated.data.schoolId,
       schoolStatus: { not: false },
-      startAt: { lte: customDayjs().toISOString() },
-      endAt: { gte: customDayjs().toISOString() },
+      // startAt: { lte: customDayjs().toISOString() },
+      // endAt: { gte: customDayjs().toISOString() },
     },
   });
 

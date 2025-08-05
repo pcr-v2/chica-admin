@@ -14,10 +14,11 @@ const AutocompleteSchool =
 interface IProps {
   onChange: (value: SchoolCodeOption | null) => void;
   debounceTime?: number;
+  defaultSchoolName?: string; // ✅ 추가
 }
 
 export default function SearchAutocomplete(props: IProps) {
-  const { onChange, debounceTime = 500 } = props;
+  const { onChange, debounceTime = 500, defaultSchoolName } = props;
 
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<SchoolCodeOption[]>([]);
@@ -47,6 +48,31 @@ export default function SearchAutocomplete(props: IProps) {
     setValue(newValue);
     onChange(newValue ?? null);
   };
+  // console.log("defaultSchoolName", defaultSchoolName);
+  useEffect(() => {
+    if (!defaultSchoolName) return;
+
+    (async () => {
+      try {
+        const result = await getSchoolCode(defaultSchoolName);
+        const matched = result.find((school: any) =>
+          school.name.includes(defaultSchoolName),
+        );
+
+        // ✅ 이미 동일한 값이 세팅돼 있다면 skip
+        if (
+          matched &&
+          (value?.code !== matched.code || inputValue !== defaultSchoolName)
+        ) {
+          setValue(matched); // value (객체) 설정
+          setInputValue(defaultSchoolName); // inputValue 문자열 설정
+          onChange(matched); // 외부로 전달
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [defaultSchoolName]);
 
   return (
     <StyledAutocomplete

@@ -1,8 +1,10 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
 import SchoolAddForm from "@/app/(main)/school/SchoolAddForm";
 import SchoolSearchFilter from "@/app/(main)/school/SchoolSearchFilter";
@@ -10,10 +12,15 @@ import SchoolTable from "@/app/(main)/school/SchoolTable";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
 import SearchInput from "@/app/_components/common/SearchInput";
-import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
+import { getSchool } from "@/app/actions/school/getSchoolAction";
+import {
+  getSchoolList,
+  GetSchoolListResponse,
+} from "@/app/actions/school/getSchoolListAction";
+import { UpdateSchoolStatus } from "@/app/actions/school/updateSchoolStatusAction";
 import PlusIcon from "@/public/images/icons/plus-icon.svg";
 
-export type TTab = "total" | "use" | "expire";
+export type TTab = "total" | "use" | "not" | "expire";
 
 interface IProps {
   schoolList: GetSchoolListResponse;
@@ -22,9 +29,39 @@ interface IProps {
 export default function SchoolContainer(props: IProps) {
   const { schoolList } = props;
 
+  const [selectedTab, setSelectedTab] = useState<TTab>("total");
+
+  const [selectedFilter, setSelectedFilter] = useState("schoolname");
+  const [value, setValue] = useState("");
+
+  const [updateSchoolId, setUpdateSchoolId] = useState("");
+
+  const [open, setOpen] = useState(false);
+  const [statusMap, setStatusMap] = useState<Record<string, boolean>>({});
+
+  const queryKey = ["schoolList", open, statusMap];
+
+  const { data } = useQuery({
+    queryKey,
+    queryFn: () => getSchoolList(),
+    initialData: schoolList,
+    staleTime: 0,
+  });
+
+  const { data: updatedData } = useQuery({
+    queryKey: open
+      ? ["student-update", updateSchoolId, open]
+      : [updateSchoolId],
+    queryFn: () =>
+      updateSchoolId
+        ? getSchool({ schoolId: updateSchoolId })
+        : Promise.resolve(null),
+    enabled: !!updateSchoolId, // boardId 있을 때만 실행
+  });
+
   // 사용카운트
   const useCount =
-    schoolList.result?.filter((el) => {
+    data.result?.filter((el) => {
       const today = dayjs().startOf("day");
       const start = dayjs(el.startAt).startOf("day");
       const end = dayjs(el.endAt).startOf("day");
@@ -36,9 +73,16 @@ export default function SchoolContainer(props: IProps) {
       );
     }).length ?? 0;
 
+  // 미사용카운트
+  const notCount =
+    data.result?.filter((el) => {
+      const status = statusMap[el.schoolId] ?? el.schoolStatus;
+      return status === false;
+    }).length ?? 0;
+
   // 만료 카운트
   const expireCount =
-    schoolList.result?.filter((el) => {
+    data.result?.filter((el) => {
       const today = dayjs().startOf("day");
       const start = dayjs(el.startAt).startOf("day");
       const end = dayjs(el.endAt).startOf("day");
@@ -55,18 +99,101 @@ export default function SchoolContainer(props: IProps) {
       count: useCount,
     },
     {
+      label: "미사용",
+      value: "not",
+      count: notCount,
+    },
+    {
       label: "만료",
       value: "expire",
       count: expireCount,
     },
   ] as const;
 
-  const [selectedTab, setSelectedTab] = useState<TTab>("total");
+  const filteredList = useMemo(() => {
+    if (!data.result) return [];
 
-  const [selectedFilter, setSelectedFilter] = useState("schoolname");
-  const [value, setValue] = useState("");
+    const today = dayjs().startOf("day");
 
-  const [open, setOpen] = useState(false);
+    const listWithTabFilter = data.result.filter((el) => {
+      const start = dayjs(el.startAt).startOf("day");
+      const end = dayjs(el.endAt).startOf("day");
+
+      if (selectedTab === "use") {
+        return (
+          start.isBefore(today.add(1, "day")) &&
+          end.isAfter(today.subtract(1, "day"))
+        );
+      }
+
+      if (selectedTab === "not") {
+        return el.schoolStatus === false;
+      }
+
+      if (selectedTab === "expire") {
+        return today.isBefore(start) || today.isAfter(end);
+      }
+
+      return true; // 전체 탭일 경우
+    });
+
+    if (!value.trim()) return listWithTabFilter;
+
+    return listWithTabFilter.filter((item) => {
+      let targetValue: string | null = null;
+
+      switch (selectedFilter) {
+        case "schoolname":
+          targetValue = item["schoolName"];
+          break;
+        case "teachername":
+          targetValue = item["teacherName"];
+          break;
+        case "email":
+          targetValue = item["teacherEmail"];
+          break;
+        default:
+          targetValue = null;
+      }
+
+      if (!targetValue || typeof targetValue !== "string") return false;
+
+      return targetValue.toLowerCase().includes(value.toLowerCase());
+    });
+  }, [data.result, selectedFilter, value, selectedTab]);
+
+  const handleToggle = async (schoolId: string, newStatus: boolean) => {
+    setStatusMap((prev) => ({ ...prev, [schoolId]: newStatus }));
+
+    try {
+      const res = await UpdateSchoolStatus({
+        schoolId,
+        schoolStatus: newStatus,
+      });
+
+      if (res.code === "FAIL") {
+        toast.error(res.message);
+        setStatusMap((prev) => ({ ...prev, [schoolId]: !newStatus }));
+        return;
+      }
+
+      toast.success(`${res.result?.schoolName} 상태 변경 완료`);
+    } catch (e) {
+      toast.error("상태 변경 실패");
+      setStatusMap((prev) => ({ ...prev, [schoolId]: !newStatus }));
+    }
+  };
+
+  useEffect(() => {
+    if (!data) return;
+
+    const initialMap: Record<string, boolean> = {};
+    data.result?.forEach((item) => {
+      initialMap[item.schoolId] = item.schoolStatus;
+    });
+
+    setStatusMap(initialMap);
+  }, [data]);
 
   return (
     <Wrapper>
@@ -97,73 +224,34 @@ export default function SchoolContainer(props: IProps) {
           </RegistBtn>
         </SearchWrap>
 
-        <SchoolTable list={schoolList.result} />
+        <SchoolTable
+          statusMap={statusMap}
+          handleToggle={handleToggle}
+          list={filteredList}
+          onClickEdit={(schoolId) => {
+            setUpdateSchoolId(schoolId);
+            setOpen(true);
+          }}
+        />
       </ContentWrap>
-
-      {/* <TopContent>
-        <CountText>등록된 학교 {schoolList.result?.length}개</CountText>
-
-        <AddSchool onClick={() => setOpen(true)}>
-          <AddRounded sx={{ color: "#fff", width: "24px" }} />
-          학교 추가
-        </AddSchool>
-      </TopContent>
-      <Divider />
-
-      <ListWrap>
-        {schoolList.result?.map((el) => {
-          return (
-            <SingleRow key={el.id}>
-              <Box sx={{}}>{el.schoolName}</Box>
-              <Box sx={{}}>{el.teacherName}</Box>
-              <Box sx={{}}>{el.teacherEmail}</Box>
-              <Box sx={{}}>{el.teacherPhone}</Box>
-              <Box sx={{}}>{el.loginId}</Box>
-              <Box sx={{}}>
-                계약 종료일 : {customDayjs(el.endAt).format("YYYY-MM-DD")}
-              </Box>
-              <Box sx={{}}>{el.schoolStatus.toString()}</Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "4px",
-                  backgroundColor: "#3196ff",
-                  padding: "4px 8px",
-                  cursor: "pointer",
-                  color: "#fff",
-                }}
-                onClick={async () => {
-                  const res = await getMeal(el);
-                  setTest(res);
-                }}
-              >
-                급식보기
-              </Box>
-            </SingleRow>
-          );
-        })}
-      </ListWrap>
-      {test}
-
-      */}
 
       <Modal
         open={open}
         maxWidth={571}
         children={
           <SchoolAddForm
-            onSuccess={() => {
+            updatedData={updatedData?.result}
+            onSuccess={() => setOpen(false)}
+            onClose={() => {
+              setUpdateSchoolId("");
               setOpen(false);
-              // revalidatePath("/school/list");
-              // router.refresh();
             }}
-            onClose={() => setOpen(false)}
           />
         }
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setUpdateSchoolId("");
+          setOpen(false);
+        }}
       />
     </Wrapper>
   );

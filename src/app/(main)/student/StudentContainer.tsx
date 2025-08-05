@@ -138,7 +138,9 @@ export default function StudentContainer(props: IProps) {
     isLoading,
     error,
   } = useQuery({
-    queryKey: open.show ? ["student-update", updatedStudentId, open.show] : [],
+    queryKey: open.show
+      ? ["student-update", updatedStudentId, open.show]
+      : [updatedStudentId],
     queryFn: () =>
       updatedStudentId
         ? getStudent({ studentId: updatedStudentId })
@@ -259,6 +261,7 @@ export default function StudentContainer(props: IProps) {
         toast.success(res.message);
         setTempBulk([]);
         setBulk(null);
+        setUpdatedStudentId("");
         setOpen({ show: false, type: null });
         return;
       }
@@ -279,6 +282,7 @@ export default function StudentContainer(props: IProps) {
       toast.success(res.message);
       setTempBulk([]);
       setBulk(null);
+      setUpdatedStudentId("");
     } else if (updatedData == null) {
       const res = await addStudent({
         schoolId: me.data?.schoolId as string,
@@ -291,6 +295,7 @@ export default function StudentContainer(props: IProps) {
       }
       toast.success(res.message);
       setBulk(null);
+      setUpdatedStudentId("");
     }
 
     // setOpen({ show: false, type: null });
@@ -441,6 +446,8 @@ export default function StudentContainer(props: IProps) {
               updatedData={updatedData?.result}
               isElementary={me.data?.schoolLevel === "elementary"}
               onClose={() => {
+                setUpdatedStudentId("");
+
                 setOpen({ show: false, type: null });
               }}
               onConfirm={handleAdd}
@@ -472,6 +479,7 @@ export default function StudentContainer(props: IProps) {
               onClose={() => {
                 setOpen({ show: false, type: null });
                 setBulk(null);
+                setUpdatedStudentId("");
                 setTempBulk([]);
               }}
             />

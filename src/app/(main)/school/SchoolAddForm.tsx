@@ -9,7 +9,7 @@ import {
   styled,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
@@ -17,6 +17,8 @@ import Input from "@/app/_components/common/Input";
 import SearchAutocomplete from "@/app/_components/common/SearchAutoComplete";
 import { Toggle } from "@/app/_components/common/Toggle";
 import { addSchool } from "@/app/actions/school/addSchoolAction";
+import { GetSchoolResponse } from "@/app/actions/school/getSchoolAction";
+import { updateSchool } from "@/app/actions/school/updateSchoolAction";
 import {
   formatPhoneNumber,
   isValidEmail,
@@ -51,13 +53,13 @@ type TSchool = {
 };
 
 interface IProps {
+  updatedData: GetSchoolResponse["result"];
   onClose: () => void;
   onSuccess: () => void;
 }
 
 export default function SchoolAddForm(props: IProps) {
-  const { onSuccess, onClose } = props;
-
+  const { updatedData, onSuccess, onClose } = props;
   const [school, setSchool] = useState<TSchool>({
     schoolName: "",
     loginId: "",
@@ -74,6 +76,48 @@ export default function SchoolAddForm(props: IProps) {
     schoolStatus: true,
     schoolLevel: "elementary",
   });
+
+  useEffect(() => {
+    if (!open) {
+      setSchool({
+        schoolName: "",
+        loginId: "",
+        loginPw: "",
+        schoolCode: "",
+        officeCode: "",
+        teacherName: "",
+        teacherEmail: "",
+        teacherPhone: "",
+        address: "",
+        startAt: "",
+        endAt: "",
+        schoolAnniversary: "",
+        schoolStatus: true,
+        schoolLevel: "elementary",
+      });
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (updatedData == null) return;
+
+    setSchool({
+      schoolName: updatedData.schoolName,
+      loginId: updatedData.loginId,
+      loginPw: "", // 항상 초기화
+      schoolCode: updatedData.schoolCode,
+      officeCode: updatedData.officeCode,
+      teacherName: updatedData.teacherName,
+      teacherEmail: updatedData.teacherEmail,
+      teacherPhone: updatedData.teacherPhone,
+      address: updatedData.address,
+      startAt: dayjs(updatedData.startAt).toISOString(),
+      endAt: dayjs(updatedData.endAt).toISOString(),
+      schoolAnniversary: "",
+      schoolStatus: updatedData.schoolStatus,
+      schoolLevel: updatedData.schoolLevel,
+    });
+  }, [updatedData]);
 
   const handleAdd = async () => {
     const requiredFields: { key: keyof TSchool; label: string }[] = [
@@ -128,15 +172,28 @@ export default function SchoolAddForm(props: IProps) {
       return;
     }
 
-    console.log(school);
+    // console.log(school);
 
-    // const res = await addSchool(school);
-    // if (res.code === "SUCCESS") {
-    //   toast.success(res.message);
-    //   onSuccess();
-    // } else {
-    //   toast.error(res.message);
-    // }
+    if (updatedData == null) {
+      const res = await addSchool(school);
+      if (res.code === "SUCCESS") {
+        toast.success(res.message);
+        onSuccess();
+      } else {
+        toast.error(res.message);
+      }
+    } else {
+      const res = await updateSchool({
+        schoolId: updatedData.schoolId,
+        ...school,
+      });
+      if (res.code === "SUCCESS") {
+        toast.success(res.message);
+        onSuccess();
+      } else {
+        toast.error(res.message);
+      }
+    }
   };
 
   const isFormComplete = () => {
@@ -172,18 +229,19 @@ export default function SchoolAddForm(props: IProps) {
           <Section>
             <TitleSpan>학교명</TitleSpan>
             <SearchAutocomplete
+              defaultSchoolName={updatedData?.schoolName}
               onChange={(value) => {
                 if (value) {
                   const [schoolName, address] = value.name.split("(");
 
-                  setSchool({
-                    ...school,
+                  setSchool((prev) => ({
+                    ...prev,
                     schoolCode: value.code,
                     officeCode: value.officeCode,
                     schoolName: schoolName,
                     schoolAnniversary: value.schoolAnniversary,
                     address: address.replace(")", ""),
-                  });
+                  }));
                 }
               }}
             />
@@ -272,7 +330,7 @@ export default function SchoolAddForm(props: IProps) {
                   : school.startAt
               }
               onChange={(e) => {
-                console.log("e.target.value", e.target.value);
+                // console.log("e.target.value", e.target.value);
                 setSchool({ ...school, startAt: e.target.value as string });
               }}
             />

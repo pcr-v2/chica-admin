@@ -1,6 +1,7 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
@@ -57,7 +58,7 @@ export async function addSchool(request: AddSchoolRequest): Promise<{
           officeCode,
           address,
           schoolLevel,
-          endAt: customDayjs(endAt).toISOString(),
+          endAt: dayjs(endAt).toISOString(),
           startAt: new Date(),
           schoolStatus,
         },

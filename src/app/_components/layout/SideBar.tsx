@@ -212,7 +212,7 @@ const ParentMenu = styled(Box)<{ isactive: string }>(({ isactive }) => {
 });
 
 const IconLabel = styled(Box)(() => ({
-  gap: "6px",
+  gap: "8px",
   display: "flex",
   alignItems: "center",
   justifyContent: "start",

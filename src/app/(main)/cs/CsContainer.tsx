@@ -1,19 +1,18 @@
 "use client";
 
-import { Box, Chip, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import CsSearchBar from "@/app/(main)/cs/components/CsSearchBar";
 // import CsTab, { TTab } from "@/app/(main)/cs/components/CsTab";
 import CsTable from "@/app/(main)/cs/components/CsTable";
 import WriteCs, { TCs } from "@/app/(main)/cs/components/WriteCs";
-import Badge from "@/app/_components/common/Badge";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { getCs, GetCsResponse } from "@/app/actions/cs/getCsAction";
+import { getCs } from "@/app/actions/cs/getCsAction";
 import { getCsList, GetCsListResponse } from "@/app/actions/cs/getCsListAction";
 import { updateCs } from "@/app/actions/cs/updateCsAction";
 import { writeComment } from "@/app/actions/cs/writeCommentAction";
@@ -83,9 +82,20 @@ export default function CsContainer(props: IProps) {
   // 🔍 필터링된 데이터 계산
   // 🔍 필터링된 데이터 계산
   const filteredList = useMemo(() => {
-    if (!searchValue.trim()) return data.result;
+    if (!data?.result) return [];
 
-    return data?.result?.filter((item) => {
+    // 1. 먼저 selectedTab에 따라 필터링
+    const statusFiltered = data.result.filter((item) => {
+      if (selectedTab === "complete") return item.status === "ANSWERED";
+      if (selectedTab === "not") return item.status === "UNANSWERED";
+      return true; // "전체"
+    });
+
+    // 2. 검색어가 없으면 위에서 필터된 결과 그대로 반환
+    if (!searchValue.trim()) return statusFiltered;
+
+    // 3. 검색 조건에 따라 추가 필터링
+    return statusFiltered.filter((item) => {
       let targetValue: string | null = null;
 
       switch (selectedFilter) {
@@ -104,7 +114,7 @@ export default function CsContainer(props: IProps) {
 
       return targetValue.toLowerCase().includes(searchValue.toLowerCase());
     });
-  }, [data.result, selectedFilter, searchValue]);
+  }, [data.result, selectedFilter, searchValue, selectedTab]);
 
   const handleRegist = async (value: TCs) => {
     const basePayload = {
@@ -202,7 +212,10 @@ export default function CsContainer(props: IProps) {
           <WriteCs
             type={me.data?.type as "master" | "teacher"}
             handleRegist={handleRegist}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+              setOpen(false);
+              setUpdateBoardId(null);
+            }}
             updatedData={updatedData?.result}
           />
         }

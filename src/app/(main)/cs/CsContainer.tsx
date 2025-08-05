@@ -28,7 +28,17 @@ export type TTab = "total" | "complete" | "not";
 export default function CsContainer(props: IProps) {
   const { me, csList } = props;
 
-  const queryKey = ["csList", me.data?.schoolId, me.data?.type];
+  const [selectedTab, setSelectedTab] = useState<TTab>("total");
+
+  const [open, setOpen] = useState(false);
+
+  const [updateBoardId, setUpdateBoardId] = useState<number | null>(null);
+
+  // 🔍 검색 관련 상태를 이쪽에서 관리
+  const [selectedFilter, setSelectedFilter] = useState("title");
+  const [searchValue, setSearchValue] = useState("");
+
+  const queryKey = ["csList", me.data?.schoolId, me.data?.type, open];
 
   const { data } = useQuery({
     queryKey,
@@ -59,22 +69,12 @@ export default function CsContainer(props: IProps) {
 
   const queryClient = useQueryClient();
 
-  const [selectedTab, setSelectedTab] = useState<TTab>("total");
-
-  const [open, setOpen] = useState(false);
-
-  const [updateBoardId, setUpdateBoardId] = useState<number | null>(null);
-
-  // 🔍 검색 관련 상태를 이쪽에서 관리
-  const [selectedFilter, setSelectedFilter] = useState("title");
-  const [searchValue, setSearchValue] = useState("");
-
   const {
     data: updatedData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: open ? ["cs", updateBoardId] : [],
+    queryKey: ["cs", updateBoardId, open],
     queryFn: () =>
       updateBoardId ? getCs({ boardId: updateBoardId }) : Promise.resolve(null),
     enabled: !!updateBoardId, // boardId 있을 때만 실행
@@ -163,8 +163,9 @@ export default function CsContainer(props: IProps) {
 
     // ✅ 공통처리
     queryClient.invalidateQueries({
-      queryKey: ["csList", me.data?.schoolId, me.data?.type],
+      queryKey: ["csList", me.data?.schoolId, me.data?.type, open],
     });
+    setUpdateBoardId(null);
     setOpen(false);
   };
 

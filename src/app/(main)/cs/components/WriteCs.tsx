@@ -41,7 +41,7 @@ export default function WriteCs(props: IProps) {
 
   return (
     <Wrapper>
-      <Title>문의글 작성</Title>
+      <Title>문의글 {updatedData != null ? "수정" : "작성"}</Title>
 
       <ContentWrap>
         <Section>

@@ -44,14 +44,14 @@ export default function BulkAddForm(props: IProps) {
           </StepBox>
           <DescWrap>
             <Desc style={{ color: "#32C794" }}>
-              CSV 템플릿에 대해 자세히 알아보기
-            </Desc>
-            <Desc>
-              이름, 학년, 반, 번호, 성별, 사용여부는 필수 입력란입니다.
+              이름, 학년, 반, 번호, 성별은 필수 입력란입니다.{" "}
             </Desc>
           </DescWrap>
 
           <ExampleImgSt src={ExampleImg.src} alt="example" />
+          <Desc style={{ color: "#F44336", fontSize: 12, paddingLeft: "22px" }}>
+            *1열은 삭제시 등록이 되지 않습니다.
+          </Desc>
         </StepTwoWrap>
 
         <StepOneWrap>

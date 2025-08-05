@@ -58,16 +58,11 @@ export default function SideBar(props: IProps) {
                 <IconLabel sx={{}}>
                   {Icon && (
                     <StyledIcon isactive={isActive.toString()}>
-                      <Icon
-                        style={{
-                          width: "28px",
-                          height: "28px",
-                        }}
-                      />
+                      <Icon style={{ width: "100%", height: "100%" }} />
                     </StyledIcon>
                   )}
                   <ParentMenu isactive={isActive.toString()}>
-                    {parentMenu.label}
+                    <SideBarText>{parentMenu.label}</SideBarText>
                   </ParentMenu>
                 </IconLabel>
 
@@ -118,7 +113,7 @@ export default function SideBar(props: IProps) {
                                   />
                                 </StyledIcon>
                               )}
-                              {child.label}
+                              <span>{child.label}</span>
                             </ChildItem>
                           );
                         })}
@@ -134,16 +129,16 @@ export default function SideBar(props: IProps) {
   );
 }
 
-const Wrapper = styled(Box)(() => ({
+const Wrapper = styled(Box)(({ theme }) => ({
   gap: "28px",
   width: "100%",
   display: "flex",
   maxWidth: "243px",
-  // alignItems: "start",
-  // minHeight: "100dvh",
   padding: "28px 24px",
   flexDirection: "column",
-  // justifyContent: "start",
+  [theme.breakpoints.down("desktop")]: {
+    maxWidth: "114px",
+  },
 }));
 
 const LogoWrap = styled(Box)(() => {
@@ -151,19 +146,29 @@ const LogoWrap = styled(Box)(() => {
     gap: "12px",
     display: "flex",
     alignItems: "center",
+    padding: "9px 0px 9px 8px",
   };
 });
 
-const Logo = styled(SideLogo)(() => ({
+const Logo = styled(SideLogo)(({ theme }) => ({
   width: "28px",
   height: "28px",
+  [theme.breakpoints.down("desktop")]: {
+    width: "50px",
+    height: "50px",
+    border: "1px solid red",
+  },
 }));
 
-const LogoText = styled("span")(() => {
+const LogoText = styled("span")(({ theme }) => {
   return {
     fontSize: 24,
+    display: "flex",
     fontWeight: 500,
     color: "#32C794",
+    [theme.breakpoints.down("desktop")]: {
+      display: "none",
+    },
   };
 });
 
@@ -176,19 +181,27 @@ const Menus = styled(Box)(() => ({
   justifyContent: "start",
 }));
 
-const SingleMenuWrap = styled(Box)<{ isactive: string }>(({ isactive }) => ({
-  width: "100%",
-  display: "flex",
-  cursor: "pointer",
-  borderRadius: "8px",
-  alignItems: "center",
-  padding: "10px 8px 10px 12px",
-  backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
-  justifyContent: "space-between",
-  "&:hover": {
-    backgroundColor: "#EDFCF7",
-  },
-}));
+const SingleMenuWrap = styled(Box)<{ isactive: string }>(
+  ({ isactive, theme }) => ({
+    width: "100%",
+    display: "flex",
+    cursor: "pointer",
+    borderRadius: "8px",
+    alignItems: "center",
+    padding: "10px 8px 10px 12px",
+    justifyContent: "space-between",
+    backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
+    "&:hover": {
+      backgroundColor: "#EDFCF7",
+    },
+    [theme.breakpoints.down("desktop")]: {
+      backgroundColor: isactive === "true" ? "#32C794" : "#fff",
+      "&:hover": {
+        backgroundColor: isactive === "true" ? "#32C794" : "#EDFCF7",
+      },
+    },
+  }),
+);
 
 const ParentMenu = styled(Box)<{ isactive: string }>(({ isactive }) => {
   return {
@@ -233,13 +246,29 @@ const ChildItem = styled(Box)<{ isactive: string }>(({ isactive }) => ({
   },
 }));
 
-const StyledIcon = styled("svg", {
+const StyledIcon = styled(Box, {
   shouldForwardProp: (prop) => prop !== "isactive",
-})<{ isactive: string }>(({ isactive }) => ({
-  width: "32px",
-  height: "32px",
+})<{ isactive: string }>(({ isactive, theme }) => ({
+  width: "28px",
+  height: "28px",
   path: {
     fill: isactive === "true" ? "#13BA81" : "#747D8A",
   },
   transition: "0.2s ease",
+  [theme.breakpoints.down("desktop")]: {
+    width: "40px",
+    height: "40px",
+    path: {
+      fill: isactive === "true" ? "#fff" : "#747D8A",
+    },
+  },
 }));
+
+const SideBarText = styled(Box)(({ theme }) => {
+  return {
+    display: "flex",
+    [theme.breakpoints.down("desktop")]: {
+      display: "none",
+    },
+  };
+});

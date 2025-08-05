@@ -7,13 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import Arrow from "@/public/images/icons/sidebar/side-arrow.svg";
 
 interface IProps {
+  isUpdate: boolean;
   isElementary: boolean;
   selectedGrade: number | null;
   onChange: (value: number) => void;
 }
 
 export default function StudentGradeFilter(props: IProps) {
-  const { isElementary, selectedGrade, onChange } = props;
+  const { isUpdate, isElementary, selectedGrade, onChange } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -21,10 +22,15 @@ export default function StudentGradeFilter(props: IProps) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const toggleOpen = () => {
+    if (isUpdate) {
+      return;
+    }
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
-    if (selectedGrade === null) {
+    if (selectedGrade == null) {
       setLabel("학년");
     }
   }, [selectedGrade]);
@@ -55,7 +61,7 @@ export default function StudentGradeFilter(props: IProps) {
     <Container ref={containerRef} sx={{ zIndex: isOpen ? 999 : 0 }}>
       {/* 버튼 */}
       <Btn onClick={toggleOpen}>
-        <span>{label}</span>
+        <span>{selectedGrade ? `${selectedGrade}학년` : "학년"}</span>
         <ArrowImg isopen={isOpen.toString()} />
       </Btn>
 

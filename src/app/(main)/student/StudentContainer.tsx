@@ -1,11 +1,12 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-import StudentAddForm from "@/app/(main)/student/add/StudentAddForm";
 import BulkAddForm from "@/app/(main)/student/components/BulkAddForm";
+import DeleteAllStudentAlert from "@/app/(main)/student/components/DeleteAllStudentAlert";
 import MasterSchoolFilter from "@/app/(main)/student/components/MasterSchoolFilter";
 import SingleAddForm from "@/app/(main)/student/components/SingleAddForm";
 import StudentClassFilter from "@/app/(main)/student/components/StudentClassFilter";
@@ -20,12 +21,20 @@ import {
   addStudent,
   AddStudentRequest,
 } from "@/app/actions/student/addStudentAction";
+import { deleteAllStudent } from "@/app/actions/student/deleteAllStudentAction";
+import { deleteSingleStudent } from "@/app/actions/student/deleteSingleSutdentAction";
 import {
   getGradeClass,
   GetGradeClassResponse,
 } from "@/app/actions/student/getGradeClass";
-import { GetStudentListResponse } from "@/app/actions/student/getStudentListAction";
+import { getStudent } from "@/app/actions/student/getStudentAction";
+import {
+  getStudentList,
+  GetStudentListResponse,
+} from "@/app/actions/student/getStudentListAction";
 import { csvStudentsBulkRegistSchema } from "@/app/actions/student/studentSchema";
+import { updateStudent } from "@/app/actions/student/updateStudentAction";
+import MinusIcon from "@/public/images/icons/minus-icon.svg";
 import PlusIcon from "@/public/images/icons/plus-icon.svg";
 import UploadIcon from "@/public/images/icons/upload-icon.svg";
 import downloadCsv from "@/utils/downloadCsv";
@@ -71,25 +80,7 @@ interface IProps {
 export default function StudentContainer(props: IProps) {
   const { me, studentList, schoolList } = props;
 
-  const attendingCount =
-    studentList.result?.filter((el) => el.studentStatus).length ?? 0;
-  const notAttendingCount =
-    studentList.result?.filter((el) => !el.studentStatus).length ?? 0;
-
-  const tabList = [
-    { label: "전체", value: "total", count: studentList.result?.length ?? 0 },
-    {
-      label: "재학",
-      value: "attending",
-      count: attendingCount,
-    },
-    {
-      label: "미재학",
-      value: "not-attending",
-      count: notAttendingCount,
-    },
-  ] as const;
-
+  const [deleteAllModal, setDeleteAllModal] = useState(false);
   const [open, setOpen] = useState<TOpen>({ show: false, type: null });
   const [selectedTab, setSelectedTab] = useState<TTab>("total");
   const [selectedSchool, setSelectedSchool] = useState<string | null>(null);
@@ -102,6 +93,59 @@ export default function StudentContainer(props: IProps) {
   const [bulk, setBulk] = useState<number | null>(null);
   const [tempBulk, setTempBulk] = useState<AddStudentRequest["students"]>([]);
 
+  const [updatedStudentId, setUpdatedStudentId] = useState("");
+
+  const queryKey = [
+    "studentList",
+    me.data?.schoolId,
+    me.data?.type,
+    open.show,
+    deleteAllModal,
+  ];
+
+  const { data } = useQuery({
+    queryKey,
+    queryFn: () =>
+      getStudentList({
+        schoolId: me.data?.schoolId!,
+        schoolType: me.data?.type as "master" | "teacher",
+      }),
+    initialData: studentList,
+    staleTime: 0,
+  });
+
+  const attendingCount =
+    studentList.result?.filter((el) => el.studentStatus).length ?? 0;
+  const notAttendingCount =
+    studentList.result?.filter((el) => !el.studentStatus).length ?? 0;
+
+  const tabList = [
+    { label: "전체", value: "total", count: studentList.result?.length ?? 0 },
+    // {
+    //   label: "재학",
+    //   value: "attending",
+    //   count: attendingCount,
+    // },
+    // {
+    //   label: "미재학",
+    //   value: "not-attending",
+    //   count: notAttendingCount,
+    // },
+  ] as const;
+
+  const {
+    data: updatedData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: open.show ? ["student-update", updatedStudentId, open.show] : [],
+    queryFn: () =>
+      updatedStudentId
+        ? getStudent({ studentId: updatedStudentId })
+        : Promise.resolve(null),
+    enabled: !!updatedStudentId, // boardId 있을 때만 실행
+  });
+
   const handleGradeClass = async (schoolId: string) => {
     const res = await getGradeClass({
       schoolId,
@@ -109,6 +153,18 @@ export default function StudentContainer(props: IProps) {
 
     return res;
   };
+
+  // const handleDelete = async (studentId: string)=>{
+
+  //   const res = await getGradeClass({
+  //     schoolId,
+  //   });
+
+  //   return res;
+
+  // }
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!me.data) return;
@@ -141,6 +197,53 @@ export default function StudentContainer(props: IProps) {
     }
   }, [selectedGrade]);
 
+  const handleDelete = async (studentId: string) => {
+    if (studentId == null) {
+      return;
+    }
+
+    const res = await deleteSingleStudent({ studentId });
+    if (res.code !== "SUCCESS") {
+      toast.error(res.message);
+      return;
+    }
+
+    toast.success(res.message);
+    setOpen({ show: false, type: null });
+  };
+
+  const handleDeleteAll = async () => {
+    if (me.data?.type === "master") {
+      const schoolId = selectedSchool;
+      const res = await deleteAllStudent({ schoolId: schoolId as string });
+      if (res.code !== "SUCCESS") {
+        toast.error(res.message);
+        return;
+      }
+
+      toast.success(res.message);
+      setSelectedSchool(null);
+      setSelectedGrade(null);
+      setSelectedClass("");
+      setSearchName("");
+      setDeleteAllModal(false);
+    }
+
+    const schoolId = me.data?.schoolId;
+    const res = await deleteAllStudent({ schoolId: schoolId as string });
+    if (res.code !== "SUCCESS") {
+      toast.error(res.message);
+      return;
+    }
+
+    toast.success(res.message);
+    setSelectedSchool(null);
+    setSelectedGrade(null);
+    setSelectedClass("");
+    setSearchName("");
+    setDeleteAllModal(false);
+  };
+
   const handleAdd = async (students: AddStudentRequest["students"]) => {
     if (me.data?.type === "master") {
       if (selectedSchool == null) {
@@ -154,27 +257,93 @@ export default function StudentContainer(props: IProps) {
 
       if (res.code === "SUCCESS") {
         toast.success(res.message);
+        setTempBulk([]);
+        setBulk(null);
         setOpen({ show: false, type: null });
         return;
       }
 
       toast.error(res.message);
       return;
+    } else if (updatedData && me.data?.type === "teacher") {
+      const res = await updateStudent({
+        studentId: updatedData.result?.studentId as string,
+        students,
+      });
+
+      if (res.code === "FAIL") {
+        toast.error(res.message);
+        return;
+      }
+
+      toast.success(res.message);
+      setTempBulk([]);
+      setBulk(null);
+    } else if (updatedData == null) {
+      const res = await addStudent({
+        schoolId: me.data?.schoolId as string,
+        students,
+      });
+
+      if (res.code === "FAIL") {
+        toast.error(res.message);
+        return;
+      }
+      toast.success(res.message);
+      setBulk(null);
     }
 
-    const res = await addStudent({
-      schoolId: me.data?.schoolId as string,
-      students,
+    // setOpen({ show: false, type: null });
+
+    // ✅ 공통처리
+    queryClient.invalidateQueries({
+      queryKey: ["studentList", me.data?.schoolId, me.data?.type],
     });
 
-    if (res.code === "FAIL") {
-      toast.error(res.message);
-      return;
-    }
-
-    toast.success(res.message);
     setOpen({ show: false, type: null });
   };
+
+  const filteredList = useMemo(() => {
+    if (!data?.result) return [];
+
+    return data.result.filter((student) => {
+      // 1. 마스터 타입일 경우 선택된 학교 필터링
+      if (
+        me.data?.type === "master" &&
+        selectedSchool &&
+        student.schoolId !== selectedSchool
+      ) {
+        return false;
+      }
+
+      // 2. 학년 필터 (null이 아니면 필터 적용)
+      if (selectedGrade !== null && student.studentGrade !== selectedGrade) {
+        return false;
+      }
+
+      // 3. 반 필터 (빈 문자열이 아니면 필터 적용)
+      if (selectedClass !== "" && student.studentClass !== selectedClass) {
+        return false;
+      }
+
+      // 4. 이름 검색어 필터 (빈 문자열 아니면 부분 포함 검사)
+      if (
+        searchName.trim() !== "" &&
+        !student.studentName.toLowerCase().includes(searchName.toLowerCase())
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [
+    data?.result,
+    selectedSchool,
+    selectedGrade,
+    selectedClass,
+    searchName,
+    me.data?.type,
+  ]);
 
   return (
     <Wrapper>
@@ -196,6 +365,7 @@ export default function StudentContainer(props: IProps) {
             )}
 
             <StudentGradeFilter
+              isUpdate={updatedData?.result != null}
               isElementary={me.data?.schoolLevel === "elementary"}
               selectedGrade={selectedGrade}
               onChange={(value) => setSelectedGrade(value)}
@@ -236,10 +406,29 @@ export default function StudentContainer(props: IProps) {
               <Upload />
               일괄등록
             </RegistBtn>
+
+            <DeleteBtn
+              onClick={() => {
+                if (me.data?.type === "master" && selectedSchool == null) {
+                  toast.error("학교를 먼저 선택해 주세요.");
+                  return;
+                }
+                setDeleteAllModal(true);
+              }}
+            >
+              <Minus />
+              일괄삭제
+            </DeleteBtn>
           </Box>
         </SearchWrap>
 
-        <StudentTable list={studentList.result} />
+        <StudentTable
+          list={filteredList}
+          onClickEdit={(studentId) => {
+            setUpdatedStudentId(studentId);
+            setOpen({ show: true, type: "single" }); // 바로 열거나, fetch 후 열어도 됨
+          }}
+        />
       </ContentWrap>
 
       <Modal
@@ -248,8 +437,12 @@ export default function StudentContainer(props: IProps) {
         children={
           open.type === "single" ? (
             <SingleAddForm
+              onDelete={handleDelete}
+              updatedData={updatedData?.result}
               isElementary={me.data?.schoolLevel === "elementary"}
-              onClose={() => setOpen({ show: false, type: null })}
+              onClose={() => {
+                setOpen({ show: false, type: null });
+              }}
               onConfirm={handleAdd}
             />
           ) : (
@@ -285,6 +478,19 @@ export default function StudentContainer(props: IProps) {
           )
         }
         onClose={() => setOpen({ show: false, type: null })}
+      />
+
+      <Modal
+        isDelete
+        open={deleteAllModal}
+        maxWidth={420}
+        children={
+          <DeleteAllStudentAlert
+            onDelete={handleDeleteAll}
+            onClose={() => setDeleteAllModal(false)}
+          />
+        }
+        onClose={() => setDeleteAllModal(false)}
       />
     </Wrapper>
   );
@@ -342,14 +548,39 @@ const RegistBtn = styled(Box)(() => {
   };
 });
 
+const DeleteBtn = styled(Box)(() => {
+  return {
+    gap: "8px",
+    fontSize: 16,
+    width: "100%",
+    fontWeight: 600,
+    display: "flex",
+    maxWidth: "120px",
+    cursor: "pointer",
+    color: "#fff",
+    textAlign: "center",
+    borderRadius: "8px",
+    padding: "8px 12px",
+    alignItems: "center",
+    backgroundColor: "#F44336",
+    border: "1px solid transparent",
+  };
+});
+
 const Plus = styled(PlusIcon)<{ isopen: string }>(({ isopen }) => ({
   width: "24px",
   height: "24px",
   path: {
     fill: "#747D8A",
   },
-  transition: "transform 0.2s ease-in-out",
-  transform: `rotate(${isopen === "true" ? 180 : 0}deg)`,
+}));
+
+const Minus = styled(MinusIcon)<{ isopen: string }>(({ isopen }) => ({
+  width: "24px",
+  height: "24px",
+  path: {
+    fill: "#fff",
+  },
 }));
 
 const Upload = styled(UploadIcon)<{ isopen: string }>(({ isopen }) => ({

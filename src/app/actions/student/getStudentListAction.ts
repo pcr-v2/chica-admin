@@ -26,6 +26,7 @@ export async function getStudentList(request: GetStudentListRequest) {
   if (!isMaster) {
     where.push({
       schoolId: validated.data.schoolId,
+      studentStatus: true,
     });
   }
 

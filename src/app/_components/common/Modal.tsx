@@ -2,17 +2,19 @@ import { styled } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useEffect } from "react";
 
+import CloseBlackIcon from "@/public/images/icons/close-black.svg";
 import CloseIcon from "@/public/images/icons/close-green.png";
 
 interface IProps {
   open: boolean;
+  isDelete?: boolean;
   maxWidth?: number;
   children: ReactNode;
   onClose: () => void;
 }
 
 export default function Modal(props: IProps) {
-  const { children, onClose, open, maxWidth = 500 } = props;
+  const { children, onClose, open, maxWidth = 500, isDelete } = props;
 
   useEffect(() => {
     if (!open) return;
@@ -34,7 +36,7 @@ export default function Modal(props: IProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.2 }}
         >
           <Content
             style={{
@@ -42,11 +44,15 @@ export default function Modal(props: IProps) {
             }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, scale: 1 }}
+            transition={{ duration: 0.2 }}
           >
             {children}
-            <CloseIconSt src={CloseIcon.src} onClick={onClose} />
+            {isDelete ? (
+              <CloseDelete onClick={onClose} />
+            ) : (
+              <CloseIconSt src={CloseIcon.src} onClick={onClose} />
+            )}
           </Content>
         </Background>
       )}
@@ -96,3 +102,15 @@ const CloseIconSt = styled("img")(() => {
     },
   };
 });
+
+const CloseDelete = styled(CloseBlackIcon)(() => ({
+  top: 18,
+  right: 16,
+  width: "24px",
+  height: "24px",
+  cursor: "pointer",
+  position: "absolute",
+  path: {
+    fill: "#F44336",
+  },
+}));

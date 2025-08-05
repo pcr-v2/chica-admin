@@ -18,7 +18,7 @@ export const Toggle = (props: IProps) => {
       control={
         <IOSSwitch
           sx={{ m: 1 }}
-          checked={checked}
+          checked={checked ?? true}
           onChange={(e) => onChange?.(e.target.checked)}
         />
       }

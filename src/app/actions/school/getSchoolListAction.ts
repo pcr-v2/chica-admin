@@ -14,7 +14,7 @@ export async function getSchoolList() {
       // endAt: { gte: dayjs().toDate() },
     },
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
   });
 

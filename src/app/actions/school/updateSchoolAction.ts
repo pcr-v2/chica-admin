@@ -55,7 +55,7 @@ export async function updateSchool(request: UpdateSchoolRequest) {
       officeCode,
       address,
       schoolLevel,
-      endAt: dayjs(endAt).toISOString(),
+      endAt: new Date(dayjs(endAt).format("YYYY-MM-DD")),
       startAt: new Date(),
       schoolStatus,
     },

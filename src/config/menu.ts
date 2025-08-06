@@ -78,6 +78,13 @@ export const MENUS: MenuItem[] = [
     ],
   },
   {
+    label: "일정 관리",
+    path: "/schedule",
+    icon: SideSchedule,
+    allowRoles: ["master"],
+    children: [],
+  },
+  {
     label: "고객센터",
     path: "/cs",
     icon: SideCs,

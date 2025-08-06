@@ -1,5 +1,6 @@
 import { styled, SxProps } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 import customDayjs from "@/utils/customDayjs";
 
@@ -13,10 +14,13 @@ export type FormDatePickerProps = {
   value?: string | null;
   onChange?: (e: ChangeEvent) => void;
   sx?: SxProps;
+  offMinDate?: boolean;
 };
 
 export default function FormDatePicker(props: FormDatePickerProps) {
-  const { name, value, onChange, sx } = props;
+  const { name, value, onChange, sx, offMinDate = false } = props;
+
+  const currentYear = dayjs().year();
 
   const realValue = !value ? null : customDayjs(value).tz("Asia/Seoul");
 
@@ -65,7 +69,11 @@ export default function FormDatePicker(props: FormDatePickerProps) {
           },
         },
       }}
-      minDate={customDayjs().tz("Asia/Seoul").add(1, "day")}
+      minDate={
+        offMinDate
+          ? customDayjs(`${currentYear}-01-01`).tz("Asia/Seoul")
+          : customDayjs().tz("Asia/Seoul").add(1, "day")
+      }
     />
   );
 }

@@ -67,7 +67,7 @@ export default function WriteCs(props: IProps) {
           </Section>
           {(type === "master" || updatedData?.status === "ANSWERED") && (
             <Section>
-              <TitleSpan>마스터 답변</TitleSpan>
+              <TitleSpan>관리자 답변</TitleSpan>
               <TextArea
                 disabled={updatedData?.status === "ANSWERED"}
                 maxLength={200}

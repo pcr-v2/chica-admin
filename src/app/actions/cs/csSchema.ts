@@ -8,7 +8,7 @@ export const writeCsSchema = z.object({
 
 export const writeCommentSchema = z.object({
   type: z.literal("master", {
-    required_error: "마스터만 댓글을 달수있습니다.",
+    required_error: "관리자만 댓글을 달수있습니다.",
   }),
   boardId: z.number({ required_error: "게시글 id가 없습니다." }),
   schoolId: z.string({ required_error: "학교 id가 없습니다." }),

@@ -115,7 +115,7 @@ const ArrowImg = styled(Arrow)<{ isopen: string }>(({ isopen }) => ({
     fill: "#747D8A",
   },
   transition: "transform 0.2s ease-in-out",
-  transform: `rotate(${isopen === "true" ? 180 : 0}deg)`,
+  transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));
 
 const Dropdown = styled(motion.ul)(() => ({

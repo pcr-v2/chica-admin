@@ -14,6 +14,7 @@ import StudentGradeFilter from "@/app/(main)/student/components/StudentGradeFilt
 import StudentTable from "@/app/(main)/student/components/StudentTable";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
+import RefreshBtn from "@/app/_components/common/RefreshBtn";
 import SearchInput from "@/app/_components/common/SearchInput";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
@@ -361,6 +362,15 @@ export default function StudentContainer(props: IProps) {
       <ContentWrap>
         <SearchWrap>
           <Box sx={{ display: "flex", gap: "16px" }}>
+            <RefreshBtn
+              onClick={() => {
+                setSelectedSchool(null);
+                setSelectedGrade(null);
+                setSelectedClass("");
+                setSearchName("");
+              }}
+            />
+
             {me.data?.type === "master" && (
               <MasterSchoolFilter
                 schoolList={schoolList.result}
@@ -511,7 +521,7 @@ const Wrapper = styled(Box)(() => {
     display: "flex",
     alignItems: "center",
     borderRadius: "24px",
-    padding: "32px 28px",
+    padding: "32px 28px 64px",
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#fff",
@@ -598,5 +608,5 @@ const Upload = styled(UploadIcon)<{ isopen: string }>(({ isopen }) => ({
     fill: "#747D8A",
   },
   transition: "transform 0.2s ease-in-out",
-  transform: `rotate(${isopen === "true" ? 180 : 0}deg)`,
+  transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));

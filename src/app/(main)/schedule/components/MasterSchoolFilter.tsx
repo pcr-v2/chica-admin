@@ -19,7 +19,7 @@ export default function MasterSchoolFilter(props: IProps) {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [label, setLabel] = useState("마스터-학교선택");
+  const [label, setLabel] = useState("관리자-학교선택");
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -117,7 +117,7 @@ const ArrowImg = styled(Arrow)<{ isopen: string }>(({ isopen }) => ({
     fill: "#747D8A",
   },
   transition: "transform 0.2s ease-in-out",
-  transform: `rotate(${isopen === "true" ? 180 : 0}deg)`,
+  transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));
 
 const Dropdown = styled(motion.ul)(() => ({

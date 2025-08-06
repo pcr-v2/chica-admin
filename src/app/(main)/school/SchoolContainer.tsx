@@ -11,6 +11,7 @@ import SchoolSearchFilter from "@/app/(main)/school/SchoolSearchFilter";
 import SchoolTable from "@/app/(main)/school/SchoolTable";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
+import RefreshBtn from "@/app/_components/common/RefreshBtn";
 import SearchInput from "@/app/_components/common/SearchInput";
 import { getSchool } from "@/app/actions/school/getSchoolAction";
 import {
@@ -205,7 +206,15 @@ export default function SchoolContainer(props: IProps) {
 
       <ContentWrap>
         <SearchWrap>
-          <Box sx={{ display: "flex", gap: "16px" }}>
+          <Box sx={{ display: "flex", gap: "16px", flex: 1 }}>
+            <RefreshBtn
+              onClick={() => {
+                setValue("");
+                setSelectedTab("total");
+                setSelectedFilter("schoolname");
+              }}
+            />
+
             <SchoolSearchFilter
               selectedFilter={selectedFilter}
               onChange={(value) => setSelectedFilter(value)}
@@ -315,5 +324,5 @@ const Plus = styled(PlusIcon)<{ isopen: string }>(({ isopen }) => ({
     fill: "#fff",
   },
   transition: "transform 0.2s ease-in-out",
-  transform: `rotate(${isopen === "true" ? 180 : 0}deg)`,
+  transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));

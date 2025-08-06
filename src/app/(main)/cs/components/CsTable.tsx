@@ -69,7 +69,7 @@ export default function CsTable({ list, onClickEdit }: IProps) {
         },
       },
       {
-        header: "수정하기",
+        header: "수정",
         accessorKey: "update",
         cell: ({ row }) => {
           return (

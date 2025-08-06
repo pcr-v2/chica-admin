@@ -19,7 +19,7 @@ export default function MasterSchoolFilter(props: IProps) {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [label, setLabel] = useState("마스터-학교선택");
+  const [label, setLabel] = useState("관리자-학교선택");
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,7 +53,9 @@ export default function MasterSchoolFilter(props: IProps) {
     <Container ref={containerRef} sx={{ zIndex: isOpen ? 999 : 0 }}>
       {/* 버튼 */}
       <Btn onClick={toggleOpen}>
-        <SelectLabel>{label}</SelectLabel>
+        <SelectLabel>
+          {selectedSchool == null ? "관리자-학교선택" : label}
+        </SelectLabel>
         <ArrowImg isopen={isOpen.toString()} />
       </Btn>
 

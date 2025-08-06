@@ -11,6 +11,7 @@ import CsTable from "@/app/(main)/cs/components/CsTable";
 import WriteCs, { TCs } from "@/app/(main)/cs/components/WriteCs";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
+import RefreshBtn from "@/app/_components/common/RefreshBtn";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getCs } from "@/app/actions/cs/getCsAction";
 import { getCsList, GetCsListResponse } from "@/app/actions/cs/getCsListAction";
@@ -187,13 +188,30 @@ export default function CsContainer(props: IProps) {
         tabList={tabList}
       />
       <ContentWrap>
-        <CsSearchBar
-          onClickWrite={() => setOpen(true)}
-          selectedFilter={selectedFilter}
-          onFilterChange={setSelectedFilter}
-          searchValue={searchValue}
-          onSearchChange={setSearchValue}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "16px",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <RefreshBtn
+            onClick={() => {
+              setSearchValue("");
+              setSelectedTab("total");
+              setSelectedFilter("title");
+            }}
+          />
+          <CsSearchBar
+            onClickWrite={() => setOpen(true)}
+            selectedFilter={selectedFilter}
+            onFilterChange={setSelectedFilter}
+            searchValue={searchValue}
+            onSearchChange={setSearchValue}
+          />
+        </Box>
 
         <CsTable
           list={filteredList}

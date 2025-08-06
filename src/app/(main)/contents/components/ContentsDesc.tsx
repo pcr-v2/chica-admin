@@ -19,12 +19,20 @@ export default function ContentsDesc() {
         <Two />
         <StepText>
           단일 파일 기준으로 이미지 파일은 10MB, 동영상 파일은 30MB까지 업로드
-          가능합니다.
+          가능합니다.&nbsp;&nbsp;
+          <span style={{ color: "#32C794" }}>
+            (전체 1GB까지 업로드 가능합니다.)
+          </span>
         </StepText>
       </StepBox>
       <StepBox>
         <Three />
-        <StepText>전체 1GB까지 업로드 가능합니다.</StepText>
+        <StepText>
+          파일명은 한글 지원이 어렵기에 영문을 권장 드립니다. &nbsp;&nbsp;
+          <span style={{ color: "#32C794" }}>
+            (한글로 저장시 임의의 영문으로 저장됩니다.)
+          </span>
+        </StepText>
       </StepBox>
     </DescBox>
   );

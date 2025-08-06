@@ -163,7 +163,7 @@ export default function ScheduleContainer(props: IProps) {
 
       {rows.length <= 0 && me.data?.type === "master" ? (
         <EmptyText>
-          <span>마스터는 학교를 선택 후 일정 확인이 가능합니다.</span>
+          <span>관리자는 학교를 선택 후 일정 확인이 가능합니다.</span>
         </EmptyText>
       ) : (
         <ScheduleTable rows={rows} onClickEdit={handleEdit} />

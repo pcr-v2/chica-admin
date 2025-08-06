@@ -45,7 +45,7 @@ export default function Header(props: IProps) {
 
       <UserMenu>
         <UserName>
-          {me?.data?.type === "master" && "마스터 "}
+          {me?.data?.type === "master" && "관리자"}
           {me?.data?.name}-선생님
         </UserName>
         <Logout onClick={handleLogout} />

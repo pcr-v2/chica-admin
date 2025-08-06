@@ -15,6 +15,8 @@ interface IProps {
 export default function ScheduleTable(props: IProps) {
   const { rows, onClickEdit } = props;
 
+  const currentMonth = dayjs().format("M");
+
   // 1. 월별로 그룹핑 (예: '1월', '2월', ...)
   const groupedByMonth = groupBy(rows, (row) => {
     const month = dayjs(row.date).month() + 1;
@@ -26,7 +28,15 @@ export default function ScheduleTable(props: IProps) {
       {Object.entries(groupedByMonth).map(([month, group], groupIndex) => (
         <Table key={groupIndex}>
           {/* 좌측 월 셀 (한 번만 출력) */}
-          <LeftMonth groupindex={groupIndex}>{month}</LeftMonth>
+          <LeftMonth
+            groupindex={groupIndex}
+            style={{
+              backgroundColor:
+                month === `${currentMonth}월` ? "#C8F1E3" : "#f7f8fa",
+            }}
+          >
+            {month}
+          </LeftMonth>
 
           {/* 우측 셀들 */}
           <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
@@ -101,7 +111,7 @@ const LeftMonth = styled(Box)<{ groupindex: number }>(({ groupindex }) => {
     alignItems: "center",
     justifyContent: "start",
     padding: "16px 14px 14px",
-    backgroundColor: "#F7F8FA",
+
     borderLeft: "1px solid #e0e0e0",
     borderRight: "1px solid #e0e0e0",
     borderBottom: "1px solid #e0e0e0",

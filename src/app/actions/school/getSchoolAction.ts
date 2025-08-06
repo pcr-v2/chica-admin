@@ -5,7 +5,6 @@ import { z } from "zod";
 
 import { getSchoolSchema } from "@/app/actions/school/schoolSchema";
 import { mysqlPrisma } from "@/libs/prisma";
-import customDayjs from "@/utils/customDayjs";
 
 export type GetSchoolRequest = z.infer<typeof getSchoolSchema>;
 export type GetSchoolResponse = Awaited<ReturnType<typeof getSchool>>;

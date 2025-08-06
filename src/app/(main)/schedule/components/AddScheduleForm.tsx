@@ -7,6 +7,7 @@ import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { GetScheduleResponse } from "@/app/actions/schedule/getScheduleAction";
+import { GetSchoolResponse } from "@/app/actions/school/getSchoolAction";
 
 export type TAddScheduleValue = {
   scheduleName: string;
@@ -16,13 +17,14 @@ export type TAddScheduleValue = {
 };
 
 interface IProps {
-  me: GetMeResponse["data"];
+  // me: GetMeResponse["data"];
+  getSchoolResult: GetSchoolResponse["result"];
   onConfirm: (value: TAddScheduleValue) => void;
   onClose: () => void;
 }
 
 export default function AddScheduleForm(props: IProps) {
-  const { me, onClose, onConfirm } = props;
+  const { getSchoolResult, onClose, onConfirm } = props;
 
   const [scheduleName, setScheduleName] = useState("");
   const [startAt, setStartAt] = useState("");
@@ -88,23 +90,24 @@ export default function AddScheduleForm(props: IProps) {
           <TitleSpan>대상학년</TitleSpan>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            {me?.schoolLevel === "elementary"
+            {(getSchoolResult?.schoolLevel === "elementary"
               ? ["1", "2", "3", "4", "5", "6"]
-              : ["1", "2", "3"].map((value, i) => (
-                  <CheckboxWrap key={i}>
-                    <CustomCheckbox
-                      value={value}
-                      checked={target.includes(value)}
-                      onChange={() => handleCheckbox(value)}
-                    />
-                    {value === "1" && "1학년"}
-                    {value === "2" && "2학년"}
-                    {value === "3" && "3학년"}
-                    {value === "4" && "4학년"}
-                    {value === "5" && "5학년"}
-                    {value === "6" && "6학년"}
-                  </CheckboxWrap>
-                ))}
+              : ["1", "2", "3"]
+            ).map((value, i) => (
+              <CheckboxWrap key={i}>
+                <CustomCheckbox
+                  value={value}
+                  checked={target.includes(value)}
+                  onChange={() => handleCheckbox(value)}
+                />
+                {value === "1" && "1학년"}
+                {value === "2" && "2학년"}
+                {value === "3" && "3학년"}
+                {value === "4" && "4학년"}
+                {value === "5" && "5학년"}
+                {value === "6" && "6학년"}
+              </CheckboxWrap>
+            ))}
           </Box>
         </Section>
       </ContentWrap>

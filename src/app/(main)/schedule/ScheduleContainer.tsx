@@ -17,6 +17,7 @@ import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { addSchedule } from "@/app/actions/schedule/addScheduleAction";
 import { deleteSchedule } from "@/app/actions/schedule/deleteScheduleAction";
 import { getScheduleList } from "@/app/actions/schedule/getScheduleListAction";
+import { getSchool } from "@/app/actions/school/getSchoolAction";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import PlusIcon from "@/public/images/icons/plus-icon.svg";
 
@@ -64,6 +65,25 @@ export default function ScheduleContainer(props: IProps) {
     staleTime: 0,
     enabled: !!selectedSchool,
   });
+
+  const { data: getSchoolResult } = useQuery({
+    queryKey: ["school", selectedSchool, me, open],
+    queryFn: () =>
+      getSchool({
+        schoolId: selectedSchool,
+      }).then((res) => {
+        if (res.code === "FAIL") {
+          toast.error(res.message);
+          return null;
+        }
+
+        return res;
+      }),
+    staleTime: 0,
+    enabled: !!selectedSchool,
+  });
+
+  console.log("getSchoolResult", getSchoolResult);
 
   useEffect(() => {
     if (selectedSchool == "" && me.data?.type === "teacher") {
@@ -175,7 +195,7 @@ export default function ScheduleContainer(props: IProps) {
         onClose={() => setOpen(false)}
         children={
           <AddScheduleForm
-            me={me.data}
+            getSchoolResult={getSchoolResult?.result}
             onClose={() => {
               setDeleteId("");
               setOpen(false);

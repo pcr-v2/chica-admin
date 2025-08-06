@@ -11,58 +11,59 @@ export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   isDragging?: boolean;
 };
 
-const Item = forwardRef<HTMLDivElement, ItemProps>(
+const ContentsItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ id, withOpacity, isDragging, style, ...props }, ref) => {
     return (
-      <ItemContainer
+      <ItemWrap
         ref={ref}
         withOpacity={withOpacity}
         isDragging={isDragging}
         style={style}
         {...props}
       >
-        <PreviewBox>{id}</PreviewBox>
+        <ItemBox>{id}</ItemBox>
 
         <BottomWrap>
           <TimeSpan>00:00:00</TimeSpan>
           <Delete />
         </BottomWrap>
-      </ItemContainer>
+      </ItemWrap>
     );
   },
 );
 
-export default Item;
+export default ContentsItem;
 
-// ---------- styled components ----------
+// -------------------------------------
+// 🧱 styled components
+// -------------------------------------
 
-const ItemContainer = styled("div", {
-  shouldForwardProp: (prop) =>
-    !["withOpacity", "isDragging"].includes(prop as string),
+const ItemWrap = styled("div", {
+  shouldForwardProp: (prop) => prop !== "withOpacity" && prop !== "isDragging",
 })<{
   withOpacity?: boolean;
   isDragging?: boolean;
 }>(({ withOpacity, isDragging }) => ({
   opacity: withOpacity ? 0.5 : 1,
   transformOrigin: "50% 50%",
-  height: "268px",
-  width: "220px",
-  borderRadius: "16px",
+  height: 268,
+  width: 220,
+  borderRadius: 16,
   cursor: isDragging ? "grabbing" : "grab",
   backgroundColor: "#ffffff",
   display: "flex",
   flexDirection: "column",
-  gap: "8px",
+  gap: 8,
   justifyContent: "space-between",
   alignItems: "center",
   transform: isDragging ? "scale(1.05)" : "scale(1)",
 }));
 
-const PreviewBox = styled("div")(() => ({
-  height: "220px",
-  width: "220px",
+const ItemBox = styled("div")(() => ({
+  height: 220,
+  width: 220,
+  borderRadius: 16,
   border: "1px solid blue",
-  borderRadius: "16px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -82,11 +83,11 @@ const TimeSpan = styled("span")(() => ({
 }));
 
 const Delete = styled(DeleteIcon)(() => ({
-  width: "40px",
-  height: "40px",
-  padding: "6px",
+  width: 40,
+  height: 40,
+  padding: 6,
   cursor: "pointer",
-  borderRadius: "8px",
+  borderRadius: 8,
   border: "1px solid #F3F3F3",
   path: {
     fill: "#747D8A",

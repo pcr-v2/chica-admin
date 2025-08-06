@@ -60,13 +60,13 @@ export default function DashboardContainer(props: IProps) {
               {currentYear}년 공휴일 추가
             </HolidayBtn>
           )}
-          <DownloadBtn
+          {/* <DownloadBtn
             onClick={() => {
               alert("개발중");
             }}
           >
             전체 데이터 다운로드
-          </DownloadBtn>
+          </DownloadBtn> */}
         </Box>
       </BottomWrap>
     </Wrapper>

@@ -23,6 +23,7 @@ export default function SignInForm(props: IProps) {
   return (
     <Wrapper>
       <Input
+        moreheight="17px 14px"
         id="id"
         type="text"
         value={id}
@@ -30,6 +31,7 @@ export default function SignInForm(props: IProps) {
         placeholder="아이디"
       />
       <Input
+        moreheight="17px 14px"
         id="pw"
         type="password"
         value={pw}

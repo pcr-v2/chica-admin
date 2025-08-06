@@ -17,12 +17,13 @@ interface IProps {
   type: "master" | "teacher";
   updatedData: GetCsResponse["result"];
 
+  viewMode: "read" | "update" | null;
   onClose: () => void;
   handleRegist: (value: TCs) => void;
 }
 
 export default function WriteCs(props: IProps) {
-  const { handleRegist, onClose, updatedData, type } = props;
+  const { handleRegist, onClose, updatedData, type, viewMode } = props;
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -47,6 +48,7 @@ export default function WriteCs(props: IProps) {
         <Section>
           <TitleSpan>제목</TitleSpan>
           <Input
+            readOnly={viewMode === "read" ? true : false}
             disabled={type === "master" || updatedData?.status === "ANSWERED"}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -59,6 +61,7 @@ export default function WriteCs(props: IProps) {
           <Section>
             <TitleSpan>문의내용</TitleSpan>
             <TextArea
+              readOnly={viewMode === "read" ? true : false}
               disabled={type === "master" || updatedData?.status === "ANSWERED"}
               value={content}
               onChange={(e) => setContent(e.target.value)}

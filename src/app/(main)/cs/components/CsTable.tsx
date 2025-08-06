@@ -20,11 +20,12 @@ import { GetCsListResponse } from "@/app/actions/cs/getCsListAction";
 import EditIcon from "@/public/images/icons/edit-icon.svg";
 
 interface IProps {
+  onClickTitle: (boardId: number) => void;
   onClickEdit: (boardId: number) => void;
   list: GetCsListResponse["result"];
 }
 
-export default function CsTable({ list, onClickEdit }: IProps) {
+export default function CsTable({ list, onClickEdit, onClickTitle }: IProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
@@ -40,7 +41,15 @@ export default function CsTable({ list, onClickEdit }: IProps) {
       {
         header: "제목",
         accessorKey: "title",
-        cell: (info) => <Ellipsis>{info.getValue() as string}</Ellipsis>,
+        cell: (info) => (
+          <Ellipsis
+            title={info.getValue() as string}
+            onClick={() => onClickTitle(info.row.original.id)}
+            style={{ cursor: "pointer" }}
+          >
+            {info.getValue() as string}
+          </Ellipsis>
+        ),
       },
       {
         header: "학교",

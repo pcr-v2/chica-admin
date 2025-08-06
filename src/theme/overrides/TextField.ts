@@ -5,6 +5,10 @@ const MuiTextField: Components<Theme> = {
     styleOverrides: {
       root: ({ theme }) => ({
         borderRadius: "12px",
+        "& input.Mui-disabled": {
+          color: "#575757 !important", // ✅ 핵심: input 요소 자체에 적용
+          WebkitTextFillColor: "#575757 !important", // ✅ Safari 대응까지
+        },
         "& .MuiFormHelperText-root.Mui-error": {
           fontSize: "12px",
         },
@@ -24,6 +28,11 @@ const MuiTextField: Components<Theme> = {
             border: "1.5px solid",
             // borderColor: theme.palette.text02.main,
           },
+          "& .Mui-disabled": {
+            // backgroundColor: theme.palette.background03.main,
+            // borderColor: theme.palette.line01.main,
+            color: "#424242 !important",
+          },
           "& input": {
             padding: "12px",
           },
@@ -31,7 +40,7 @@ const MuiTextField: Components<Theme> = {
         "& .MuiOutlinedInput-root.Mui-disabled": {
           // backgroundColor: theme.palette.background03.main,
           // borderColor: theme.palette.line01.main,
-          // color: theme.palette.text05.main,
+          color: "#424242 !important",
         },
 
         "& .MuiInputBase-sizeLarge": {

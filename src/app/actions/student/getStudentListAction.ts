@@ -51,7 +51,11 @@ export async function getStudentList(request: GetStudentListRequest) {
         },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: [
+      { studentGrade: "asc" },
+      { studentClass: "asc" },
+      { studentNumber: "asc" },
+    ],
   });
 
   if (!result) {

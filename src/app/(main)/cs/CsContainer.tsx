@@ -30,6 +30,8 @@ export default function CsContainer(props: IProps) {
 
   const [selectedTab, setSelectedTab] = useState<TTab>("total");
 
+  const [viewMode, setViewMode] = useState<"update" | "read" | null>(null);
+
   const [open, setOpen] = useState(false);
 
   const [updateBoardId, setUpdateBoardId] = useState<number | null>(null);
@@ -214,8 +216,14 @@ export default function CsContainer(props: IProps) {
         </Box>
 
         <CsTable
+          onClickTitle={(boardId) => {
+            setUpdateBoardId(boardId);
+            setViewMode("read");
+            setOpen(true); // 바로 열거나, fetch 후 열어도 됨
+          }}
           list={filteredList}
           onClickEdit={(boardId) => {
+            setViewMode("update");
             setUpdateBoardId(boardId);
             setOpen(true); // 바로 열거나, fetch 후 열어도 됨
           }}
@@ -228,6 +236,7 @@ export default function CsContainer(props: IProps) {
         onClose={() => setOpen(false)}
         children={
           <WriteCs
+            viewMode={viewMode}
             type={me.data?.type as "master" | "teacher"}
             handleRegist={handleRegist}
             onClose={() => {

@@ -142,7 +142,7 @@ export default function StudentTable({ list, onClickEdit }: IProps) {
               />
               <Rank
                 onClick={() => {
-                  alert("랭킹");
+                  // alert("랭킹");
                 }}
               />
             </div>

@@ -107,7 +107,7 @@ const Btn = styled(Box)(() => {
     cursor: "pointer",
     textAlign: "center",
     borderRadius: "8px",
-    padding: "14px 20px",
+    padding: "12px 20px",
     backgroundColor: "#32C794",
   };
 });

@@ -15,6 +15,8 @@ type IProps = TextFieldProps & {
   value: string;
   showCancel?: boolean;
   maxLength?: number;
+  moreheight?: string;
+  readOnly?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -25,6 +27,8 @@ export default function Input(props: IProps) {
     onChange,
     showCancel = false,
     maxLength,
+    moreheight,
+    readOnly,
   } = props;
 
   const [showPassword, setShowPassword] = useState(type !== "password");
@@ -48,6 +52,7 @@ export default function Input(props: IProps) {
         input: {
           inputProps: {
             maxLength: maxLength,
+            readOnly: props.readOnly,
           },
           disableUnderline: true,
           endAdornment: value.length > 0 && (
@@ -68,6 +73,12 @@ export default function Input(props: IProps) {
           ),
         },
       }}
+      sx={{
+        "& input.MuiInputBase-input": {
+          padding:
+            moreheight !== "" && moreheight != null ? moreheight : "10px 12px",
+        },
+      }}
     />
   );
 }
@@ -77,6 +88,9 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     fontSize: 14,
     color: "#464B53",
     padding: "10px 12px",
+  },
+  "& input.Mui-disabled": {
+    color: "#747D8A !important", // ✅ 핵심 수정
   },
   "& .MuiFilledInput-root": {
     borderRadius: 8,
@@ -99,7 +113,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     "&.Mui-disabled": {
       backgroundColor: "#FAFAFA !important", // 기본 상태
       // borderColor: "#d9d9d9",
-      color: "#747D8A",
+      color: "#747D8A !important",
     },
 
     "&.Mui-disabled:hover": {

@@ -111,6 +111,6 @@ const CloseDelete = styled(CloseBlackIcon)(() => ({
   cursor: "pointer",
   position: "absolute",
   path: {
-    fill: "#F44336",
+    fill: "#747D8A",
   },
 }));

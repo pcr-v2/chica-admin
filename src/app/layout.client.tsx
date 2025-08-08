@@ -42,6 +42,9 @@ const ChildrenWrap = styled(Box)(() => {
   return {
     width: "100%",
     display: "flex",
+    flex: 1,
+    flexGrow: 1,
+    minHeight: "100dvh",
     alignItems: "center",
     justifyContent: "center",
   };

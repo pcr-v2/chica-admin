@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import React, { forwardRef, HTMLAttributes } from "react";
+import React, { forwardRef, HTMLAttributes, ReactNode } from "react";
 
 import DeleteIcon from "@/public/images/icons/delete-icon.svg";
 
@@ -9,6 +9,7 @@ export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;
   withOpacity?: boolean;
   isDragging?: boolean;
+  children?: ReactNode;
 };
 
 const Item = forwardRef<HTMLDivElement, ItemProps>(
@@ -21,7 +22,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
         style={style}
         {...props}
       >
-        <PreviewBox>{id}</PreviewBox>
+        <PreviewBox>{props.children ?? id}</PreviewBox>
 
         <BottomWrap>
           <TimeSpan>00:00:00</TimeSpan>

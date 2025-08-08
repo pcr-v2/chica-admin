@@ -228,7 +228,7 @@ const TitleSpan = styled("span")(() => {
 const BtnWrap = styled(Box)(() => {
   return {
     display: "flex",
-    padding: "16px 12px 16px 24px",
+    padding: "16px 28px 28px",
   };
 });
 

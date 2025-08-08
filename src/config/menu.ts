@@ -3,9 +3,9 @@ import { FunctionComponent, ReactNode, SVGProps } from "react";
 import SideContents from "@/public/images/icons/sidebar/side-contents.svg";
 import SideCs from "@/public/images/icons/sidebar/side-cs.svg";
 import SideHome from "@/public/images/icons/sidebar/side-home.svg";
+import SideMypage from "@/public/images/icons/sidebar/side-mypage.svg";
 import SideSchedule from "@/public/images/icons/sidebar/side-schedule.svg";
 import SideSchool from "@/public/images/icons/sidebar/side-school.svg";
-import SideStudentAdd from "@/public/images/icons/sidebar/side-student-add.svg";
 import SideStudent from "@/public/images/icons/sidebar/side-student.svg";
 
 // ✅ 1. 사용자 타입 정의
@@ -145,6 +145,13 @@ export const MENUS: MenuItem[] = [
     label: "고객센터",
     path: "/cs",
     icon: SideCs,
+    allowRoles: ["teacher"],
+    children: [],
+  },
+  {
+    label: "마이페이지",
+    path: "/my-page",
+    icon: SideMypage,
     allowRoles: ["teacher"],
     children: [],
   },

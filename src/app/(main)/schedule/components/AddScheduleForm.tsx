@@ -17,7 +17,6 @@ export type TAddScheduleValue = {
 };
 
 interface IProps {
-  // me: GetMeResponse["data"];
   getSchoolResult: GetSchoolResponse["result"];
   onConfirm: (value: TAddScheduleValue) => void;
   onClose: () => void;
@@ -91,8 +90,8 @@ export default function AddScheduleForm(props: IProps) {
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
             {(getSchoolResult?.schoolLevel === "elementary"
-              ? ["1", "2", "3", "4", "5", "6"]
-              : ["1", "2", "3"]
+              ? ["1", "2", "3", "4", "5", "6", "all"]
+              : ["1", "2", "3", "all"]
             ).map((value, i) => (
               <CheckboxWrap key={i}>
                 <CustomCheckbox
@@ -106,6 +105,7 @@ export default function AddScheduleForm(props: IProps) {
                 {value === "4" && "4학년"}
                 {value === "5" && "5학년"}
                 {value === "6" && "6학년"}
+                {value === "all" && "전체"}
               </CheckboxWrap>
             ))}
           </Box>
@@ -261,7 +261,7 @@ const BtnWrap = styled(Box)(() => {
     gap: "16px",
     display: "flex",
     justifyContent: "end",
-    padding: "16px 12px 16px 24px",
+    padding: "16px 28px 28px",
   };
 });
 

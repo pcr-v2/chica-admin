@@ -12,7 +12,7 @@ export default function DeleteScheduleAlert(props: IProps) {
 
   return (
     <Wrapper>
-      <Title>일정 삭제</Title>
+      {/* <Title>일정 삭제</Title> */}
 
       <ContentWrap>
         <TitleSpan>여러 날에 걸친 일정은 모두 삭제해야</TitleSpan>
@@ -57,7 +57,7 @@ const ContentWrap = styled(Box)(() => {
     gap: "8px",
     width: "100%",
     display: "flex",
-    padding: "28px",
+    padding: "32px 28px 28px",
     flexDirection: "column",
   };
 });

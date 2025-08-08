@@ -1,27 +1,38 @@
-"use client";
-
 import {
   AnimateLayoutChanges,
   defaultAnimateLayoutChanges,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import React, { FC } from "react";
 
-import Item, { ItemProps } from "@/app/(main)/video/Item";
+import ContentsItem, {
+  ItemProps,
+} from "@/app/(main)/contents/components/ContentsItem";
 
-const animateLayoutChanges: AnimateLayoutChanges = (args) =>
+const animateLayoutChanges = (args: any) =>
   defaultAnimateLayoutChanges({ ...args, wasDragging: true });
 
-const ContentsSortableItem: FC<ItemProps> = (props) => {
+interface Props extends Omit<ItemProps, "style" | "ref"> {}
+
+const ContentsSortableItem = (props: Props) => {
   const {
-    isDragging,
+    id,
+    fileType,
+    fileUrl,
+    onClickDelete,
+    isDragging: isDraggingProp,
+    withOpacity,
+    opacity,
+  } = props;
+
+  const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: props.id, animateLayoutChanges });
+    isDragging,
+  } = useSortable({ id, animateLayoutChanges });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -29,11 +40,16 @@ const ContentsSortableItem: FC<ItemProps> = (props) => {
   };
 
   return (
-    <Item
+    <ContentsItem
+      onClickDelete={onClickDelete}
       ref={setNodeRef}
+      id={id}
+      fileType={fileType}
+      fileUrl={fileUrl}
+      isDragging={isDragging}
+      withOpacity={withOpacity}
+      opacity={opacity}
       style={style}
-      withOpacity={isDragging}
-      {...props}
       {...attributes}
       {...listeners}
     />

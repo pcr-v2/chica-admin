@@ -3,19 +3,18 @@
 import { Box, styled } from "@mui/material";
 import {
   ColumnDef,
-  getCoreRowModel,
-  useReactTable,
   flexRender,
+  getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import ContentsPagination from "@/app/_components/common/ContentsPagination";
 import ContentsViewCountFilter from "@/app/_components/common/ContentsViewCountFilter";
-import { Toggle } from "@/app/_components/common/Toggle";
 import { GetStudentListResponse } from "@/app/actions/student/getStudentListAction";
 import { updateStudentStatus } from "@/app/actions/student/updateStudentStatus";
 import EditIcon from "@/public/images/icons/edit-icon.svg";
@@ -105,6 +104,7 @@ export default function StudentTable({ list, onClickEdit }: IProps) {
       {
         header: "이름",
         accessorKey: "studentName",
+        // cell: ({ getValue }) => `${maskName(getValue() as string)}`,
       },
       // {
       //   header: "재학여부",

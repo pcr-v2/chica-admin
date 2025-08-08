@@ -79,8 +79,8 @@ const Wrapper = styled(Box)(() => {
 
 const Logo = styled("img")(() => {
   return {
-    width: "180px",
-    marginBottom: "40px",
+    width: "240px",
+    marginBottom: "64px",
   };
 });
 

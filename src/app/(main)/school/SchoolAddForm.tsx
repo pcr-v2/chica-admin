@@ -476,7 +476,7 @@ const BtnWrap = styled(Box)(() => {
     gap: "16px",
     display: "flex",
     justifyContent: "end",
-    padding: "16px 12px 16px 24px",
+    padding: "16px 28px 28px",
   };
 });
 

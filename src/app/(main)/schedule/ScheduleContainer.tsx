@@ -191,7 +191,7 @@ export default function ScheduleContainer(props: IProps) {
 
       <Modal
         open={open}
-        maxWidth={571}
+        maxWidth={600}
         onClose={() => setOpen(false)}
         children={
           <AddScheduleForm
@@ -208,7 +208,7 @@ export default function ScheduleContainer(props: IProps) {
       <Modal
         isDelete
         open={deleteModal}
-        maxWidth={420}
+        maxWidth={360}
         children={
           <DeleteScheduleAlert
             onDelete={handleDelete}

@@ -6,9 +6,9 @@ import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-import SchoolAddForm from "@/app/(main)/school/SchoolAddForm";
-import SchoolSearchFilter from "@/app/(main)/school/SchoolSearchFilter";
-import SchoolTable from "@/app/(main)/school/SchoolTable";
+import SchoolAddForm from "@/app/(main)/school/components/SchoolAddForm";
+import SchoolSearchFilter from "@/app/(main)/school/components/SchoolSearchFilter";
+import SchoolTable from "@/app/(main)/school/components/SchoolTable";
 import CountTab from "@/app/_components/common/CountTab";
 import Modal from "@/app/_components/common/Modal";
 import RefreshBtn from "@/app/_components/common/RefreshBtn";

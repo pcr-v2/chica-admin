@@ -1,7 +1,4 @@
-import React from "react";
-
 import ContentsContainer from "@/app/(main)/contents/ContentsContainer";
-import VideoContainer from "@/app/(main)/video/VideoContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getContentsList } from "@/app/actions/contents/getContentsListAction";
 

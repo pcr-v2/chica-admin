@@ -4,11 +4,11 @@ import { Box, styled } from "@mui/material";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
 
-import BottomContent from "@/app/(main)/dashboard/BottomContent";
-import MiddleContent from "@/app/(main)/dashboard/MiddleContent";
-import TopContent from "@/app/(main)/dashboard/TopContent";
 import { BarChart } from "@/app/(main)/dashboard/components/BarChart";
+import BottomContent from "@/app/(main)/dashboard/components/BottomContent";
 import ChartLine from "@/app/(main)/dashboard/components/LineChart";
+import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
+import TopContent from "@/app/(main)/dashboard/components/TopContent";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
 
 interface IProps {

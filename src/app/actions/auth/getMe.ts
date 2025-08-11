@@ -44,6 +44,11 @@ export async function getMe() {
       schoolId: admin.schoolId,
       schoolLevel: admin.schoolLevel,
       name: admin.teacherName,
+      schoolName: admin.schoolName,
+      phone: admin.teacherPhone,
+      email: admin.teacherEmail,
+      startAt: admin.startAt,
+      endAt: admin.endAt,
     },
   };
 }

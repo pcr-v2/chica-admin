@@ -9,8 +9,8 @@ export default async function page() {
   const me = await getMe();
 
   const contentsList = await getContentsList({
-    schoolId: me.data?.schoolId as string,
+    schoolId: "21a01ae2-2f60-4f7c-bcae-9fa4fc287564",
   });
 
-  return <ContentsContainer contentsList={[]} me={me} />;
+  return <ContentsContainer contentsList={contentsList} me={me} />;
 }

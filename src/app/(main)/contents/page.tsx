@@ -9,5 +9,5 @@ export default async function page() {
     schoolId: me.data?.schoolId as string,
   });
 
-  return <ContentsContainer me={me} contentsList={contentsList.result} />;
+  return <ContentsContainer me={me} contentsList={contentsList} />;
 }

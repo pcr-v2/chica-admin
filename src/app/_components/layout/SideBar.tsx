@@ -134,6 +134,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
   maxWidth: "243px",
+  minHeight: "100dvh",
   padding: "28px 24px",
   flexDirection: "column",
   [theme.breakpoints.down("desktop")]: {

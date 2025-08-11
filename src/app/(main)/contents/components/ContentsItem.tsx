@@ -37,6 +37,7 @@ const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation(); // 드래그 시작 시 발생하는 pointerdown 이벤트 차단
+    event.preventDefault(); // 드래그 시작 시 발생하는 pointerdown 이벤트 차단
     onClickDelete();
   };
 
@@ -59,6 +60,7 @@ const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
         <TimeSpan>00:00:00</TimeSpan>
 
         <Delete
+          data-no-dnd
           onClick={handleDeleteClick}
           onPointerDown={handleDeletePointerDown}
         />

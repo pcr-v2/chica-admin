@@ -29,6 +29,9 @@ export async function getContentsList(request: GetContentsListRequest) {
       schoolId,
       contentsStatus: true,
     },
+    orderBy: {
+      seq: "asc",
+    },
   });
 
   if (!res) {

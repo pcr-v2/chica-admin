@@ -133,7 +133,9 @@ exports.Prisma.ContentsScalarFieldEnum = {
   fileType: 'fileType',
   fileName: 'fileName',
   seq: 'seq',
-  contentsStatus: 'contentsStatus'
+  contentsStatus: 'contentsStatus',
+  userFileName: 'userFileName',
+  fileSize: 'fileSize'
 };
 
 exports.Prisma.HolidayScalarFieldEnum = {
@@ -207,10 +209,16 @@ exports.Prisma.BrushedOrderByRelevanceFieldEnum = {
   studentId: 'studentId'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 exports.Prisma.ContentsOrderByRelevanceFieldEnum = {
   schoolId: 'schoolId',
   fileType: 'fileType',
-  fileName: 'fileName'
+  fileName: 'fileName',
+  userFileName: 'userFileName'
 };
 
 exports.Prisma.HolidayOrderByRelevanceFieldEnum = {
@@ -221,11 +229,6 @@ exports.Prisma.SchedulesOrderByRelevanceFieldEnum = {
   schoolId: 'schoolId',
   scheduleName: 'scheduleName',
   scheduleTarget: 'scheduleTarget'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
 };
 
 exports.Prisma.SchoolOrderByRelevanceFieldEnum = {

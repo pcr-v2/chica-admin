@@ -6,6 +6,7 @@ import {
   DragOverlay,
   DragStartEvent,
   MouseSensor,
+  PointerSensor,
   TouchSensor,
   closestCenter,
   useSensor,
@@ -16,33 +17,105 @@ import {
   arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Box, styled } from "@mui/material";
-import { useCallback, useRef, useState } from "react";
+import { Box, Button, styled } from "@mui/material";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 
 import ContentsAdd from "@/app/(main)/contents/components/ContentsAdd";
+import ContentsControlBar from "@/app/(main)/contents/components/ContentsControlBar";
 import ContentsDesc from "@/app/(main)/contents/components/ContentsDesc";
 import ContentsItem from "@/app/(main)/contents/components/ContentsItem";
 import ContentsSortableItem from "@/app/(main)/contents/components/ContentsSortableItem";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { GetContentsListResponse } from "@/app/actions/contents/getContentsListAction";
+import { deleteFileFromS3 } from "@/app/actions/contents/deleteFileFromS3";
+import {
+  getContentsList,
+  GetContentsListResponse,
+} from "@/app/actions/contents/getContentsListAction";
+import { updateSeq } from "@/app/actions/contents/updateSeq";
+import { uploadFilesToS3 } from "@/app/actions/contents/uploadFilesToS3";
 import DeleteIcon from "@/public/images/icons/delete-icon.svg";
+
+type FileType = "image" | "video";
+
+interface IItem {
+  id: string; // 서버에서 받아온 경우 숫자형 id도 string으로 변환해서 사용
+  type: FileType;
+  url: string; // CloudFront URL or ObjectURL
+  fileName?: string; // 서버에서 온 데이터용 (uuid 부분)
+  fileType?: string; // 확장자 (jpeg, mp4 등)
+  schoolId?: string;
+  seq?: number;
+  contentsStatus?: boolean;
+  file?: File; // 업로드할 때 클라이언트에서만 존재
+}
 
 interface IProps {
   me: GetMeResponse;
-  contentsList: GetContentsListResponse["result"];
+  contentsList: GetContentsListResponse;
 }
 
 export default function ContentsContainer(props: IProps) {
   const { me, contentsList } = props;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const queryClient = useQueryClient();
 
-  const [items, setItems] = useState<
-    { id: string; type: "image" | "video"; url: string }[]
-  >([]);
+  // 초기값 세팅: 서버에서 받은 contentsList를 IItem[] 형태로 매핑
+  const [items, setItems] = useState<IItem[]>([]);
+  const [totalSize, setTotalSize] = useState(0);
+  const queryKey = ["contentsList"];
+
+  const { data } = useQuery({
+    queryKey,
+    queryFn: () =>
+      getContentsList({
+        schoolId: me.data?.schoolId!,
+      }),
+    initialData: contentsList,
+    staleTime: 0,
+  });
+
+  useEffect(() => {
+    if (data.result) {
+      setItems(
+        data.result.map((content) => ({
+          id: content.id.toString(),
+          type: content.fileType === "mp4" ? "video" : "image",
+          url: `${process.env.NEXT_PUBLIC_AWS_CLOUD_FRONT_KEY}/${content.schoolId}/${content.fileName}.${content.fileType}`,
+          fileName: content.fileName,
+          fileType: content.fileType,
+          schoolId: content.schoolId,
+          seq: content.seq,
+          contentsStatus: content.contentsStatus,
+        })),
+      );
+
+      const sumedContentsSize = data.result.reduce(
+        (sum, file) => sum + Number(file.fileSize),
+        0,
+      );
+
+      setTotalSize(sumedContentsSize);
+    }
+  }, [data]);
+
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  // const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+      // 여기서 data-no-dnd 속성이 있으면 드래그 시작 무시
+      onStart: (event: any) => {
+        const target = event?.nativeEvent?.target as HTMLElement;
+        if (target?.closest("[data-no-dnd]")) {
+          throw new Error("Drag cancelled"); // 강제 취소
+        }
+      },
+    }),
+  );
 
   const handleAddClick = () => {
     fileInputRef.current?.click();
@@ -52,9 +125,23 @@ export default function ContentsContainer(props: IProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const isVideo = file.type.startsWith("video");
+    const maxVideoSize = 30 * 1024 * 1024; // 30MB
+    const maxImageSize = 10 * 1024 * 1024; // 10MB
+
+    if (isVideo && file.size > maxVideoSize) {
+      toast.error("30MB 이상의 영상 파일은 업로드할 수 없습니다.");
+      return;
+    }
+
+    if (!isVideo && file.size > maxImageSize) {
+      toast.error("10MB 이상의 이미지 파일은 업로드할 수 없습니다.");
+      return;
+    }
+
     const allowedTypes = ["video/mp4", "image/png", "image/jpeg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      alert("지원하지 않는 파일 형식입니다.");
+      toast.error("지원하지 않는 파일 형식입니다.");
       return;
     }
 
@@ -62,8 +149,8 @@ export default function ContentsContainer(props: IProps) {
     const url = URL.createObjectURL(file);
     const type = file.type.startsWith("video") ? "video" : "image";
 
-    setItems((prev) => [...prev, { id, type, url }]);
-    e.target.value = ""; // 같은 파일 다시 선택 가능하도록 초기화
+    setItems((prev) => [...prev, { id, type, url, file }]);
+    e.target.value = "";
   };
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
@@ -76,27 +163,92 @@ export default function ContentsContainer(props: IProps) {
       setItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over!.id);
+
+        const newItems = arrayMove(items, oldIndex, newIndex);
+
+        const seqData = newItems.map((item, index) => ({
+          id: Number(item.id),
+          seq: index + 1,
+        }));
+
+        updateSeq(seqData);
+
         return arrayMove(items, oldIndex, newIndex);
       });
     }
     setActiveId(null);
   }, []);
 
-  console.log("item", items);
-
   const handleDelete = (deleteId: string) => {
-    console.log("deleteId", deleteId);
-    if (deleteId == null || deleteId === "") return;
+    // console.log("deleteId", deleteId);
 
-    const newItems = items.filter((el) => el.id !== deleteId);
+    if (!deleteId) return;
+    setItems((prev) => prev.filter((item) => item.id !== deleteId));
+  };
 
-    setItems(newItems);
+  const handleUpload = async () => {
+    if (!items.length) {
+      toast.error("업로드할 파일이 없습니다.");
+      return;
+    }
+
+    // console.log("items", items);
+
+    const formData = new FormData();
+    for (const item of items) {
+      if (item.file) {
+        formData.append("files", item.file);
+      }
+    }
+
+    const res = await uploadFilesToS3({
+      formData,
+      schoolId: me.data?.schoolId as string,
+    });
+
+    // console.log("S3 업로드 완료:", uploadedUrls);
+
+    toast.success("업로드 완료!");
+    queryClient.invalidateQueries({
+      queryKey: ["contentsList"],
+    });
+  };
+
+  const handleDeleteTest = async (request: {
+    deleteId: string;
+    fileType: string;
+  }) => {
+    const { deleteId, fileType } = request;
+    // console.log("deleteId", deleteId);
+    const res = await deleteFileFromS3({
+      keys: [deleteId],
+      schoolId: me.data?.schoolId as string,
+      fileType: fileType,
+    });
+
+    if (res?.code === "FAIL") {
+      toast.error(res.message);
+    }
+
+    toast.success(res?.message as string);
+
+    // 로컬 상태 즉시 반영
+    setItems((prev) => prev.filter((item) => item.fileName !== deleteId));
+
+    // 서버 데이터도 새로 받아오기
+    queryClient.refetchQueries({
+      queryKey: ["contentsList"],
+    });
   };
 
   return (
     <Wrapper>
       <ContentWrap>
-        <ContentsDesc />
+        <ContentsControlBar
+          totalSize={Number(totalSize.toFixed(2))}
+          contentsLength={data.result?.length ?? 0}
+          handleUpdloadFiles={handleUpload}
+        />
 
         <DndContext
           sensors={sensors}
@@ -109,7 +261,7 @@ export default function ContentsContainer(props: IProps) {
             items={items.map((item) => item.id)}
             strategy={rectSortingStrategy}
           >
-            <ContentsWrap>
+            <SortSection>
               <ContentsAdd onClick={handleAddClick} />
 
               <input
@@ -126,10 +278,15 @@ export default function ContentsContainer(props: IProps) {
                   id={item.id}
                   fileType={item.type}
                   fileUrl={item.url}
-                  onClickDelete={() => handleDelete(item.id)}
+                  onClickDelete={() =>
+                    handleDeleteTest({
+                      deleteId: item.fileName as string,
+                      fileType: item.fileType as string,
+                    })
+                  }
                 />
               ))}
-            </ContentsWrap>
+            </SortSection>
           </SortableContext>
 
           <DragOverlay adjustScale style={{ transformOrigin: "0 0" }}>
@@ -158,25 +315,21 @@ export default function ContentsContainer(props: IProps) {
 
 const Wrapper = styled(Box)(() => {
   return {
-    // flex: 1,
     flexGrow: 1,
     gap: "60px",
-    // height: "100%",
     width: "100%",
+    minHeight: "100dvh",
     display: "flex",
+    alignItems: "start",
     borderRadius: "24px",
-    flexDirection: "column",
+    justifyContent: "start",
     backgroundColor: "#fff",
     padding: "32px 28px 32px",
-    justifyContent: "flex-start",
-    // alignItems: "center",
-    // minHeight: "calc(100dvh - 134px)",
   };
 });
 
 const ContentWrap = styled(Box)(() => {
   return {
-    // flex: 1,
     flexGrow: 1,
     gap: "40px",
     display: "flex",
@@ -186,36 +339,32 @@ const ContentWrap = styled(Box)(() => {
   };
 });
 
-const Delete = styled(DeleteIcon)(() => ({
-  width: "40px",
-  height: "40px",
-  padding: "6px",
-  cursor: "pointer",
-  borderRadius: "8px",
-  border: "1px solid #F3F3F3",
-  path: {
-    fill: "#747D8A",
-  },
-}));
-
-const ContentsWrap = styled(Box)(() => {
+const SortSection = styled(Box)(() => {
   return {
     gap: "24px",
-    margin: "0 auto",
-    display: "flex",
     flexWrap: "wrap",
-    width: "100%",
-    border: "1px solid red",
-    // maxWidth: "1364px",
-    alignItems: "start",
-    justifyContent: "start",
+    alignItems: "center",
+    display: "inline-flex",
+    justifyContent: "center",
   };
 });
 
-const TimeSpan = styled("span")(() => {
-  return {
-    fontSize: 18,
-    fontWeight: 400,
-    color: "#D5D7DB",
-  };
-});
+// const Delete = styled(DeleteIcon)(() => ({
+//   width: "40px",
+//   height: "40px",
+//   padding: "6px",
+//   cursor: "pointer",
+//   borderRadius: "8px",
+//   border: "1px solid #F3F3F3",
+//   path: {
+//     fill: "#747D8A",
+//   },
+// }));
+
+// const TimeSpan = styled("span")(() => {
+//   return {
+//     fontSize: 18,
+//     fontWeight: 400,
+//     color: "#D5D7DB",
+//   };
+// });

@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   experimental: {
     scrollRestoration: true,
+    serverActions: {
+      bodySizeLimit: "30mb", // 원하는 용량으로 설정 (예: 10mb)
+    },
   },
 
   webpack(config) {

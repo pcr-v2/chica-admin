@@ -11,3 +11,10 @@ export const addContentsSchema = z.object({
   seq: z.number({ required_error: "정렬 값이 없습니다." }),
   contentsStatus: z.boolean({ required_error: "컨텐츠 상태가 없습니다." }),
 });
+
+export const updateSeqSchema = z.array(
+  z.object({
+    id: z.number({ required_error: "컨텐츠 아이디가 없습니다." }),
+    seq: z.number({ required_error: "컨텐츠 정렬 번호가 없습니다." }),
+  }),
+);

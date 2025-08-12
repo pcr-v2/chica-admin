@@ -34,6 +34,8 @@ import {
   getContentsList,
   GetContentsListResponse,
 } from "@/app/actions/contents/getContentsListAction";
+import { getPresignedUploadUrl } from "@/app/actions/contents/getPresignedUploadUrl";
+import { saveMetaToDB } from "@/app/actions/contents/saveMetaToDB";
 import { updateSeq } from "@/app/actions/contents/updateSeq";
 import { uploadFilesToS3 } from "@/app/actions/contents/uploadFilesToS3";
 import DeleteIcon from "@/public/images/icons/delete-icon.svg";
@@ -186,32 +188,93 @@ export default function ContentsContainer(props: IProps) {
     setItems((prev) => prev.filter((item) => item.id !== deleteId));
   };
 
+  // const handleUpload = async () => {
+  //   if (!items.length) {
+  //     toast.error("업로드할 파일이 없습니다.");
+  //     return;
+  //   }
+
+  //   // console.log("items", items);
+
+  //   const formData = new FormData();
+  //   for (const item of items) {
+  //     if (item.file) {
+  //       formData.append("files", item.file);
+  //     }
+  //   }
+
+  //   const res = await uploadFilesToS3({
+  //     formData,
+  //     schoolId: me.data?.schoolId as string,
+  //   });
+
+  //   // console.log("S3 업로드 완료:", uploadedUrls);
+
+  //   toast.success("업로드 완료!");
+  //   queryClient.invalidateQueries({
+  //     queryKey: ["contentsList"],
+  //   });
+  // };
+
   const handleUpload = async () => {
-    if (!items.length) {
+    if (!items.length || items == null) {
       toast.error("업로드할 파일이 없습니다.");
       return;
     }
 
-    // console.log("items", items);
+    // 1. 각 파일별 presigned URL 요청
+    const presignedUrls = await Promise.all(
+      items.map(async (item) => {
+        if (!item.file) return null;
+        return await getPresignedUploadUrl({
+          fileName: item.file.name,
+          fileType: item.file.type,
+          schoolId: me.data?.schoolId as string,
+        });
+      }),
+    );
 
-    const formData = new FormData();
-    for (const item of items) {
-      if (item.file) {
-        formData.append("files", item.file);
-      }
-    }
+    // 2. S3에 직접 업로드
+    await Promise.all(
+      presignedUrls.map(async (presigned, idx) => {
+        if (!presigned) return;
 
-    const res = await uploadFilesToS3({
-      formData,
+        await fetch(presigned.url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": items[idx]?.file?.type ?? "",
+          },
+          body: items[idx].file,
+        });
+      }),
+    );
+
+    const filteredPresignedUrls = presignedUrls.filter(
+      (p): p is { url: string; key: string } => p !== null,
+    );
+
+    // 3. DB에 메타 저장: 서버 액션 호출해서 key 리스트 전달
+    const uploadedMeta = filteredPresignedUrls.map(({ key }) => ({
+      fileName: key.split("/")[1].split(".")[0], // UUID만
+      fileType: key.split(".").pop(),
+      fileSize:
+        items.find((i) => i.file?.name === key.split("/")[1])?.file?.size ?? 0,
+      userFileName: items
+        .find((i) => i.file?.name === key.split("/")[1])
+        ?.file?.name.split(".")[0],
+    }));
+
+    const res = await saveMetaToDB({
       schoolId: me.data?.schoolId as string,
+      files: uploadedMeta,
     });
 
-    // console.log("S3 업로드 완료:", uploadedUrls);
-
-    toast.success("업로드 완료!");
-    queryClient.invalidateQueries({
-      queryKey: ["contentsList"],
-    });
+    if (res.code === "SUCCESS") {
+      toast.success("업로드 및 DB 저장 완료!");
+      queryClient.invalidateQueries({ queryKey: ["contentsList"] });
+    } else {
+      toast.error(res.message);
+    }
   };
 
   const handleDeleteTest = async (request: {

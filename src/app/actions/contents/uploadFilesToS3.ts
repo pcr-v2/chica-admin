@@ -36,7 +36,7 @@ export async function uploadFilesToS3(request: TRequest) {
       }),
     );
 
-    const fileUrl = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME!}.s3.${process.env.AWS_REGION!}.amazonaws.com/${schoolId}/${fileName}`;
+    const fileUrl = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME!}.s3.${process.env.NEXT_PUBLIC_AWS_REGION!}.amazonaws.com/${schoolId}/${fileName}`;
 
     // 메타 정보 배열에 저장
     uploadedMeta.push({

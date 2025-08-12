@@ -1,22 +1,46 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 import Table from "@/app/(main)/dashboard/components/Table";
+import { GetMeResponse } from "@/app/actions/auth/getMe";
+import {
+  getRankPageStatistic,
+  GetRankPageStatisticResponse,
+} from "@/app/actions/statistic/getRankPageStatistic";
 
-export default function BottomContent() {
+interface IProps {
+  me: GetMeResponse;
+  list: GetRankPageStatisticResponse;
+}
+
+export default function BottomContent(props: IProps) {
+  const { me, list } = props;
+
+  const { data } = useQuery({
+    queryKey: ["student-statistic-list"],
+    queryFn: () =>
+      getRankPageStatistic({
+        schoolId: me.data?.schoolId as string,
+        type: "term",
+      }),
+    initialData: list,
+    staleTime: 0,
+  });
+
   return (
     <Wrapper>
       <TableWrap>
         <Title>미참여 학생 리스트</Title>
 
-        <Table />
+        <Table list={data} type="uncheck" />
       </TableWrap>
 
       <TableWrap>
         <Title>학생 순위</Title>
 
-        <Table />
+        <Table list={data} type="rank" />
       </TableWrap>
     </Wrapper>
   );

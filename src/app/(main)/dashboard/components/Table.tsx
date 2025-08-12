@@ -2,21 +2,29 @@
 
 import { Box, styled } from "@mui/material";
 
+import { GetRankPageStatisticResponse } from "@/app/actions/statistic/getRankPageStatistic";
 import Female from "@/public/images/icons/female-icon.svg";
 import Male from "@/public/images/icons/male-icon.svg";
 
-const testList = [
-  { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
-  { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
-];
+// const testList = [
+//   { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "male", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
+//   { gender: "female", grade: 4, class: "12", number: 1, name: "정소민" },
+// ];
 
-export default function Table() {
+interface IProps {
+  list: GetRankPageStatisticResponse;
+  type: "uncheck" | "rank";
+}
+
+export default function Table(props: IProps) {
+  const { list, type } = props;
+
   return (
     <Wrapper>
       <TableHeader>
@@ -27,26 +35,55 @@ export default function Table() {
         <TableHeaderColumn>이름</TableHeaderColumn>
       </TableHeader>
 
-      {testList.map((el, idx) => {
-        return (
-          <TableRow
-            key={idx}
-            style={{
-              borderBottom:
-                testList.length - 1 === idx ? "none" : "1px solid #F3F3F3",
-            }}
-          >
-            <TableRowItem>
-              <Icon>{el.gender === "male" ? <Male /> : <Female />}</Icon>
-            </TableRowItem>
+      {type === "uncheck"
+        ? list.data?.unCheckedListRaw?.map((el, idx) => {
+            return (
+              <TableRow
+                key={idx}
+                style={{
+                  borderBottom:
+                    list.data?.unCheckedListRaw &&
+                    list.data?.unCheckedListRaw?.length - 1 === idx
+                      ? "none"
+                      : "1px solid #F3F3F3",
+                }}
+              >
+                <TableRowItem>
+                  {el.student_gender === "male" ? <MaleIcon /> : <FeMaleIcon />}
+                </TableRowItem>
 
-            <TableRowItem>{el.grade}학년</TableRowItem>
-            <TableRowItem>{el.class}반</TableRowItem>
-            <TableRowItem>{el.number}번</TableRowItem>
-            <TableRowItem>{el.name}</TableRowItem>
-          </TableRow>
-        );
-      })}
+                <TableRowItem>{el.student_grade}학년</TableRowItem>
+                <TableRowItem>{el.student_class}반</TableRowItem>
+                <TableRowItem>{el.student_number}번</TableRowItem>
+                <TableRowItem>{el.student_name}</TableRowItem>
+              </TableRow>
+            );
+          })
+        : list.data?.studentRankArray?.map((el, idx) => {
+            return (
+              <TableRow
+                key={idx}
+                style={{
+                  borderBottom:
+                    list.data?.unCheckedListRaw &&
+                    list.data?.unCheckedListRaw?.length - 1 === idx
+                      ? "none"
+                      : "1px solid #F3F3F3",
+                }}
+              >
+                <TableRowItem>
+                  {/* <Icon> */}
+                  {el.student_gender === "male" ? <MaleIcon /> : <FeMaleIcon />}
+                  {/* </Icon> */}
+                </TableRowItem>
+
+                <TableRowItem>{el.student_grade}학년</TableRowItem>
+                <TableRowItem>{el.student_class}반</TableRowItem>
+                <TableRowItem>{el.student_number}번</TableRowItem>
+                <TableRowItem>{el.student_name}</TableRowItem>
+              </TableRow>
+            );
+          })}
     </Wrapper>
   );
 }
@@ -120,3 +157,23 @@ const Icon = styled(Box)({
     // height: "100%",
   },
 });
+
+const MaleIcon = styled(Male)<{ isopen: string }>(({ isopen }) => ({
+  width: "42px",
+  height: "42px",
+  path: {
+    // fill: "",
+  },
+  // transition: "transform 0.2s ease-in-out",
+  // transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
+}));
+
+const FeMaleIcon = styled(Female)<{ isopen: string }>(({ isopen }) => ({
+  width: "42px",
+  height: "42px",
+  path: {
+    // fill: "",
+  },
+  // transition: "transform 0.2s ease-in-out",
+  // transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
+}));

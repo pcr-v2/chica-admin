@@ -37,14 +37,14 @@ export const fetchAndSaveHolidays = async () => {
   // 1. API 호출
   const res = await fetch(url);
   const text = await res.text();
-  console.log("raw text:", text);
+  // console.log("raw text:", text);
 
   let rawHolidays: RawHoliday[] = [];
 
   try {
     const data = JSON.parse(text);
     rawHolidays = data.response?.body?.items?.item ?? [];
-    console.log("공휴일 데이터 (가공 전):", rawHolidays);
+    // console.log("공휴일 데이터 (가공 전):", rawHolidays);
   } catch (e) {
     console.error("JSON 파싱 실패");
     throw new Error("응답이 JSON 형식이 아님");

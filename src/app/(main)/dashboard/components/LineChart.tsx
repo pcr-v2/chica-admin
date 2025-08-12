@@ -10,9 +10,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import dayjs from "dayjs";
 import React from "react";
 import { Line } from "react-chartjs-2";
+
+import { GetLineChartStatisticResponse } from "@/app/actions/statistic/getLineChartStatistic";
 
 ChartJS.register(
   CategoryScale,
@@ -24,73 +25,86 @@ ChartJS.register(
   Legend,
 );
 
-// ✅ 1. 차트 옵션 (선 부드럽게)
-export const options = {
-  responsive: true,
-  maintainAspectRatio: false, // 이게 있어야 부모 높이에 따라 반응함
-  plugins: {
-    legend: {
-      display: false,
-      position: "top" as const,
-    },
-    title: {
-      display: false,
-      text: "일별/주별 통계",
-    },
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false, // ✅ 세로선 제거
+interface IProps {
+  lineRes: GetLineChartStatisticResponse;
+}
+
+export default function ChartLine({ lineRes }: IProps) {
+  const labels = lineRes.data?.labels || [];
+
+  const maleData = lineRes.data?.maleRates || [];
+  const femaleData = lineRes.data?.femaleRates || [];
+  const totalData = lineRes.data?.rates || [];
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom" as const,
+        labels: {
+          padding: 15, // ✅ 레전드와 차트 간격 조정
+          boxWidth: 12, // 레전드 색상 박스 크기
+          boxHeight: 12, // 색상 박스 높이
+          font: {
+            size: 16, // ✅ 폰트 사이즈
+            weight: 400,
+            family: "Pretandard",
+          },
+        },
+      },
+      title: {
+        display: false,
+        // text: "일별/주별 통계",
       },
     },
-    y: {
-      grid: {
-        drawBorder: false,
-        drawTicks: false,
-        drawOnChartArea: true, // ✅ chart area 내부에 선 그리기 (기본값 true)
-        //   color: (ctx) => {
-        //     // 라인 구분 조건 걸고 싶으면 여기서 가능
-        //     return "rgba(167, 169, 170, 0.25)";
-        //   },
-        borderDash: [4, 4], // ✅ 점선 스타일
-        lineWidth: 1,
+    scales: {
+      x: {
+        grid: { display: false },
+      },
+      y: {
+        min: 0,
+        suggestedMax: Math.max(...[...maleData, ...femaleData]) * 1.1, // 최대값 + 10%
+        ticks: { stepSize: 10 },
+        grid: {
+          drawBorder: false,
+          drawTicks: false,
+          drawOnChartArea: true,
+          borderDash: [4, 4],
+          lineWidth: 1,
+        },
       },
     },
-  },
-};
+  };
 
-// ✅ 2. 라벨: 최근 7일 (2025-07-27 ~ 2025-08-02 형식)
-const today = dayjs();
-const labels = Array.from({ length: 7 }).map((_, i) =>
-  today.subtract(6 - i, "day").format("MM-DD"),
-);
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "남학생",
+        data: maleData,
+        borderColor: "#BDDEFF",
+        backgroundColor: "rgba(189, 222, 255, 0.5)",
+        tension: 0.4,
+      },
+      {
+        label: "여학생",
+        data: femaleData,
+        borderColor: "#C8F1E3",
+        backgroundColor: "rgba(200, 241, 227, 0.5)",
+        tension: 0.4,
+      },
+      // {
+      //   label: "전체",
+      //   data: totalData,
+      //   borderColor: "#f1dbc8",
+      //   backgroundColor: "rgba(241, 219, 200, 0.5)",
+      //   tension: 0.5,
+      // },
+    ],
+  };
 
-// ✅ 3. 데이터: 일별 / 주별 값
-const dailyData = [20, 45, 30, 55, 40, 70, 60]; // 직접 넣기
-const weeklyData = [40, 50, 60, 45, 55, 65, 70];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "일별",
-      data: dailyData,
-      borderColor: "#BDDEFF",
-      backgroundColor: "rgba(189, 222, 255, 0.5)",
-      tension: 0.5, // 선 부드럽게
-    },
-    {
-      label: "주별",
-      data: weeklyData,
-      borderColor: "#C8F1E3",
-      backgroundColor: "rgba(200, 241, 227, 0.5)",
-      tension: 0.5,
-    },
-  ],
-};
-
-export default function ChartLine() {
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Line options={options} data={data} />

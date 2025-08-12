@@ -44,7 +44,7 @@ export async function addContents(request: AddContentsRequest) {
     },
   });
 
-  console.log("addResult", addResult);
+  // console.log("addResult", addResult);
 
   return {
     code: "SUCCESS" as const,

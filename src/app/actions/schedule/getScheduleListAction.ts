@@ -72,7 +72,7 @@ export async function getScheduleList(request: GetScheduleListRequest) {
     };
   }
 
-  console.log("schoolSchedule", schoolSchedule);
+  // console.log("schoolSchedule", schoolSchedule);
 
   // 1. 학교 스케줄 날짜를 현재 연도로 변경
   const updatedSchoolScheduleList = schoolSchedule.map((schedule) => {
@@ -106,6 +106,18 @@ export async function getScheduleList(request: GetScheduleListRequest) {
       formatted[month] = [];
     }
     formatted[month].push(item);
+  });
+
+  // 4-1. 월별 배열 내 날짜 기준 정렬 (오름차순)
+  Object.keys(formatted).forEach((month) => {
+    formatted[month].sort((a, b) => {
+      // a.date, b.date 포맷: "MM.DD.(ddd)"
+      // MM은 동일한 월이라 1~2번째 문자 같음, 비교는 DD(3~4번째 문자) 기준으로 함
+      // substring 으로 일(day) 부분만 추출
+      const dayA = Number(a.date.slice(3, 5));
+      const dayB = Number(b.date.slice(3, 5));
+      return dayA - dayB;
+    });
   });
 
   // 5. 월 정렬

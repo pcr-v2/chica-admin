@@ -1,7 +1,9 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { BarChart } from "@/app/(main)/dashboard/components/BarChart";
@@ -9,14 +11,27 @@ import BottomContent from "@/app/(main)/dashboard/components/BottomContent";
 import ChartLine from "@/app/(main)/dashboard/components/LineChart";
 import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
 import TopContent from "@/app/(main)/dashboard/components/TopContent";
+import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
+import {
+  getBarChartStatistic,
+  GetBarChartStatisticResponse,
+} from "@/app/actions/statistic/getBarChartStatistic";
+import {
+  getLineChartStatistic,
+  GetLineChartStatisticResponse,
+} from "@/app/actions/statistic/getLineChartStatistic";
+import { GetRankPageStatisticResponse } from "@/app/actions/statistic/getRankPageStatistic";
 
 interface IProps {
-  type: "master" | "teacher";
+  me: GetMeResponse;
+  list: GetRankPageStatisticResponse;
+  lineRes: GetLineChartStatisticResponse;
+  barRes: GetBarChartStatisticResponse;
 }
 
 export default function DashboardContainer(props: IProps) {
-  const { type } = props;
+  const { me, list, lineRes, barRes } = props;
 
   const currentYear = dayjs().year();
 
@@ -36,26 +51,57 @@ export default function DashboardContainer(props: IProps) {
     }
   };
 
+  const [lineTab, setLineTab] = useState<"day" | "week">("day");
+  const [barTab, setBarTab] = useState<"day" | "week">("day");
+
+  const { data: lineData } = useQuery({
+    queryKey: ["line", lineTab],
+    queryFn: () =>
+      getLineChartStatistic({
+        schoolId: me.data?.schoolId as string,
+        type: lineTab,
+      }),
+    enabled: !!me.data,
+    initialData: lineRes,
+  });
+  const { data: barData } = useQuery({
+    queryKey: ["bar", barTab],
+    queryFn: () =>
+      getBarChartStatistic({
+        schoolId: me.data?.schoolId as string,
+        type: barTab,
+      }),
+    enabled: !!me.data,
+    initialData: barRes,
+  });
+
   return (
     <Wrapper>
-      <TopContent />
-
       <MiddleWrap>
-        <MiddleContent graph={<ChartLine />} />
-        <MiddleContent graph={<BarChart />} />
+        <MiddleContent
+          graph={<ChartLine lineRes={lineData} />}
+          tab={lineTab}
+          onChange={(value) => setLineTab(value)}
+        />
+        <MiddleContent
+          graph={<BarChart barRes={barData} tab={barTab} />}
+          tab={barTab}
+          onChange={(value) => setBarTab(value)}
+        />
       </MiddleWrap>
 
       <BottomWrap>
-        <BottomContent />
+        <BottomContent me={me} list={list} />
 
         <Box
           sx={{
             width: "100%",
             display: "flex",
-            justifyContent: type === "master" ? "space-between" : "end",
+            justifyContent:
+              me.data?.type === "master" ? "space-between" : "end",
           }}
         >
-          {type === "master" && (
+          {me.data?.type === "master" && (
             <HolidayBtn onClick={handleHoliday}>
               {currentYear}년 공휴일 추가
             </HolidayBtn>

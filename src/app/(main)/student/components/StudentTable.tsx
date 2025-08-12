@@ -13,8 +13,10 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
+import StudentRankForm from "@/app/(main)/student/components/StudentRankForm";
 import ContentsPagination from "@/app/_components/common/ContentsPagination";
 import ContentsViewCountFilter from "@/app/_components/common/ContentsViewCountFilter";
+import Modal from "@/app/_components/common/Modal";
 import { GetStudentListResponse } from "@/app/actions/student/getStudentListAction";
 import { updateStudentStatus } from "@/app/actions/student/updateStudentStatus";
 import EditIcon from "@/public/images/icons/edit-icon.svg";
@@ -34,6 +36,10 @@ export default function StudentTable({ list, onClickEdit }: IProps) {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
   const [statusMap, setStatusMap] = useState<Record<string, boolean>>({});
+  const [onClickRank, setOnClickRank] = useState({
+    show: false,
+    studentId: "",
+  });
 
   const data = useMemo(() => list ?? [], [list]);
 
@@ -142,7 +148,10 @@ export default function StudentTable({ list, onClickEdit }: IProps) {
               />
               <Rank
                 onClick={() => {
-                  // alert("랭킹");
+                  setOnClickRank({
+                    show: true,
+                    studentId: row.original.studentId,
+                  });
                 }}
               />
             </div>
@@ -255,6 +264,14 @@ export default function StudentTable({ list, onClickEdit }: IProps) {
           />
         </Box>
       </PaginationBar>
+
+      <Modal
+        isDelete
+        maxWidth={572}
+        open={onClickRank.show}
+        onClose={() => setOnClickRank({ show: false, studentId: "" })}
+        children={<StudentRankForm studentId={onClickRank.studentId} />}
+      />
     </Wrapper>
   );
 }

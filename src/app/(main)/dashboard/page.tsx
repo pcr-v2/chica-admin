@@ -1,8 +1,31 @@
 import DashboardContainer from "@/app/(main)/dashboard/DashboardContainer";
 import { getMe } from "@/app/actions/auth/getMe";
+import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
+import { getLineChartStatistic } from "@/app/actions/statistic/getLineChartStatistic";
+import { getRankPageStatistic } from "@/app/actions/statistic/getRankPageStatistic";
 
 export default async function page() {
   const me = await getMe();
 
-  return <DashboardContainer type={me.data?.type as "master" | "teacher"} />;
+  const list = await getRankPageStatistic({
+    schoolId: me.data?.schoolId as string,
+    type: "term",
+  });
+
+  const lineRes = await getLineChartStatistic({
+    schoolId: me.data?.schoolId as string,
+    type: "day",
+  });
+
+  const barRes = await getBarChartStatistic({
+    schoolId: me.data?.schoolId as string,
+    type: "day",
+  });
+
+  // console.log("lineRes", lineRes);
+  // console.log("barRes", barRes);
+
+  return (
+    <DashboardContainer me={me} list={list} lineRes={lineRes} barRes={barRes} />
+  );
 }

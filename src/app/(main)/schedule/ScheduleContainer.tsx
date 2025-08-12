@@ -83,7 +83,7 @@ export default function ScheduleContainer(props: IProps) {
     enabled: !!selectedSchool,
   });
 
-  console.log("getSchoolResult", getSchoolResult);
+  // console.log("getSchoolResult", getSchoolResult);
 
   useEffect(() => {
     if (selectedSchool == "" && me.data?.type === "teacher") {

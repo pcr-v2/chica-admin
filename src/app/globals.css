@@ -1,9 +1,11 @@
+@import url("https://cdn.jsdelivr.net/gh/innks/NanumSquareRound@master/nanumsquareround.min.css");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
-  font-family: "Pretendard", sans-serif !important;
+  font-family: "Pretendard", sans-serif;
   line-height: 150%;
 
   -webkit-tap-highlight-color: transparent;

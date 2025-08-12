@@ -29,7 +29,7 @@ export default function CsSearchBar(props: IProps) {
         <CsSearchFilter
           selectedFilter={selectedFilter}
           onChange={(value) => {
-            console.log(value);
+            // console.log(value);
             onFilterChange(value);
           }}
         />

@@ -39,7 +39,7 @@ export async function deleteFileFromS3(request: TRequest) {
       where: { fileName: key },
     });
 
-    console.log("res", `${schoolId}/${key}.${fileType}`);
+    // console.log("res", `${schoolId}/${key}.${fileType}`);
 
     if (res == null) {
       return {

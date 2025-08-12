@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useEffect } from "react";
 
 import CloseBlackIcon from "@/public/images/icons/close-black.svg";
-import CloseIcon from "@/public/images/icons/close-green.png";
+import CloseIcon from "@/public/images/icons/close-green.svg";
 
 interface IProps {
   open: boolean;
@@ -51,7 +51,7 @@ export default function Modal(props: IProps) {
             {isDelete ? (
               <CloseDelete onClick={onClose} />
             ) : (
-              <CloseIconSt src={CloseIcon.src} onClick={onClose} />
+              <CloseIconSt onClick={onClose} />
             )}
           </Content>
         </Background>
@@ -87,7 +87,7 @@ const Content = styled(motion.div)(() => {
   };
 });
 
-const CloseIconSt = styled("img")(() => {
+const CloseIconSt = styled(CloseIcon)(() => {
   return {
     top: 17,
     right: 12,
@@ -99,6 +99,8 @@ const CloseIconSt = styled("img")(() => {
       justifyContent: "center",
       display: "flex",
       alignItems: "center",
+      stroke: "#13BA81", // 스트로크 색상 추가 (필요시)
+      strokeWidth: 0.5, // 굵기 조절 (숫자 조절 가능)
     },
   };
 });
@@ -106,11 +108,13 @@ const CloseIconSt = styled("img")(() => {
 const CloseDelete = styled(CloseBlackIcon)(() => ({
   top: 18,
   right: 16,
-  width: "24px",
-  height: "24px",
+  width: "28px",
+  height: "28px",
   cursor: "pointer",
   position: "absolute",
   path: {
     fill: "#747D8A",
+    stroke: "#747D8A", // 스트로크 색상 추가 (필요시)
+    strokeWidth: 1, // 굵기 조절 (숫자 조절 가능)
   },
 }));

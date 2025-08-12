@@ -12,8 +12,6 @@ export default function DeleteAllStudentAlert(props: IProps) {
 
   return (
     <Wrapper>
-      <Title>학생 일괄삭제</Title>
-
       <ContentWrap>
         <TitleSpan>학생 일괄삭제는 다시 되돌릴 수 없으며</TitleSpan>
         <TitleSpan style={{ color: "#F44336" }}>
@@ -57,7 +55,7 @@ const ContentWrap = styled(Box)(() => {
     gap: "8px",
     width: "100%",
     display: "flex",
-    padding: "28px",
+    padding: "32px",
     flexDirection: "column",
   };
 });
@@ -73,7 +71,7 @@ const TitleSpan = styled("span")(() => {
 
 const BtnWrap = styled(Box)(() => {
   return {
-    gap: "24px",
+    gap: "16px",
     display: "flex",
     padding: "0px 24px 28px 24px",
     justifyContent: "space-between",

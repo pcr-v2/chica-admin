@@ -7,7 +7,7 @@ export default function TopContent() {
     <Wrapper>
       <Title>양치 실천율</Title>
 
-      <PercentWrap>
+      {/* <PercentWrap>
         <PercentBox
           style={{
             color: "#fff",
@@ -27,7 +27,7 @@ export default function TopContent() {
           <Box>월간</Box>
           <PercentText>100 %</PercentText>
         </PercentBox>
-      </PercentWrap>
+      </PercentWrap> */}
     </Wrapper>
   );
 }

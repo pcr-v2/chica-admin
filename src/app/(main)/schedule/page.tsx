@@ -1,4 +1,5 @@
 import ScheduleContainer from "@/app/(main)/schedule/ScheduleContainer";
+import TestContainer from "@/app/(main)/schedule/TestContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 
@@ -7,5 +8,6 @@ export default async function page() {
 
   const schoolList = await getSchoolList();
 
-  return <ScheduleContainer me={me} schoolList={schoolList.result} />;
+  // return <ScheduleContainer me={me} schoolList={schoolList.result} />;
+  return <TestContainer />;
 }

@@ -12,15 +12,17 @@ type PresignRequest = {
   fileName: string; // 실제 업로드할 파일명
   fileType: string; // MIME 타입
   schoolId: string;
+  customUuid?: string;
 };
 
 export async function getPresignedUploadUrl({
   fileName,
   fileType,
   schoolId,
+  customUuid,
 }: PresignRequest) {
   const fileExt = fileName.split(".").pop();
-  const key = `${schoolId}/${uuidv4()}.${fileExt}`;
+  const key = `${schoolId}/${customUuid ?? uuidv4()}.${fileExt}`;
 
   const command = new PutObjectCommand({
     Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,

@@ -230,6 +230,7 @@ export default function ContentsContainer(props: IProps) {
           fileName: item.file.name,
           fileType: item.file.type,
           schoolId: me.data?.schoolId as string,
+          customUuid: item.id, // 프론트에서 만든 uuid를 그대로 전달
         });
       }),
     );
@@ -253,16 +254,24 @@ export default function ContentsContainer(props: IProps) {
       (p): p is { url: string; key: string } => p !== null,
     );
 
+    console.log("filteredPresignedUrls", filteredPresignedUrls);
+
     // 3. DB에 메타 저장: 서버 액션 호출해서 key 리스트 전달
-    const uploadedMeta = filteredPresignedUrls.map(({ key }) => ({
-      fileName: key.split("/")[1].split(".")[0], // UUID만
-      fileType: key.split(".").pop(),
-      fileSize:
-        items.find((i) => i.file?.name === key.split("/")[1])?.file?.size ?? 0,
-      userFileName: items
-        .find((i) => i.file?.name === key.split("/")[1])
-        ?.file?.name.split(".")[0],
-    }));
+    const uploadedMeta = filteredPresignedUrls.map(({ key }) => {
+      const id = key.split("/")[1].split(".")[0];
+      const matchedItem = items.find((i) => i.id === id);
+      console.log("matchedItem", matchedItem);
+      return {
+        fileName: id, // UUID만
+        fileType: key.split(".").pop(),
+        fileSize: matchedItem
+          ? Number(((matchedItem.file?.size ?? 0) / (1024 * 1024)).toFixed(2))
+          : 0,
+        userFileName: matchedItem ? matchedItem.file?.name.split(".")[0] : "",
+      };
+    });
+    console.log("uploadedMeta", uploadedMeta);
+    console.log("file", items);
 
     const res = await saveMetaToDB({
       schoolId: me.data?.schoolId as string,

@@ -24,7 +24,7 @@ interface IProps {
 
 export default function Table(props: IProps) {
   const { list, type } = props;
-
+  // console.log("list", list);
   return (
     <Wrapper>
       <TableHeader>

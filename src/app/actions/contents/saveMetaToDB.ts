@@ -24,7 +24,7 @@ export async function saveMetaToDB(request: SaveMetaRequest) {
       select: { seq: true },
     });
 
-    console.log("files", files);
+    // console.log("files", files);
 
     await mysqlPrisma.contents.createMany({
       data: files.map(

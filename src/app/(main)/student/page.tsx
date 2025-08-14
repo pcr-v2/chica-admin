@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import StudentContainer from "@/app/(main)/student/StudentContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
@@ -12,6 +14,10 @@ export default async function page() {
   });
 
   const schoolList = await getSchoolList();
+
+  if (me.code === "FAIL") {
+    return redirect("/signin");
+  }
 
   return (
     <StudentContainer

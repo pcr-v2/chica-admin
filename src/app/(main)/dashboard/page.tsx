@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import DashboardContainer from "@/app/(main)/dashboard/DashboardContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
@@ -24,6 +26,10 @@ export default async function page() {
 
   // console.log("lineRes", lineRes);
   // console.log("barRes", barRes);
+
+  if (me.code === "FAIL") {
+    return redirect("/signin");
+  }
 
   return (
     <DashboardContainer me={me} list={list} lineRes={lineRes} barRes={barRes} />

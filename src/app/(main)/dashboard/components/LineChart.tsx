@@ -36,6 +36,8 @@ export default function ChartLine({ lineRes }: IProps) {
   const femaleData = lineRes.data?.femaleRates || [];
   const totalData = lineRes.data?.rates || [];
 
+  const yMax = Math.max(...[...maleData, ...femaleData]);
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -65,7 +67,7 @@ export default function ChartLine({ lineRes }: IProps) {
       },
       y: {
         min: 0,
-        suggestedMax: Math.max(...[...maleData, ...femaleData]) * 1.1, // 최대값 + 10%
+        suggestedMax: yMax >= 100 ? yMax * 1.1 : 100, // ✅ 조건부 최대값
         ticks: { stepSize: 10 },
         grid: {
           drawBorder: false,

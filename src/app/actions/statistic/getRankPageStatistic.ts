@@ -263,6 +263,7 @@ export async function getRankPageStatistic(
         student_grade,
         student_class,
         student_gender,
+        student_number,
         percentage,
         ROW_NUMBER() OVER (ORDER BY percentage DESC) AS student_rank
       FROM StudentStats

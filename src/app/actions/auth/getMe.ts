@@ -16,39 +16,46 @@ export async function getMe() {
 
   if (accessToken == null) {
     return {
-      code: "UNAUTHORIZED",
+      code: "UNAUTHORIZED" as const,
       message: "인증이 필요합니다.",
     };
   }
 
-  const verified = await jwtVerify(accessToken, secretKey);
+  try {
+    const verified = await jwtVerify(accessToken, secretKey);
 
-  const admin = await mysqlPrisma.school.findFirst({
-    where: {
-      loginId: verified.payload.id!,
-    },
-  });
+    const admin = await mysqlPrisma.school.findFirst({
+      where: {
+        loginId: verified.payload.id!,
+      },
+    });
 
-  if (admin == null) {
+    if (admin == null) {
+      return {
+        code: "NOT_FOUND" as const,
+        message: "존재하지 않는 유저입니다.",
+      };
+    }
+
     return {
-      code: "NOT_FOUND",
-      message: "존재하지 않는 유저입니다.",
+      code: "SUCCESS" as const,
+      data: {
+        type: admin.schoolType,
+        loginId: admin.loginId,
+        schoolId: admin.schoolId,
+        schoolLevel: admin.schoolLevel,
+        name: admin.teacherName,
+        schoolName: admin.schoolName,
+        phone: admin.teacherPhone,
+        email: admin.teacherEmail,
+        startAt: admin.startAt,
+        endAt: admin.endAt,
+      },
+    };
+  } catch (error) {
+    return {
+      code: "FAIL" as const,
+      message: "유저 정보를 가져오는데 실패했습니다.",
     };
   }
-
-  return {
-    code: "SUCCESS",
-    data: {
-      type: admin.schoolType,
-      loginId: admin.loginId,
-      schoolId: admin.schoolId,
-      schoolLevel: admin.schoolLevel,
-      name: admin.teacherName,
-      schoolName: admin.schoolName,
-      phone: admin.teacherPhone,
-      email: admin.teacherEmail,
-      startAt: admin.startAt,
-      endAt: admin.endAt,
-    },
-  };
 }

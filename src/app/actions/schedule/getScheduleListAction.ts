@@ -12,7 +12,7 @@ export type GetScheduleListResponse = Awaited<
   ReturnType<typeof getScheduleList>
 >;
 
-type MergedSchedule = {
+export type MergedSchedule = {
   [month: string]: {
     id: number;
     scheduleName: string;
@@ -131,6 +131,6 @@ export async function getScheduleList(request: GetScheduleListRequest) {
   return {
     code: "SUCCESS" as const,
     message: "휴일 정보를 가져왔습니다.",
-    result: sortedFormatted,
+    result: sortedFormatted as MergedSchedule,
   };
 }

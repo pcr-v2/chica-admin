@@ -20,8 +20,12 @@ interface IProps {
   me: GetMeResponse;
   scheduleList: MergedSchedule;
 }
-export default function TestContainer(props: IProps) {
+export default function CalendarContainer(props: IProps) {
   const { me, scheduleList } = props;
+
+  const calendarRef = useRef<FullCalendar>(null);
+
+  const [ready, setReady] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["scheduleList"],
@@ -33,10 +37,8 @@ export default function TestContainer(props: IProps) {
       return res.result;
     },
     initialData: scheduleList,
-    // enabled
+    enabled: !!me,
   });
-
-  const calendarRef = useRef<FullCalendar>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,7 +49,6 @@ export default function TestContainer(props: IProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const [ready, setReady] = useState(false);
   useEffect(() => {
     setTimeout(() => setReady(true), 50);
   }, []);
@@ -151,7 +152,6 @@ export default function TestContainer(props: IProps) {
   console.log("events", events);
 
   if (ready === false) return;
-
   return (
     <Wrapper>
       <CustomCode />

@@ -18,11 +18,17 @@ export default async function page() {
 
   // console.log("getHolidays", getH.olidays);
 
-  // return <ScheduleContainer me={me} schoolList={schoolList.result} />;
   return (
-    <TestContainer
+    <ScheduleContainer
       me={me}
+      schoolList={schoolList.result}
       scheduleList={scheduleList.result as MergedSchedule}
     />
   );
+  // return (
+  //   <TestContainer
+  //     me={me}
+  //     scheduleList={scheduleList.result as MergedSchedule}
+  //   />
+  // );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { RefObject } from "@fullcalendar/core/preact.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -8,6 +9,7 @@ import { Box, styled, Tooltip } from "@mui/material";
 
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import CustomCode from "@/app/(main)/schedule/CustomCssWrap";
@@ -20,9 +22,26 @@ import {
 interface IProps {
   me: GetMeResponse;
   scheduleList: MergedSchedule;
+  calendarRef: RefObject<FullCalendar | null>;
 }
-export default function TestContainer(props: IProps) {
-  const { me, scheduleList } = props;
+export default function ScheduleCalendar(props: IProps) {
+  const { me, scheduleList, calendarRef } = props;
+  //   const calendarRef = useRef<FullCalendar>(null);
+
+  const [title, setTitle] = useState(calendarRef.current?.getApi().view.title);
+
+  // 현재 보이는 타이틀 갱신
+  const updateTitle = () => {
+    const calendarApi = calendarRef.current?.getApi();
+    if (calendarApi) {
+      //   console.log("calendarApi.view.title", calendarApi.view.title);
+      setTitle(calendarApi.view.title);
+    }
+  };
+
+  useEffect(() => {
+    updateTitle();
+  }, []);
 
   const { data } = useQuery({
     queryKey: ["scheduleList"],
@@ -37,21 +56,17 @@ export default function TestContainer(props: IProps) {
     // enabled
   });
 
-  const calendarRef = useRef<FullCalendar>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (calendarRef.current) {
-        calendarRef.current.getApi().updateSize();
-      }
-    }, 100); // 스타일이 적용될 시간 확보
-    return () => clearTimeout(timer);
-  }, []);
-
   const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    setTimeout(() => setReady(true), 50);
+    setTimeout(() => setReady(true), 0);
   }, []);
+
+  useEffect(() => {
+    if (ready) {
+      updateTitle();
+    }
+  }, [ready]);
 
   // "08.15.(금)" → "2025-08-15"
   function formatDateToISO(year: number, dateStr: string) {
@@ -140,23 +155,16 @@ export default function TestContainer(props: IProps) {
     return result;
   }, [data]);
 
-  const list = [
-    {
-      type: "national",
-      title: "테스트1",
-      start: "2025-08-13",
-      end: "2025-08-22",
-    },
-    { type: "school", title: "테스트222", date: "2025-08-14" },
-  ];
-  console.log("events", events);
-
-  if (ready === false) return;
+  if (ready === false)
+    return <Box sx={{ minHeight: "870px", backgroundColor: "#fff" }} />;
 
   return (
     <Wrapper>
       <CustomCode />
       <FullCalendar
+        datesSet={updateTitle}
+        height="870px" // ← 이걸로 제일 깔끔하게 고정됨
+        contentHeight="753px"
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -208,10 +216,27 @@ export default function TestContainer(props: IProps) {
             </Tooltip>
           );
         }}
-        headerToolbar={{
-          start: "today add",
-          center: "title prev next",
-          end: "",
+        headerToolbar={false}
+        customButtons={{
+          //   today: {
+          //     text: `오늘`, // ✅ 여기서 커스텀 텍스트
+          //     click: (e) => {
+          //       // 원래 today 기능 실행
+          //       const calendarApi = calendarRef.current?.getApi();
+          //       calendarApi?.today();
+          //     },
+          //   },
+          myButton: {
+            text: "커스텀버튼",
+            click: () => alert("클릭됨!"),
+          },
+          //   nextArrow: {
+          //     text: `<img src="${Arrow}" alt="next" style="width:16px;height:16px;margin-left:4px;" />`,
+          //     click: () => {
+          //       const calendarApi = calendarRef.current?.getApi();
+          //       calendarApi?.next();
+          //     },
+          //   },
         }}
         // dateClick={(arg) => {
         //   alert(`${arg.dateStr}에 일정을 추가하세요!`);
@@ -241,5 +266,6 @@ const Wrapper = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "start",
+    minHeight: "100dvh",
   };
 });

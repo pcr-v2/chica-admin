@@ -11,13 +11,14 @@ const CustomCode: React.FC = () => {
         // 전체 달력 보더라디우스
         ".fc": {
           fontSize: 14,
-          fontWeight: 600,
           width: "100%",
+          fontWeight: 600,
           maxWidth: "917px",
-          height: "753px !important",
-          minHeight: "753px !important",
-          maxHeight: "753px !important",
+          // height: "753px !important",
+          // minHeight: "753px !important",
+          // maxHeight: "753px !important",
         },
+
         ".fc .fc-scrollgrid-section-liquid > td": {
           border: "none",
         },
@@ -62,6 +63,18 @@ const CustomCode: React.FC = () => {
           margin: "0px 4px !important",
           backgroundColor: "transparent !important",
           border: "none",
+        },
+        ".fc .fc-highlight": {
+          top: 18,
+          // zIndex: 1,
+          height: "24px",
+          borderRadius: "4px",
+          margin: "0px 4px",
+          position: "absolute",
+          backgroundColor: "rgba(229, 242, 255, 0.5)",
+        },
+        ".fc .fc-daygrid-day-bg .fc-highlight": {
+          zIndex: 1,
         },
       }}
     />

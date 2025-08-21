@@ -1,6 +1,7 @@
 "use server";
 
 import dayjs from "dayjs";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { addScheduleSchema } from "@/app/actions/schedule/scheduleSchema";
@@ -105,6 +106,8 @@ export async function addSchedule(request: AddScheduleRequest) {
       message: "일정 생성 중 오류가 발생했습니다.",
     };
   }
+
+  revalidatePath("/schedule");
 
   return {
     code: "SUCCESS" as const,

@@ -19,18 +19,31 @@ export type TAddScheduleValue = {
 };
 
 interface IProps {
+  dragDate: { startDate: string; endDate: string } | null;
   getSchoolResult: GetSchoolResponse["result"];
   onConfirm: (value: TAddScheduleValue) => void;
   onClose: () => void;
 }
 
 export default function AddScheduleForm(props: IProps) {
-  const { getSchoolResult, onClose, onConfirm } = props;
+  const { getSchoolResult, dragDate, onClose, onConfirm } = props;
 
   const [scheduleName, setScheduleName] = useState("");
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
   const [target, setTarget] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (dragDate != null) {
+      setStartAt(dragDate.startDate);
+      setEndAt(dragDate.endDate);
+    } else {
+      setStartAt("");
+      setEndAt("");
+    }
+  }, [dragDate]);
+
+  console.log("dragDate", dragDate);
 
   const handleCheckbox = (value: string) => {
     if (value === "all") {
@@ -89,7 +102,8 @@ export default function AddScheduleForm(props: IProps) {
           <Box sx={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <FormDatePicker
               offMinDate
-              value={startAt}
+              readOnly={!!dragDate} // dragDate가 존재하면 수정 불가
+              value={dragDate?.startDate || startAt} // dragDate가 있으면 그 값 사용
               onChange={(e) => {
                 const newStart = e.target.value as string;
                 setStartAt(newStart);
@@ -109,7 +123,8 @@ export default function AddScheduleForm(props: IProps) {
 
             <FormDatePicker
               offMinDate
-              value={endAt}
+              value={dragDate?.endDate || endAt} // dragDate가 있으면 그 값 사용
+              readOnly={!!dragDate} // dragDate가 존재하면 수정 불가
               onChange={(e) => {
                 const newEnd = e.target.value as string;
 
@@ -152,7 +167,14 @@ export default function AddScheduleForm(props: IProps) {
       </ContentWrap>
 
       <BtnWrap>
-        <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={onClose}>
+        <Btn
+          sx={{ border: "1px solid #E0E0E0" }}
+          onClick={() => {
+            onClose();
+            setEndAt("");
+            setStartAt("");
+          }}
+        >
           취소
         </Btn>
         <Btn

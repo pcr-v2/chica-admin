@@ -76,11 +76,11 @@ export async function getScheduleList(request: GetScheduleListRequest) {
 
   // 1. 학교 스케줄 날짜를 현재 연도로 변경
   const updatedSchoolScheduleList = schoolSchedule.map((schedule) => {
-    const updatedDate = dayjs(schedule.scheduleAt).year(currentYear);
+    // const updatedDate = dayjs(schedule.scheduleAt).year(currentYear);
     return {
       id: schedule.id,
       scheduleName: schedule.scheduleName,
-      date: customDayjs(updatedDate).format("YYYY.MM.DD.(ddd)"),
+      date: customDayjs(schedule.scheduleAt).format("YYYY.MM.DD.(ddd)"),
       from: "schedule" as const,
       scheduleTarget: schedule.scheduleTarget,
     };

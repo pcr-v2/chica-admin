@@ -158,7 +158,7 @@ export default function ScheduleList(props: IProps) {
 
   return (
     <Wrapper>
-      <BtnWrap>
+      {/* <BtnWrap>
         <Left>
           {me.data?.type === "master" && (
             <MasterSchoolFilter
@@ -179,7 +179,7 @@ export default function ScheduleList(props: IProps) {
             <Plus />
           </AddScheduleBtn>
         </Right>
-      </BtnWrap>
+      </BtnWrap> */}
 
       {rows.length <= 0 && me.data?.type === "master" ? (
         <EmptyText>
@@ -234,7 +234,7 @@ const Wrapper = styled(Box)(() => {
     display: "flex",
     alignItems: "center",
     borderRadius: "24px",
-    padding: "32px 28px",
+    // padding: "32px 28px",
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#fff",

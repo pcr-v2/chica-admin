@@ -80,7 +80,7 @@ export async function getScheduleList(request: GetScheduleListRequest) {
     return {
       id: schedule.id,
       scheduleName: schedule.scheduleName,
-      date: customDayjs(updatedDate).format("MM.DD.(ddd)"),
+      date: customDayjs(updatedDate).format("YYYY.MM.DD.(ddd)"),
       from: "schedule" as const,
       scheduleTarget: schedule.scheduleTarget,
     };
@@ -90,7 +90,7 @@ export async function getScheduleList(request: GetScheduleListRequest) {
   const formattedHolidays = holiday.map((h) => ({
     id: h.id,
     scheduleName: h.holidayName,
-    date: customDayjs(h.holidayAt).format("MM.DD.(ddd)"),
+    date: customDayjs(h.holidayAt).format("YYYY.MM.DD.(ddd)"),
     from: "holiday" as const,
     scheduleTarget: "all",
   }));

@@ -71,7 +71,7 @@ const CustomCode: React.FC = () => {
           borderRadius: "4px",
           margin: "0px 4px",
           position: "absolute",
-          backgroundColor: "rgba(229, 242, 255, 0.5)",
+          backgroundColor: "rgba(229, 242, 255, 0.6)",
         },
         ".fc .fc-daygrid-day-bg .fc-highlight": {
           zIndex: 1,

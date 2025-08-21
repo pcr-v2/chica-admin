@@ -15,10 +15,11 @@ type TBtn = "today" | "next" | "prev";
 interface IProps {
   type: "calendar" | "list";
   onClickType: (value: "calendar" | "list") => void;
+  onClickAdd: () => void;
 }
 
-const ScheduleHeader = forwardRef<FullCalendar | null, IProps>((props, ref) => {
-  const { type, onClickType } = props;
+const ScheduleHeader = forwardRef<FullCalendar, IProps>((props, ref) => {
+  const { type, onClickType, onClickAdd } = props;
 
   const [ready, setReady] = useState(false);
   const [title, setTitle] = useState("");
@@ -29,46 +30,43 @@ const ScheduleHeader = forwardRef<FullCalendar | null, IProps>((props, ref) => {
 
   // 현재 보이는 타이틀 갱신
   const updateTitle = () => {
-    if (!ref || !("current" in ref) || !ref.current) return;
-
-    const calendarApi = ref.current.getApi();
-    if (!calendarApi) return;
-
-    const fullTitle = calendarApi.view.title; // ex: "August 2025"
-
-    if (type === "calendar") {
-      setTitle(fullTitle); // 달력일 때는 전체
-    } else if (type === "list") {
-      const yearMatch = fullTitle.match(/\d{4}/); // 4자리 숫자만 추출
-      setTitle(yearMatch ? yearMatch[0] : fullTitle); // 없으면 그대로
+    const calendarRef = ref as React.RefObject<FullCalendar>;
+    if (!calendarRef?.current) {
+      setTimeout(updateTitle, 50); // 50ms 후 다시 시도
+      return;
     }
+
+    const calendarApi = calendarRef.current.getApi();
+    const fullTitle = calendarApi.view.title;
+
+    setTitle(fullTitle);
   };
 
   // FullCalendar에서 datesSet 이벤트에 연결
   useEffect(() => {
+    if (type !== "calendar") return;
     if (!ref || !("current" in ref) || !ref.current) return;
 
     const calendarApi = ref.current.getApi();
-    const fullTitle = calendarApi.view.title; // ex: "August 2025"
+    updateTitle();
 
-    if (type === "calendar") {
-      setTitle(fullTitle); // 달력일 때는 전체
-    } else if (type === "list") {
-      const yearMatch = fullTitle.match(/\d{4}/); // 4자리 숫자만 추출
-      console.log("yearMatch", yearMatch);
-
-      setTitle(yearMatch ? yearMatch[0] : fullTitle); // 없으면 그대로
-    }
-
-    // 달력 이동 시 title 갱신
     calendarApi.on("datesSet", updateTitle);
-
-    // cleanup
     return () => calendarApi.off("datesSet", updateTitle);
-  }, [ready, type]); // type 바뀔 때도 갱신
+  }, [type, ready, ref]);
+
+  useEffect(() => {
+    if (!ref || !("current" in ref)) return;
+
+    if (!ready) return;
+
+    const calendarApi = ref.current?.getApi();
+    calendarApi?.today(); // 뷰를 오늘로 초기화
+
+    updateTitle();
+  }, [type, ready]);
 
   const handleBtn = (value: TBtn) => {
-    if (!ref || !("current" in ref) || !ref.current) return;
+    if (!ref || !("current" in ref)) return;
 
     if (value === "today") {
       ref.current?.getApi().today();
@@ -93,23 +91,23 @@ const ScheduleHeader = forwardRef<FullCalendar | null, IProps>((props, ref) => {
           <Arrow />
         </Today>
 
-        <AddScheduleBtn onClick={() => {}}>
+        <AddScheduleBtn onClick={onClickAdd}>
           일정등록
           <Plus />
         </AddScheduleBtn>
       </LeftWrap>
 
-      <CenterWrap>
-        {type === "calendar" ? (
-          <>
-            <Prev onClick={() => handleBtn("prev")} />
-            <Title>{title}</Title>
-            <Next onClick={() => handleBtn("next")} />
-          </>
-        ) : (
-          <Title>{currentYear}</Title>
-        )}
-      </CenterWrap>
+      {type === "calendar" ? (
+        <CenterWrap>
+          <Prev onClick={() => handleBtn("prev")} />
+          <Title>{title}</Title>
+          <Next onClick={() => handleBtn("next")} />
+        </CenterWrap>
+      ) : (
+        <ListCenterWrap>
+          <Title>{currentYear}년도</Title>
+        </ListCenterWrap>
+      )}
 
       <RightWrap>
         <CalendarBox
@@ -136,9 +134,9 @@ const Wrapper = styled(Box)(() => {
     gap: "24px",
     width: "100%",
     display: "flex",
-    alignItems: "center",
-    // border: "1px solid red",
     maxWidth: "917px",
+    minHeight: "80px",
+    alignItems: "center",
     justifyContent: "space-between",
   };
 });
@@ -149,6 +147,7 @@ const Today = styled(Box)(() => {
     fontSize: 18,
     fontWeight: 400,
     display: "flex",
+    cursor: "pointer",
     color: "#747D8A",
     lineHeight: "150%",
     alignItems: "center",
@@ -176,6 +175,7 @@ const Plus = styled(PlusIcon)<{ isopen: string }>(({ isopen }) => ({
 const Prev = styled(PrevIcon)<{ isopen: string }>(({ isopen }) => ({
   width: "40px",
   height: "40px",
+  cursor: "pointer",
   path: {
     // fill: "#747D8A",
   },
@@ -184,6 +184,7 @@ const Prev = styled(PrevIcon)<{ isopen: string }>(({ isopen }) => ({
 const Next = styled(NextIcon)<{ isopen: string }>(({ isopen }) => ({
   width: "40px",
   height: "40px",
+  cursor: "pointer",
   path: {
     // fill: "#747D8A",
   },
@@ -269,6 +270,17 @@ const CenterWrap = styled(Box)(() => {
     alignItems: "center",
     paddingRight: "130px",
     justifyContent: "space-between",
+  };
+});
+
+const ListCenterWrap = styled(Box)(() => {
+  return {
+    display: "flex",
+    flex: 1,
+    // minWidth: "435px",
+    alignItems: "center",
+    paddingRight: "130px",
+    justifyContent: "center",
   };
 });
 

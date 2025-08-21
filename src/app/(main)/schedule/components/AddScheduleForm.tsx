@@ -1,7 +1,9 @@
 "use client";
 
 import { Box, Checkbox, CheckboxProps, styled } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
@@ -31,13 +33,28 @@ export default function AddScheduleForm(props: IProps) {
   const [target, setTarget] = useState<string[]>([]);
 
   const handleCheckbox = (value: string) => {
-    if (target.includes(value)) {
-      const newTarget = target.filter((el) => el !== value);
-      setTarget(newTarget);
-      return;
-    }
+    if (value === "all") {
+      // all을 누르면 -> 나머지는 다 해제하고 all만 선택
+      if (target.includes("all")) {
+        setTarget([]); // 이미 체크된 상태에서 다시 누르면 해제
+      } else {
+        setTarget(["all"]);
+      }
+    } else {
+      // 개별 학년 선택
+      let newTarget = [...target];
 
-    setTarget([...target, value]);
+      if (newTarget.includes(value)) {
+        newTarget = newTarget.filter((el) => el !== value);
+      } else {
+        newTarget.push(value);
+      }
+
+      // 개별 학년이 선택되면 all은 무조건 해제
+      newTarget = newTarget.filter((el) => el !== "all");
+
+      setTarget(newTarget);
+    }
   };
 
   const isFormComplete = () => {
@@ -73,14 +90,36 @@ export default function AddScheduleForm(props: IProps) {
             <FormDatePicker
               offMinDate
               value={startAt}
-              onChange={(e) => setStartAt(e.target.value as string)}
+              onChange={(e) => {
+                const newStart = e.target.value as string;
+                setStartAt(newStart);
+
+                // 만약 endAt이 startAt보다 이전이면 endAt 초기화
+                if (
+                  endAt &&
+                  dayjs(endAt).isBefore(dayjs(newStart).add(1, "day"))
+                ) {
+                  setEndAt(""); // 또는 newStart로 강제 설정 가능
+                  toast.error("종료일은 시작일 이후여야 합니다.");
+                }
+              }}
             />
 
             <span>~</span>
 
             <FormDatePicker
+              offMinDate
               value={endAt}
-              onChange={(e) => setEndAt(e.target.value as string)}
+              onChange={(e) => {
+                const newEnd = e.target.value as string;
+
+                if (startAt && dayjs(newEnd).isBefore(dayjs(startAt))) {
+                  toast.error("종료일은 시작일 이후여야 합니다.");
+                  return; // 값 변경 막기
+                }
+
+                setEndAt(newEnd);
+              }}
             />
           </Box>
         </Section>

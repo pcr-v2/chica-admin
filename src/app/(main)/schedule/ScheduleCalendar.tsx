@@ -68,41 +68,62 @@ export default function ScheduleCalendar(props: IProps) {
     }
   }, [ready]);
 
-  // "08.15.(금)" → "2025-08-15"
-  function formatDateToISO(year: number, dateStr: string) {
-    const [month, day] = dateStr.split(".").map((v) => v.trim());
+  // "2025.08.15.(금)" → "2025-08-15"
+  function formatDateToISO(dateStr: string) {
+    const [year, month, day] = dateStr.slice(0, 10).split(".");
     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
   }
 
   // 하루 차이인지 체크
   function isNextDay(dateA: string, dateB: string) {
-    const currentYear = new Date().getFullYear();
     const toDate = (d: string) => {
-      const [month, day] = d.split(".");
-      return new Date(currentYear, Number(month) - 1, Number(day));
+      const [year, month, day] = d.slice(0, 10).split(".");
+      return new Date(Number(year), Number(month) - 1, Number(day));
     };
     return (
       toDate(dateB).getTime() - toDate(dateA).getTime() === 24 * 60 * 60 * 1000
     );
   }
 
+  // (선택) 연속 바를 자연스럽게 잇고 싶으면 end를 "마지막날+1일"로 바꿔서 사용
+  function addOneDayISO(dateStr: string) {
+    const d = new Date(formatDateToISO(dateStr));
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split("T")[0];
+  }
+
   const events = useMemo(() => {
     if (!data) return [];
 
-    const currentYear = new Date().getFullYear();
-
-    // month별 데이터 합치기
     const allSchedules = Object.values(data).flat();
-
     if (allSchedules.length === 0) return [];
 
-    // 날짜 순 정렬
-    allSchedules.sort((a, b) => {
-      const dateA = new Date(formatDateToISO(currentYear, a.date)).getTime();
-      const dateB = new Date(formatDateToISO(currentYear, b.date)).getTime();
-      return dateA - dateB;
-    });
+    // 표시용 타이틀
+    const getDisplayName = (
+      scheduleName: string,
+      from: string,
+      target?: string,
+    ) => {
+      if (from === "schedule") {
+        if (target === "all") return `${scheduleName} (전교생)`;
+        if (target) return `${scheduleName} (${target}학년)`;
+      }
+      return scheduleName;
+    };
 
+    // 1) (from, scheduleName, scheduleTarget)로 그룹핑
+    type Item = (typeof allSchedules)[number];
+    const keyOf = (it: Item) =>
+      `${it.from}||${it.scheduleName}||${it.scheduleTarget ?? ""}`;
+
+    const groups = new Map<string, Item[]>();
+    for (const it of allSchedules) {
+      const k = keyOf(it);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k)!.push(it);
+    }
+
+    // 2) 각 그룹 내부에서 날짜 정렬 후, 연속 구간으로 압축
     const result: {
       title: string;
       start: string;
@@ -110,50 +131,84 @@ export default function ScheduleCalendar(props: IProps) {
       from: "holiday" | "schedule";
     }[] = [];
 
-    let tempStart = allSchedules[0].date;
-    let tempEnd = allSchedules[0].date;
-    let tempName = allSchedules[0].scheduleName;
-    let tempFrom = allSchedules[0].from;
+    for (const [, items] of groups) {
+      items.sort((a, b) => {
+        const da = new Date(formatDateToISO(a.date)).getTime();
+        const db = new Date(formatDateToISO(b.date)).getTime();
+        return da - db;
+      });
 
-    for (let i = 1; i <= allSchedules.length; i++) {
-      const curr = allSchedules[i];
-      const prev = allSchedules[i - 1];
+      let runStart = items[0].date;
+      let runEnd = items[0].date;
 
-      const isConsecutive =
-        curr &&
-        curr.scheduleName === tempName &&
-        curr.from === tempFrom &&
-        isNextDay(prev.date, curr.date);
-
-      if (isConsecutive) {
-        tempEnd = curr.date;
-      } else {
-        if (tempStart !== tempEnd) {
-          result.push({
-            title: tempName,
-            start: formatDateToISO(currentYear, tempStart),
-            end: formatDateToISO(currentYear, tempEnd),
-            from: tempFrom,
-          });
+      for (let i = 1; i < items.length; i++) {
+        const prev = items[i - 1];
+        const curr = items[i];
+        if (isNextDay(prev.date, curr.date)) {
+          // 연속이면 끝만 늘림
+          runEnd = curr.date;
         } else {
-          result.push({
-            title: tempName,
-            start: formatDateToISO(currentYear, tempStart),
-            from: tempFrom,
-          });
-        }
+          // 끊기면 현재까지 하나 push
+          const base = items[i - 1];
+          const title = getDisplayName(
+            base.scheduleName,
+            base.from,
+            base.scheduleTarget,
+          );
 
-        if (curr) {
-          tempStart = curr.date;
-          tempEnd = curr.date;
-          tempName = curr.scheduleName;
-          tempFrom = curr.from;
+          if (runStart !== runEnd) {
+            result.push({
+              title,
+              start: formatDateToISO(runStart),
+              // end: formatDateToISO(runEnd),
+              end: addOneDayISO(runEnd), // 연속 바 잇고 싶으면 이걸로
+              from: base.from,
+            });
+          } else {
+            result.push({
+              title,
+              start: formatDateToISO(runStart),
+              from: base.from,
+            });
+          }
+          // 새 런 시작
+          runStart = curr.date;
+          runEnd = curr.date;
         }
+      }
+
+      // 마지막 런 push
+      const base0 = items[0];
+      const title0 = getDisplayName(
+        base0.scheduleName,
+        base0.from,
+        base0.scheduleTarget,
+      );
+      if (runStart !== runEnd) {
+        result.push({
+          title: title0,
+          start: formatDateToISO(runStart),
+          end: addOneDayISO(runEnd), // 옵션
+          from: base0.from as "holiday" | "schedule",
+        });
+      } else {
+        result.push({
+          title: title0,
+          start: formatDateToISO(runStart),
+          from: base0.from as "holiday" | "schedule",
+        });
       }
     }
 
+    // 3) 시작일 기준 정렬
+    result.sort(
+      (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
+    );
+
     return result;
   }, [data]);
+
+  // console.log("events", events);
 
   if (ready === false)
     return <Box sx={{ minHeight: "870px", backgroundColor: "#fff" }} />;
@@ -217,32 +272,6 @@ export default function ScheduleCalendar(props: IProps) {
           );
         }}
         headerToolbar={false}
-        customButtons={{
-          //   today: {
-          //     text: `오늘`, // ✅ 여기서 커스텀 텍스트
-          //     click: (e) => {
-          //       // 원래 today 기능 실행
-          //       const calendarApi = calendarRef.current?.getApi();
-          //       calendarApi?.today();
-          //     },
-          //   },
-          myButton: {
-            text: "커스텀버튼",
-            click: () => alert("클릭됨!"),
-          },
-          //   nextArrow: {
-          //     text: `<img src="${Arrow}" alt="next" style="width:16px;height:16px;margin-left:4px;" />`,
-          //     click: () => {
-          //       const calendarApi = calendarRef.current?.getApi();
-          //       calendarApi?.next();
-          //     },
-          //   },
-        }}
-        // dateClick={(arg) => {
-        //   alert(`${arg.dateStr}에 일정을 추가하세요!`);
-        //   // 나중에 모달 열기 함수 호출로 교체 가능
-        //   // openScheduleModal(arg.dateStr);
-        // }}
         editable
         selectable={true} // ← 드래그 선택 가능
         selectMirror={true} // ← 선택 영역 미리보기
@@ -250,7 +279,6 @@ export default function ScheduleCalendar(props: IProps) {
           alert(
             `${dayjs(info.startStr).format("YYYY-MM-DD")}부터 ${dayjs(info.endStr).subtract(1, "days").format("YYYY-MM-DD")}까지 일정을 추가하세요!`,
           );
-
           // 나중에 모달 호출로 변경 가능
           // openScheduleModal(info.startStr, info.endStr);
         }}

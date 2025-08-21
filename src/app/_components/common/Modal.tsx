@@ -63,6 +63,7 @@ export default function Modal(props: IProps) {
 const Background = styled(motion.div)(() => {
   return {
     inset: 0,
+    zIndex: 10,
     width: "100%",
     padding: "24px",
     display: "flex",

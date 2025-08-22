@@ -1,7 +1,9 @@
-import { redirect } from "next/navigation";
-
 import ScheduleContainer from "@/app/(main)/schedule/ScheduleContainer";
 import { getMe } from "@/app/actions/auth/getMe";
+import {
+  getScheduleList,
+  MergedSchedule,
+} from "@/app/actions/schedule/getScheduleListAction";
 import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 
 export default async function page() {
@@ -9,9 +11,15 @@ export default async function page() {
 
   const schoolList = await getSchoolList();
 
-  if (me.code === "FAIL") {
-    return redirect("/signin");
-  }
+  const scheduleList = await getScheduleList({
+    schoolId: me.data?.schoolId as string,
+  });
 
-  return <ScheduleContainer me={me} schoolList={schoolList.result} />;
+  return (
+    <ScheduleContainer
+      me={me}
+      schoolList={schoolList.result}
+      scheduleList={scheduleList.result as MergedSchedule}
+    />
+  );
 }

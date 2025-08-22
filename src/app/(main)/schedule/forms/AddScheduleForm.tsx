@@ -1,12 +1,12 @@
 "use client";
 
 import { Box, Checkbox, CheckboxProps, styled } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
-import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { GetScheduleResponse } from "@/app/actions/schedule/getScheduleAction";
 import { GetSchoolResponse } from "@/app/actions/school/getSchoolAction";
 
 export type TAddScheduleValue = {
@@ -17,27 +17,65 @@ export type TAddScheduleValue = {
 };
 
 interface IProps {
+  dragDate: { startDate: string; endDate: string } | null;
   getSchoolResult: GetSchoolResponse["result"];
   onConfirm: (value: TAddScheduleValue) => void;
   onClose: () => void;
 }
 
 export default function AddScheduleForm(props: IProps) {
-  const { getSchoolResult, onClose, onConfirm } = props;
+  const { getSchoolResult, dragDate, onClose, onConfirm } = props;
 
   const [scheduleName, setScheduleName] = useState("");
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
   const [target, setTarget] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (dragDate != null) {
+      setStartAt(dragDate.startDate);
+      setEndAt(dragDate.endDate);
+    } else {
+      setStartAt("");
+      setEndAt("");
+    }
+  }, [dragDate]);
+
+  // console.log("dragDate", dragDate);
+
   const handleCheckbox = (value: string) => {
-    if (target.includes(value)) {
-      const newTarget = target.filter((el) => el !== value);
-      setTarget(newTarget);
-      return;
+    let newTarget = [...target];
+
+    if (value === "all") {
+      // all 클릭 시 → 나머지 해제 후 all만 선택
+      if (newTarget.includes("all")) {
+        newTarget = [];
+      } else {
+        newTarget = ["all"];
+      }
+    } else {
+      // 개별 학년 선택
+      if (newTarget.includes(value)) {
+        newTarget = newTarget.filter((el) => el !== value);
+      } else {
+        newTarget.push(value);
+      }
+
+      // all 해제
+      newTarget = newTarget.filter((el) => el !== "all");
+
+      // ✅ 전체 학년이 선택되면 all로 변경
+      const isElementary = getSchoolResult?.schoolLevel === "elementary";
+      const gradeList = isElementary
+        ? ["1", "2", "3", "4", "5", "6"]
+        : ["1", "2", "3"];
+
+      if (gradeList.every((grade) => newTarget.includes(grade))) {
+        newTarget = ["all"];
+      }
     }
 
-    setTarget([...target, value]);
+    setTarget(newTarget);
   };
 
   const isFormComplete = () => {
@@ -72,15 +110,39 @@ export default function AddScheduleForm(props: IProps) {
           <Box sx={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <FormDatePicker
               offMinDate
-              value={startAt}
-              onChange={(e) => setStartAt(e.target.value as string)}
+              readOnly={!!dragDate} // dragDate가 존재하면 수정 불가
+              value={dragDate?.startDate || startAt} // dragDate가 있으면 그 값 사용
+              onChange={(e) => {
+                const newStart = e.target.value as string;
+                setStartAt(newStart);
+
+                // 만약 endAt이 startAt보다 이전이면 endAt 초기화
+                if (
+                  endAt &&
+                  dayjs(endAt).isBefore(dayjs(newStart).add(1, "day"))
+                ) {
+                  setEndAt(""); // 또는 newStart로 강제 설정 가능
+                  toast.error("종료일은 시작일 이후여야 합니다.");
+                }
+              }}
             />
 
             <span>~</span>
 
             <FormDatePicker
-              value={endAt}
-              onChange={(e) => setEndAt(e.target.value as string)}
+              offMinDate
+              value={dragDate?.endDate || endAt} // dragDate가 있으면 그 값 사용
+              readOnly={!!dragDate} // dragDate가 존재하면 수정 불가
+              onChange={(e) => {
+                const newEnd = e.target.value as string;
+
+                if (startAt && dayjs(newEnd).isBefore(dayjs(startAt))) {
+                  toast.error("종료일은 시작일 이후여야 합니다.");
+                  return; // 값 변경 막기
+                }
+
+                setEndAt(newEnd);
+              }}
             />
           </Box>
         </Section>
@@ -113,7 +175,14 @@ export default function AddScheduleForm(props: IProps) {
       </ContentWrap>
 
       <BtnWrap>
-        <Btn sx={{ border: "1px solid #E0E0E0" }} onClick={onClose}>
+        <Btn
+          sx={{ border: "1px solid #E0E0E0" }}
+          onClick={() => {
+            onClose();
+            setEndAt("");
+            setStartAt("");
+          }}
+        >
           취소
         </Btn>
         <Btn

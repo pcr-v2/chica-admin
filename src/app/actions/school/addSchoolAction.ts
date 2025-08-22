@@ -68,19 +68,19 @@ export async function addSchool(request: AddSchoolRequest): Promise<{
         throw new Error("학교 생성 실패");
       }
 
-      const addedSchedule = await trx.schedules.create({
-        data: {
-          schoolId: addedSchool.schoolId,
-          scheduleName: "개교기념일",
-          scheduleStatus: true,
-          scheduleTarget: "all",
-          scheduleAt: customDayjs(schoolAnniversary).toDate(),
-        },
-      });
+      // const addedSchedule = await trx.schedules.create({
+      //   data: {
+      //     schoolId: addedSchool.schoolId,
+      //     scheduleName: "개교기념일",
+      //     scheduleStatus: true,
+      //     scheduleTarget: "all",
+      //     scheduleAt: customDayjs(schoolAnniversary).toDate(),
+      //   },
+      // });
 
-      if (!addedSchedule) {
-        throw new Error("스케줄 생성 실패");
-      }
+      // if (!addedSchedule) {
+      //   throw new Error("스케줄 생성 실패");
+      // }
 
       return {
         code: "SUCCESS" as const,

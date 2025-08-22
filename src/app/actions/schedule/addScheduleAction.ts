@@ -1,6 +1,8 @@
 "use server";
 
 import dayjs from "dayjs";
+import { revalidatePath } from "next/cache";
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 import { addScheduleSchema } from "@/app/actions/schedule/scheduleSchema";
@@ -46,6 +48,8 @@ export async function addSchedule(request: AddScheduleRequest) {
   const data: {
     schoolId: string;
     scheduleName: string;
+    scheduleSetId: string;
+
     scheduleTarget: string;
     scheduleStatus: boolean;
     scheduleAt: Date;
@@ -53,10 +57,13 @@ export async function addSchedule(request: AddScheduleRequest) {
 
   // case 1: 초등 전체 선택
   if (scheduleTarget.length === 6 && schoolLevel === "elementary") {
+    const scheduleSetId = uuidv4();
+
     scheduleAt.forEach((date) => {
       data.push({
         schoolId,
         scheduleName,
+        scheduleSetId,
         scheduleTarget: "all",
         scheduleStatus,
         scheduleAt: new Date(dayjs(date).format("YYYY-MM-DD")),
@@ -68,10 +75,13 @@ export async function addSchedule(request: AddScheduleRequest) {
     (schoolLevel === "middle" && scheduleTarget.length === 3) ||
     (schoolLevel === "high" && scheduleTarget.length === 3)
   ) {
+    const scheduleSetId = uuidv4();
+
     scheduleAt.forEach((date) => {
       data.push({
         schoolId,
         scheduleName,
+        scheduleSetId,
         scheduleTarget: "all",
         scheduleStatus,
         scheduleAt: new Date(dayjs(date).format("YYYY-MM-DD")),
@@ -80,11 +90,13 @@ export async function addSchedule(request: AddScheduleRequest) {
   }
   // case 3: 일부 학년 선택
   else {
-    scheduleAt.forEach((date) => {
-      scheduleTarget.forEach((grade) => {
+    scheduleTarget.forEach((grade) => {
+      const scheduleSetId = uuidv4();
+      scheduleAt.forEach((date) => {
         data.push({
           schoolId,
           scheduleName,
+          scheduleSetId,
           scheduleTarget: grade,
           scheduleStatus,
           scheduleAt: new Date(dayjs(date).format("YYYY-MM-DD")),
@@ -105,6 +117,8 @@ export async function addSchedule(request: AddScheduleRequest) {
       message: "일정 생성 중 오류가 발생했습니다.",
     };
   }
+
+  revalidatePath("/schedule");
 
   return {
     code: "SUCCESS" as const,

@@ -15,10 +15,18 @@ export type FormDatePickerProps = {
   onChange?: (e: ChangeEvent) => void;
   sx?: SxProps;
   offMinDate?: boolean;
+  readOnly?: boolean; // 추가
 };
 
 export default function FormDatePicker(props: FormDatePickerProps) {
-  const { name, value, onChange, sx, offMinDate = false } = props;
+  const {
+    name,
+    value,
+    onChange,
+    sx,
+    offMinDate = false,
+    readOnly = false,
+  } = props;
 
   const currentYear = dayjs().year();
 
@@ -38,6 +46,7 @@ export default function FormDatePicker(props: FormDatePickerProps) {
       name={name}
       format={"YYYY-MM-DD"}
       value={realValue}
+      readOnly={readOnly}
       onChange={setValue}
       slotProps={{
         textField: {

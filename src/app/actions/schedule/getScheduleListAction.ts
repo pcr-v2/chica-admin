@@ -1,6 +1,7 @@
 "use server";
 
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 import { getScheduleListSchema } from "@/app/actions/schedule/scheduleSchema";
@@ -12,9 +13,10 @@ export type GetScheduleListResponse = Awaited<
   ReturnType<typeof getScheduleList>
 >;
 
-type MergedSchedule = {
+export type MergedSchedule = {
   [month: string]: {
     id: number;
+    scheduleSetId: string;
     scheduleName: string;
     date: string;
     from: "holiday" | "schedule";
@@ -76,11 +78,12 @@ export async function getScheduleList(request: GetScheduleListRequest) {
 
   // 1. 학교 스케줄 날짜를 현재 연도로 변경
   const updatedSchoolScheduleList = schoolSchedule.map((schedule) => {
-    const updatedDate = dayjs(schedule.scheduleAt).year(currentYear);
+    // const updatedDate = dayjs(schedule.scheduleAt).year(currentYear);
     return {
       id: schedule.id,
+      scheduleSetId: schedule.scheduleSetId,
       scheduleName: schedule.scheduleName,
-      date: customDayjs(updatedDate).format("MM.DD.(ddd)"),
+      date: customDayjs(schedule.scheduleAt).format("YYYY.MM.DD.(ddd)"),
       from: "schedule" as const,
       scheduleTarget: schedule.scheduleTarget,
     };
@@ -89,8 +92,9 @@ export async function getScheduleList(request: GetScheduleListRequest) {
   // 2. 공휴일도 포맷팅
   const formattedHolidays = holiday.map((h) => ({
     id: h.id,
+    scheduleSetId: uuidv4(),
     scheduleName: h.holidayName,
-    date: customDayjs(h.holidayAt).format("MM.DD.(ddd)"),
+    date: customDayjs(h.holidayAt).format("YYYY.MM.DD.(ddd)"),
     from: "holiday" as const,
     scheduleTarget: "all",
   }));
@@ -131,6 +135,6 @@ export async function getScheduleList(request: GetScheduleListRequest) {
   return {
     code: "SUCCESS" as const,
     message: "휴일 정보를 가져왔습니다.",
-    result: sortedFormatted,
+    result: sortedFormatted as MergedSchedule,
   };
 }

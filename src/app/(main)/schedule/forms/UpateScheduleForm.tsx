@@ -2,28 +2,44 @@
 
 import { Box, styled } from "@mui/material";
 
+import { TUpdateDate } from "@/app/(main)/schedule/ScheduleContainer";
+import SwitchIcon from "@/public/images/icons/switch-icon.svg";
+
 interface IProps {
-  onDelete: () => void;
+  value: TUpdateDate;
+  onUpdate: () => void;
   onClose: () => void;
 }
 
-export default function DeleteScheduleAlert(props: IProps) {
-  const { onClose, onDelete } = props;
-
+export default function UpateScheduleForm(props: IProps) {
+  const { onUpdate, onClose } = props;
+  const { scheduleSetId, startDate, endDate, newStartDate, newEndDate } =
+    props.value;
+  // console.log("scheduleSetId", scheduleSetId);
   return (
     <Wrapper>
       {/* <Title>일정 삭제</Title> */}
 
       <ContentWrap>
-        <TitleSpan>여러 날에 걸친 일정은 모두 삭제해야</TitleSpan>
-        <TitleSpan>양치가 기록 됩니다.</TitleSpan>
         <TitleSpan style={{ color: "#F44336" }}>
-          정말 삭제 하시겠습니까?
+          기존 일자
+          {" ("}
+          {startDate === endDate ? startDate : `${startDate} ~ ${endDate}`}
+          {")"}
         </TitleSpan>
+        <Switch />
+        <TitleSpan style={{ color: "#32C794" }}>
+          변경 일자{" ("}
+          {newStartDate === newEndDate
+            ? newStartDate
+            : `${newStartDate} ~ ${newEndDate}`}
+          {")"}
+        </TitleSpan>
+        <TitleSpan>수정 하시겠습니까?</TitleSpan>
       </ContentWrap>
 
       <BtnWrap>
-        <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
+        <UpdateBtn onClick={onUpdate}>수정</UpdateBtn>
 
         <Btn onClick={onClose}>취소</Btn>
       </BtnWrap>
@@ -39,16 +55,13 @@ const Wrapper = styled(Box)(() => {
   };
 });
 
-const Title = styled(Box)(() => {
+const Switch = styled(SwitchIcon)(() => {
   return {
-    width: "100%",
-    fontSize: 20,
-    fontWeight: 600,
-    color: "#F44336",
-    textAlign: "start",
-    backgroundColor: "#FCE4EC",
-    padding: "16px 12px 16px 24px",
-    borderRadius: "12px 12px 0px 0px",
+    width: "24px",
+    height: "24px",
+    path: {
+      stroke: "#747D8A",
+    },
   };
 });
 
@@ -57,8 +70,9 @@ const ContentWrap = styled(Box)(() => {
     gap: "8px",
     width: "100%",
     display: "flex",
-    padding: "32px 28px 28px",
+    alignItems: "center",
     flexDirection: "column",
+    padding: "52px 28px 28px",
   };
 });
 
@@ -94,7 +108,7 @@ const Btn = styled(Box)(() => {
   };
 });
 
-const DeleteBtn = styled(Box)(() => {
+const UpdateBtn = styled(Box)(() => {
   return {
     fontSize: 16,
     width: "100%",
@@ -104,6 +118,6 @@ const DeleteBtn = styled(Box)(() => {
     padding: "8px 12px",
     textAlign: "center",
     borderRadius: "8px",
-    backgroundColor: "#F44336",
+    backgroundColor: "#32C794",
   };
 });

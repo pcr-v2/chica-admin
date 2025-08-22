@@ -1,6 +1,7 @@
 "use server";
 
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 import { getScheduleListSchema } from "@/app/actions/schedule/scheduleSchema";
@@ -15,6 +16,7 @@ export type GetScheduleListResponse = Awaited<
 export type MergedSchedule = {
   [month: string]: {
     id: number;
+    scheduleSetId: string;
     scheduleName: string;
     date: string;
     from: "holiday" | "schedule";
@@ -79,6 +81,7 @@ export async function getScheduleList(request: GetScheduleListRequest) {
     // const updatedDate = dayjs(schedule.scheduleAt).year(currentYear);
     return {
       id: schedule.id,
+      scheduleSetId: schedule.scheduleSetId,
       scheduleName: schedule.scheduleName,
       date: customDayjs(schedule.scheduleAt).format("YYYY.MM.DD.(ddd)"),
       from: "schedule" as const,
@@ -89,6 +92,7 @@ export async function getScheduleList(request: GetScheduleListRequest) {
   // 2. 공휴일도 포맷팅
   const formattedHolidays = holiday.map((h) => ({
     id: h.id,
+    scheduleSetId: uuidv4(),
     scheduleName: h.holidayName,
     date: customDayjs(h.holidayAt).format("YYYY.MM.DD.(ddd)"),
     from: "holiday" as const,

@@ -23,5 +23,10 @@ export const getScheduleSchema = z.object({
 });
 
 export const deleteScheduleSchema = z.object({
-  scheduleId: z.number({ required_error: "스케줄 아이디가 없습니다." }),
+  scheduleSetId: z.string({ required_error: "스케줄 Set 아이디가 없습니다." }),
+});
+
+export const updateScheduleSchema = z.object({
+  scheduleSetId: z.string({ required_error: "스케줄 Set 아이디가 없습니다." }),
+  dateDiff: z.number({ required_error: "수정일 차이값이 없습니다." }),
 });

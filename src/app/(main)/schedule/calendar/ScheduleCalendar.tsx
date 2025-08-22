@@ -10,18 +10,20 @@ import { Box, styled, Tooltip } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 
-import CustomCode from "@/app/(main)/schedule/CustomCssWrap";
 import { TUpdateDate } from "@/app/(main)/schedule/ScheduleContainer";
+import CustomCode from "@/app/(main)/schedule/calendar/CustomCssWrap";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { MergedSchedule } from "@/app/actions/schedule/getScheduleListAction";
+import DeleteIcon from "@/public/images/icons/delete-icon.svg";
 
 interface IProps {
   me: GetMeResponse;
   scheduleList: MergedSchedule;
   calendarRef: RefObject<FullCalendar | null>;
-
+  handleRevert: (value: (() => void) | null) => void;
   handleDragCalendar: (startDate: string, endDate: string) => void;
   handleUpdateCalendar: (value: TUpdateDate) => void;
+  handleDelete: (scheduleSetId: string) => void;
 }
 export default function ScheduleCalendar(props: IProps) {
   const {
@@ -30,6 +32,8 @@ export default function ScheduleCalendar(props: IProps) {
     calendarRef,
     handleDragCalendar,
     handleUpdateCalendar,
+    handleRevert,
+    handleDelete,
   } = props;
 
   const [ready, setReady] = useState(false);
@@ -95,7 +99,7 @@ export default function ScheduleCalendar(props: IProps) {
 
     // 2) 각 그룹 내부에서 날짜 정렬 후, 연속 구간으로 압축
     const result: {
-      id: string;
+      scheduleSetId: string;
       title: string;
       start: string;
       end?: string;
@@ -129,7 +133,7 @@ export default function ScheduleCalendar(props: IProps) {
 
           if (runStart !== runEnd) {
             result.push({
-              id: String(base.id),
+              scheduleSetId: base.scheduleSetId,
               title,
               start: formatDateToISO(runStart),
               // end: formatDateToISO(runEnd),
@@ -138,7 +142,7 @@ export default function ScheduleCalendar(props: IProps) {
             });
           } else {
             result.push({
-              id: String(base.id),
+              scheduleSetId: base.scheduleSetId,
               title,
               start: formatDateToISO(runStart),
               from: base.from,
@@ -159,7 +163,7 @@ export default function ScheduleCalendar(props: IProps) {
       );
       if (runStart !== runEnd) {
         result.push({
-          id: String(base0.id),
+          scheduleSetId: base0.scheduleSetId,
           title: title0,
           start: formatDateToISO(runStart),
           end: addOneDayISO(runEnd), // 옵션
@@ -167,7 +171,7 @@ export default function ScheduleCalendar(props: IProps) {
         });
       } else {
         result.push({
-          id: String(base0.id),
+          scheduleSetId: base0.scheduleSetId,
           title: title0,
           start: formatDateToISO(runStart),
           from: base0.from as "holiday" | "schedule",
@@ -206,6 +210,12 @@ export default function ScheduleCalendar(props: IProps) {
           return ["schedule-event"];
         }}
         eventDrop={(info) => {
+          if (info.event.extendedProps.from === "holiday") {
+            info.revert();
+
+            return;
+          }
+
           // info.oldEvent, info.event 등으로 옮긴 이벤트 정보 확인 가능
           const startDate = dayjs(info.oldEvent.start).format("YYYY-MM-DD");
           const endDate = info.oldEvent.end
@@ -217,19 +227,14 @@ export default function ScheduleCalendar(props: IProps) {
             ? dayjs(info.event.end).subtract(1, "day").format("YYYY-MM-DD")
             : newStartDate;
 
+          handleRevert(() => info.revert);
           handleUpdateCalendar({
-            id: Number(info.event.id),
+            scheduleSetId: info.event.extendedProps.scheduleSetId,
             startDate,
             endDate,
             newStartDate,
             newEndDate,
           });
-
-          // console.log(
-          //   `이벤트 이동: ${oldStart} ~ ${oldEnd} → ${newStart} ~ ${newEnd}`,
-          // );
-
-          // 서버에 변경된 일정 저장 가능
         }}
         eventContent={(arg) => {
           const from = arg.event.extendedProps.from;
@@ -240,35 +245,28 @@ export default function ScheduleCalendar(props: IProps) {
               slotProps={{
                 tooltip: {
                   sx: {
-                    bgcolor: from === "holiday" ? "#FFEBEE" : "#E5F2FF",
-                    color: from === "holiday" ? "#EF5350" : "#48A4FF",
                     fontSize: 12,
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    color: from === "holiday" ? "#fff" : "#fff",
+                    bgcolor: from === "holiday" ? "#F44336" : "#48A4FF",
                   },
                 },
                 arrow: {
-                  sx: {
-                    color: from === "holiday" ? "#FFEBEE" : "#E5F2FF",
-                  },
+                  sx: { color: from === "holiday" ? "#F44336" : "#48A4FF" },
                 },
               }}
             >
-              <div
-                style={{
-                  fontSize: 12,
-                  fontWeight: 500,
-                  backgroundColor: from === "holiday" ? "#FFEBEE" : "#E5F2FF",
-                  padding: "2px 4px",
-                  color: from === "holiday" ? "#EF5350" : "#48A4FF",
-                  borderRadius: "4px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  marginBottom: "2px",
-                }}
-              >
-                {arg.timeText && <b>{arg.timeText}</b>} {arg.event.title}
-              </div>
+              <EventBox from={from}>
+                <EventTitle from={from}>{arg.event.title}</EventTitle>
+
+                {from === "schedule" && (
+                  <Delete
+                    onClick={() => {
+                      handleDelete(arg.event.extendedProps.scheduleSetId);
+                    }}
+                  />
+                )}
+              </EventBox>
             </Tooltip>
           );
         }}
@@ -277,16 +275,10 @@ export default function ScheduleCalendar(props: IProps) {
         selectable={true} // ← 드래그 선택 가능
         selectMirror={true} // ← 선택 영역 미리보기
         select={(info) => {
-          // alert(
-          //   `${dayjs(info.startStr).format("YYYY-MM-DD")}부터 ${dayjs(info.endStr).subtract(1, "days").format("YYYY-MM-DD")}까지 일정을 추가하세요!`,
-          // );
-
           handleDragCalendar(
             dayjs(info.startStr).format("YYYY-MM-DD"),
             dayjs(info.endStr).subtract(1, "days").format("YYYY-MM-DD"),
           );
-          // 나중에 모달 호출로 변경 가능
-          // openScheduleModal(info.startStr, info.endStr);
         }}
       />
     </Wrapper>
@@ -297,9 +289,45 @@ const Wrapper = styled(Box)(() => {
   return {
     width: "100%",
     display: "flex",
+    minHeight: "100dvh",
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "start",
-    minHeight: "100dvh",
   };
 });
+
+const EventBox = styled(Box)<{ from: "holiday" | "schedule" }>(({ from }) => {
+  return {
+    padding: "2px 4px",
+    borderRadius: "4px",
+    marginBottom: "2px",
+    position: "relative",
+    backgroundColor: from === "holiday" ? "#FFEBEE" : "#E5F2FF",
+  };
+});
+
+const EventTitle = styled(Box)<{ from: "holiday" | "schedule" }>(({ from }) => {
+  return {
+    fontSize: 12,
+    fontWeight: 500,
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    paddingRight: "20px",
+    textOverflow: "ellipsis",
+    color: from === "holiday" ? "#EF5350" : "#48A4FF",
+  };
+});
+
+const Delete = styled(DeleteIcon)(() => ({
+  top: 2,
+  right: 4,
+  zIndex: 3,
+  width: "18px",
+  height: "18px",
+  cursor: "pointer",
+  position: "absolute",
+  path: {
+    fill: "#F44336",
+    backgroundColor: "#E5F2FF",
+  },
+}));

@@ -7,8 +7,6 @@ import toast from "react-hot-toast";
 
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
-import { GetMeResponse } from "@/app/actions/auth/getMe";
-import { GetScheduleResponse } from "@/app/actions/schedule/getScheduleAction";
 import { GetSchoolResponse } from "@/app/actions/school/getSchoolAction";
 
 export type TAddScheduleValue = {
@@ -43,31 +41,41 @@ export default function AddScheduleForm(props: IProps) {
     }
   }, [dragDate]);
 
-  console.log("dragDate", dragDate);
+  // console.log("dragDate", dragDate);
 
   const handleCheckbox = (value: string) => {
+    let newTarget = [...target];
+
     if (value === "all") {
-      // all을 누르면 -> 나머지는 다 해제하고 all만 선택
-      if (target.includes("all")) {
-        setTarget([]); // 이미 체크된 상태에서 다시 누르면 해제
+      // all 클릭 시 → 나머지 해제 후 all만 선택
+      if (newTarget.includes("all")) {
+        newTarget = [];
       } else {
-        setTarget(["all"]);
+        newTarget = ["all"];
       }
     } else {
       // 개별 학년 선택
-      let newTarget = [...target];
-
       if (newTarget.includes(value)) {
         newTarget = newTarget.filter((el) => el !== value);
       } else {
         newTarget.push(value);
       }
 
-      // 개별 학년이 선택되면 all은 무조건 해제
+      // all 해제
       newTarget = newTarget.filter((el) => el !== "all");
 
-      setTarget(newTarget);
+      // ✅ 전체 학년이 선택되면 all로 변경
+      const isElementary = getSchoolResult?.schoolLevel === "elementary";
+      const gradeList = isElementary
+        ? ["1", "2", "3", "4", "5", "6"]
+        : ["1", "2", "3"];
+
+      if (gradeList.every((grade) => newTarget.includes(grade))) {
+        newTarget = ["all"];
+      }
     }
+
+    setTarget(newTarget);
   };
 
   const isFormComplete = () => {

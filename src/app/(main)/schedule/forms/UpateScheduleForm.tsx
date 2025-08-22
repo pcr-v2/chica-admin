@@ -13,22 +13,23 @@ interface IProps {
 
 export default function UpateScheduleForm(props: IProps) {
   const { onUpdate, onClose } = props;
-  const { id, startDate, endDate, newStartDate, newEndDate } = props.value;
-
+  const { scheduleSetId, startDate, endDate, newStartDate, newEndDate } =
+    props.value;
+  // console.log("scheduleSetId", scheduleSetId);
   return (
     <Wrapper>
       {/* <Title>일정 삭제</Title> */}
 
       <ContentWrap>
         <TitleSpan style={{ color: "#F44336" }}>
-          기존
+          기존 일자
           {" ("}
           {startDate === endDate ? startDate : `${startDate} ~ ${endDate}`}
           {")"}
         </TitleSpan>
         <Switch />
         <TitleSpan style={{ color: "#32C794" }}>
-          변경{" ("}
+          변경 일자{" ("}
           {newStartDate === newEndDate
             ? newStartDate
             : `${newStartDate} ~ ${newEndDate}`}

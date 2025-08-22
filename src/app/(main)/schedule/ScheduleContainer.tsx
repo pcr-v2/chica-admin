@@ -1,19 +1,21 @@
 "use client";
 
 import FullCalendar from "@fullcalendar/react";
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-import ScheduleCalendar from "@/app/(main)/schedule/ScheduleCalendar";
-import ScheduleList from "@/app/(main)/schedule/ScheduleList";
+import ScheduleCalendar from "@/app/(main)/schedule/calendar/ScheduleCalendar";
+import MasterSchoolFilter from "@/app/(main)/schedule/filters/MasterSchoolFilter";
+import ScheduleHeader from "@/app/(main)/schedule/filters/ScheduleHeader";
 import AddScheduleForm, {
   TAddScheduleValue,
-} from "@/app/(main)/schedule/components/AddScheduleForm";
-import DeleteScheduleAlert from "@/app/(main)/schedule/components/DeleteScheduleAlert";
-import ScheduleHeader from "@/app/(main)/schedule/components/ScheduleHeader";
-import UpateScheduleForm from "@/app/(main)/schedule/components/UpateScheduleForm";
+} from "@/app/(main)/schedule/forms/AddScheduleForm";
+import DeleteScheduleAlert from "@/app/(main)/schedule/forms/DeleteScheduleAlert";
+import UpateScheduleForm from "@/app/(main)/schedule/forms/UpateScheduleForm";
+import ScheduleList from "@/app/(main)/schedule/list/ScheduleList";
 import Modal from "@/app/_components/common/Modal";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { addSchedule } from "@/app/actions/schedule/addScheduleAction";
@@ -22,7 +24,7 @@ import {
   getScheduleList,
   MergedSchedule,
 } from "@/app/actions/schedule/getScheduleListAction";
-import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
+import { updateSchedule } from "@/app/actions/schedule/updateScheduleAction";
 import { getSchool } from "@/app/actions/school/getSchoolAction";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 
@@ -30,13 +32,14 @@ export type TScheduleRowData = {
   id: number;
   month: string;
   date: string;
+  scheduleSetId: string;
   scheduleName: string;
   from: "holiday" | "schedule";
   scheduleTarget: string;
 };
 
 export type TUpdateDate = {
-  id: number;
+  scheduleSetId: string;
   startDate: string;
   endDate: string;
   newStartDate: string;
@@ -64,8 +67,23 @@ export default function ScheduleContainer(props: IProps) {
 
   const [selectedSchool, setSelectedSchool] = useState(me.data?.schoolId ?? "");
 
+  const [drag, setDrag] = useState<{
+    startDate: string;
+    endDate: string;
+  } | null>(null);
+
+  const [pendingRevert, setPendingRevert] = useState<(() => void) | null>(null);
+
   const { data: scheduleListRes } = useQuery<MergedSchedule>({
-    queryKey: ["scheduleList", selectedSchool, me, addModal],
+    queryKey: [
+      "scheduleList",
+      selectedSchool,
+      me,
+      addModal,
+      type,
+      deleteModal,
+      updateModal,
+    ],
     queryFn: async () => {
       const res = await getScheduleList({ schoolId: selectedSchool });
       if (res.code !== "SUCCESS") {
@@ -110,34 +128,62 @@ export default function ScheduleContainer(props: IProps) {
       toast.error(res.message);
       setAddModal(false);
       await queryClient.invalidateQueries({
-        queryKey: ["scheduleList", selectedSchool, me, addModal],
+        queryKey: [
+          "scheduleList",
+          selectedSchool,
+          me,
+          addModal,
+          type,
+          deleteModal,
+          updateModal,
+        ],
       });
       return;
     }
     toast.success(res.message);
     setAddModal(false);
     await queryClient.invalidateQueries({
-      queryKey: ["scheduleList", selectedSchool, me, addModal],
+      queryKey: [
+        "scheduleList",
+        selectedSchool,
+        me,
+        addModal,
+        type,
+        deleteModal,
+        updateModal,
+      ],
     });
 
-    queryClient.refetchQueries({ queryKey: ["schedule", selectedSchool, me] });
-  };
-
-  const handleEdit = async (scheduleId: number) => {
-    if (scheduleId == null) return;
-    setDeleteId(String(scheduleId));
-    setDeleteModal(true);
+    queryClient.refetchQueries({
+      queryKey: [
+        "scheduleList",
+        selectedSchool,
+        me,
+        addModal,
+        type,
+        deleteModal,
+        updateModal,
+      ],
+    });
   };
 
   const handleDelete = async () => {
-    const res = await deleteSchedule({ scheduleId: Number(deleteId) });
+    const res = await deleteSchedule({ scheduleSetId: deleteId });
 
     if (res.code === "FAIL") {
       toast.error(res.message);
       setDeleteModal(false);
       setDeleteId("");
       await queryClient.invalidateQueries({
-        queryKey: ["schedule", selectedSchool, me],
+        queryKey: [
+          "scheduleList",
+          selectedSchool,
+          me,
+          addModal,
+          type,
+          deleteModal,
+          updateModal,
+        ],
       });
       return;
     }
@@ -145,17 +191,64 @@ export default function ScheduleContainer(props: IProps) {
     setDeleteId("");
     setDeleteModal(false);
     await queryClient.invalidateQueries({
-      queryKey: ["schedule", selectedSchool, me],
+      queryKey: [
+        "scheduleList",
+        selectedSchool,
+        me,
+        addModal,
+        type,
+        deleteModal,
+        updateModal,
+      ],
     });
   };
 
-  const [drag, setDrag] = useState<{
-    startDate: string;
-    endDate: string;
-  } | null>(null);
+  const handleUpdate = async () => {
+    if (updateDate == null) return;
+    const start = dayjs(updateDate.startDate);
+    const newStart = dayjs(updateDate.newStartDate);
+
+    // 차이값 (단위: 일)
+    const diffInDays = newStart.diff(start, "day");
+
+    const res = await updateSchedule({
+      scheduleSetId: updateDate.scheduleSetId,
+      dateDiff: diffInDays,
+    });
+
+    if (res.code !== "SUCCESS") {
+      toast.error(res.message);
+      setUpdateModal(false);
+      return;
+    }
+
+    toast.success(res.message);
+    setUpdateModal(false);
+    await queryClient.invalidateQueries({
+      queryKey: [
+        "scheduleList",
+        selectedSchool,
+        me,
+        addModal,
+        type,
+        deleteModal,
+        updateModal,
+      ],
+    });
+  };
 
   return (
     <Wrapper>
+      <FilterBox>
+        {me.data?.type === "master" && (
+          <MasterSchoolFilter
+            onChange={(value) => setSelectedSchool(value)}
+            schoolList={schoolList}
+            selectedSchool={selectedSchool}
+          />
+        )}
+      </FilterBox>
+
       <ScheduleHeader
         type={type}
         ref={calendarRef}
@@ -169,19 +262,44 @@ export default function ScheduleContainer(props: IProps) {
           // key={scheduleListRes?.length}
           scheduleList={scheduleListRes}
           calendarRef={calendarRef}
+          handleRevert={(value) => setPendingRevert(value)}
           handleDragCalendar={(startDate, endDate) => {
             // console.log(startDate, endDate);
             setDrag({ startDate, endDate });
             setAddModal(true);
           }}
           handleUpdateCalendar={(value) => {
-            const { id, startDate, endDate, newStartDate, newEndDate } = value;
+            const {
+              scheduleSetId,
+              startDate,
+              endDate,
+              newStartDate,
+              newEndDate,
+            } = value;
             setUpdateModal(true);
-            setUpdateDate({ id, startDate, endDate, newStartDate, newEndDate });
+            setUpdateDate({
+              scheduleSetId,
+              startDate,
+              endDate,
+              newStartDate,
+              newEndDate,
+            });
+          }}
+          handleDelete={(scheduleSetId: string) => {
+            setDeleteId(scheduleSetId);
+            setDeleteModal(true);
           }}
         />
       ) : (
-        <ScheduleList me={me} schoolList={schoolList} />
+        <ScheduleList
+          me={me}
+          schoolList={schoolList}
+          handleDelete={(scheduleSetId: string) => {
+            setDeleteId(scheduleSetId);
+            setDeleteModal(true);
+          }}
+          scheduleListRes={scheduleListRes}
+        />
       )}
 
       <Modal
@@ -211,7 +329,6 @@ export default function ScheduleContainer(props: IProps) {
         maxWidth={360}
         children={
           <DeleteScheduleAlert
-            // onDelete={() => {}}
             onDelete={handleDelete}
             onClose={() => {
               setDeleteId("");
@@ -226,17 +343,27 @@ export default function ScheduleContainer(props: IProps) {
       />
 
       <Modal
-        isDelete
         open={updateModal}
         maxWidth={360}
+        isDelete
         children={
           <UpateScheduleForm
             value={updateDate as TUpdateDate}
-            onClose={() => setUpdateModal(false)}
-            onUpdate={() => {}}
+            onClose={() => {
+              if (pendingRevert) {
+                pendingRevert(); // ✅ 여기서 원상 복구
+                setPendingRevert(null);
+              }
+              setUpdateModal(false);
+            }}
+            onUpdate={handleUpdate}
           />
         }
         onClose={() => {
+          if (pendingRevert) {
+            pendingRevert(); // ✅ 여기서 원상 복구
+            setPendingRevert(null);
+          }
           setUpdateDate(null);
           setUpdateModal(false);
         }}
@@ -256,5 +383,14 @@ const Wrapper = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#fff",
+  };
+});
+
+const FilterBox = styled(Box)(() => {
+  return {
+    width: "100%",
+    display: "flex",
+    maxWidth: "917px",
+    justifyContent: "start",
   };
 });

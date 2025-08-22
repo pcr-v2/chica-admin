@@ -68,22 +68,22 @@ export async function updateSchool(request: UpdateSchoolRequest) {
     };
   }
 
-  const addedSchedule = await mysqlPrisma.schedules.create({
-    data: {
-      schoolId: updateRes.schoolId,
-      scheduleName: "개교기념일",
-      scheduleStatus: true,
-      scheduleTarget: "all",
-      scheduleAt: dayjs(schoolAnniversary).toDate(),
-    },
-  });
+  // const addedSchedule = await mysqlPrisma.schedules.create({
+  //   data: {
+  //     schoolId: updateRes.schoolId,
+  //     scheduleName: "개교기념일",
+  //     scheduleStatus: true,
+  //     scheduleTarget: "all",
+  //     scheduleAt: dayjs(schoolAnniversary).toDate(),
+  //   },
+  // });
 
-  if (!addedSchedule) {
-    return {
-      code: "FAIL" as const,
-      message: "수정 중 문제가 발생했습니다.",
-    };
-  }
+  // if (!addedSchedule) {
+  //   return {
+  //     code: "FAIL" as const,
+  //     message: "수정 중 문제가 발생했습니다.",
+  //   };
+  // }
 
   return {
     code: "SUCCESS" as const,

@@ -8,12 +8,12 @@ import { TScheduleRowData } from "@/app/(main)/schedule/ScheduleContainer";
 import DeleteIcon from "@/public/images/icons/delete-icon.svg";
 
 interface IProps {
-  onClickEdit: (scheduleId: number) => void;
+  handleDelete: (scheduleSetId: string) => void;
   rows: TScheduleRowData[];
 }
 
 export default function ScheduleTable(props: IProps) {
-  const { rows, onClickEdit } = props;
+  const { rows, handleDelete } = props;
 
   const currentMonth = dayjs().format("M");
   const currentYear = dayjs().format("YYYY");
@@ -148,7 +148,9 @@ export default function ScheduleTable(props: IProps) {
 
                       {row.from === "schedule" &&
                         row.scheduleName !== "개교기념일" && (
-                          <Delete onClick={() => onClickEdit(row.id)} />
+                          <Delete
+                            onClick={() => handleDelete(row.scheduleSetId)}
+                          />
                         )}
                     </RightCells>
                   </Box>

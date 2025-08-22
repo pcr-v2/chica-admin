@@ -18,26 +18,26 @@ export async function deleteSchedule(request: DeleteScheduleRequest) {
     };
   }
 
-  const { scheduleId } = validated.data;
+  const { scheduleSetId } = validated.data;
 
-  const findAnniversary = await mysqlPrisma.schedules.findFirst({
+  // const findAnniversary = await mysqlPrisma.schedules.findFirst({
+  //   where: {
+  //     scheduleSetId,
+  //     scheduleStatus: true,
+  //   },
+  // });
+
+  // //개교기념일 삭제가 가능한가? 아님 그냥 추가등록
+  // if (findAnniversary?.scheduleName === "개교기념일") {
+  //   return {
+  //     code: "FAIL" as const,
+  //     message: "개교기념일은 삭제할 수 없습니다.",
+  //   };
+  // }
+
+  const result = await mysqlPrisma.schedules.updateMany({
     where: {
-      id: scheduleId,
-      scheduleStatus: true,
-    },
-  });
-
-  //개교기념일 삭제가 가능한가? 아님 그냥 추가등록
-  if (findAnniversary?.scheduleName === "개교기념일") {
-    return {
-      code: "FAIL" as const,
-      message: "개교기념일은 삭제할 수 없습니다.",
-    };
-  }
-
-  const result = await mysqlPrisma.schedules.update({
-    where: {
-      id: scheduleId,
+      scheduleSetId,
     },
     data: {
       scheduleStatus: false,

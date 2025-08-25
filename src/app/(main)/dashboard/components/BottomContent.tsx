@@ -32,13 +32,13 @@ export default function BottomContent(props: IProps) {
   return (
     <Wrapper>
       <TableWrap>
-        <Title>미참여 학생 리스트</Title>
+        <Title>5일 연속 미참여 학생 리스트</Title>
 
         <Table list={data} type="uncheck" />
       </TableWrap>
 
       <TableWrap>
-        <Title>학생 순위</Title>
+        <Title>개인전 순위</Title>
 
         <Table list={data} type="rank" />
       </TableWrap>

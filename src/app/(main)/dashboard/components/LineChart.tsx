@@ -68,7 +68,7 @@ export default function ChartLine({ lineRes }: IProps) {
       y: {
         min: 0,
         suggestedMax: yMax >= 100 ? yMax * 1.1 : 100, // ✅ 조건부 최대값
-        ticks: { stepSize: 10 },
+        ticks: { stepSize: 20 },
         grid: {
           drawBorder: false,
           drawTicks: false,

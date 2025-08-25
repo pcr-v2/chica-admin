@@ -1,24 +1,30 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 import ChartTab from "@/app/(main)/dashboard/components/ChartTab";
 import { Toggle } from "@/app/_components/common/Toggle";
 
 interface IProps {
   tab: "day" | "week";
+  graphType: "line" | "bar" | "leaderBoard";
   onChange: (value: "day" | "week") => void;
   graph: ReactNode;
 }
 
 export default function MiddleContent(props: IProps) {
-  const { graph, tab, onChange } = props;
+  const { graph, graphType, tab, onChange } = props;
 
   return (
     <Wrapper>
       <Title>
-        <Box>{tab === "day" ? "일별" : "주별"} 실천율</Box>
+        {graphType === "line" && (
+          <Box>남녀별 {tab === "day" ? "일간" : "주간"} 실천율 비교</Box>
+        )}
+        {graphType === "bar" && (
+          <Box>학년별 {tab === "day" ? "일간" : "주간"} 실천율 비교</Box>
+        )}
 
         <ChartTab tab={tab} onClick={(tab) => onChange(tab)} />
       </Title>

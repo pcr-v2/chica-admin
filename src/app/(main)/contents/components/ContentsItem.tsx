@@ -1,7 +1,13 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import React, { forwardRef, HTMLAttributes } from "react";
+import React, {
+  forwardRef,
+  HTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import DeleteIcon from "@/public/images/icons/delete-icon.svg";
 
@@ -17,7 +23,6 @@ export type ItemProps = HTMLAttributes<HTMLDivElement> & {
 
 const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
   const {
-    id,
     withOpacity,
     isDragging,
     style,
@@ -28,16 +33,51 @@ const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
     ...rest
   } = props;
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoDuration, setVideoDuration] = useState<string>("");
+
+  // ✅ 영상 길이 계산
+  useEffect(() => {
+    if (fileType === "video" && videoRef.current) {
+      const video = videoRef.current;
+      const handleLoadedMetadata = () => {
+        const duration = video.duration;
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60)
+          .toString()
+          .padStart(2, "0");
+        setVideoDuration(`${minutes}분 ${seconds}초`);
+      };
+
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      return () => {
+        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      };
+    }
+  }, [fileType]);
+
+  // ✅ 이미지 확장자 추출
+  const getFileExtension = () => {
+    try {
+      const url = new URL(fileUrl);
+      const pathname = url.pathname;
+      const ext = pathname.split(".").pop();
+      return ext ? ext.toUpperCase() : "";
+    } catch {
+      const parts = fileUrl.split(".");
+      return parts[parts.length - 1].toUpperCase();
+    }
+  };
+
   const handleDeleteClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation(); // 드래그 시작 이벤트 차단
-    // onClickDelete();
+    event.stopPropagation();
   };
 
   const handleDeletePointerDown = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
-    event.stopPropagation(); // 드래그 시작 시 발생하는 pointerdown 이벤트 차단
-    event.preventDefault(); // 드래그 시작 시 발생하는 pointerdown 이벤트 차단
+    event.stopPropagation();
+    event.preventDefault();
     onClickDelete();
   };
 
@@ -50,14 +90,22 @@ const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
       {...rest}
     >
       <ItemBox isDragging={isDragging}>
-        {fileType === "image" && <FileImg src={fileUrl} alt="drag-preview" />}
+        {fileType === "image" && <FileImg src={fileUrl} alt="preview" />}
         {fileType === "video" && (
-          <FileVideo src={fileUrl} muted playsInline preload="metadata" />
+          <FileVideo
+            ref={videoRef}
+            src={fileUrl}
+            muted
+            playsInline
+            preload="metadata"
+          />
         )}
       </ItemBox>
 
       <BottomWrap>
-        <TimeSpan>00:00:00</TimeSpan>
+        <TimeSpan>
+          {fileType === "video" ? `영상 (${videoDuration})` : "이미지"}
+        </TimeSpan>
 
         <Delete
           data-no-dnd
@@ -72,9 +120,8 @@ const ContentsItem = forwardRef<HTMLDivElement, ItemProps>((props, ref) => {
 export default ContentsItem;
 
 // -------------------------------------
-// 🧱 styled components
+// styled-components
 // -------------------------------------
-
 const ItemWrap = styled("div", {
   shouldForwardProp: (prop) => prop !== "withOpacity" && prop !== "isDragging",
 })<{
@@ -96,12 +143,10 @@ const ItemWrap = styled("div", {
   transform: isDragging ? "scale(1.05)" : "scale(1)",
 }));
 
-const ItemBox = styled("div", {
-  shouldForwardProp: (prop) => prop !== "withOpacity" && prop !== "isDragging",
-})<{
+const ItemBox = styled("div")<{
   withOpacity?: boolean;
   isDragging?: boolean;
-}>(({ withOpacity, isDragging }) => ({
+}>(({ isDragging }) => ({
   width: 220,
   height: 220,
   display: "flex",
@@ -121,7 +166,7 @@ const BottomWrap = styled(Box)(() => ({
 const TimeSpan = styled("span")(() => ({
   fontSize: 18,
   fontWeight: 400,
-  color: "#D5D7DB",
+  color: "#747D8A",
 }));
 
 const Delete = styled(DeleteIcon)(() => ({
@@ -136,22 +181,18 @@ const Delete = styled(DeleteIcon)(() => ({
   },
 }));
 
-const FileImg = styled("img")(() => {
-  return {
-    width: 200,
-    height: 200,
-    opacity: 1,
-    borderRadius: 8,
-    objectFit: "cover",
-  };
-});
+const FileImg = styled("img")(() => ({
+  width: 200,
+  height: 200,
+  opacity: 1,
+  borderRadius: 8,
+  objectFit: "cover",
+}));
 
-const FileVideo = styled("video")(() => {
-  return {
-    width: 200,
-    height: 200,
-    opacity: 1,
-    borderRadius: 8,
-    objectFit: "cover",
-  };
-});
+const FileVideo = styled("video")(() => ({
+  width: 200,
+  height: 200,
+  opacity: 1,
+  borderRadius: 8,
+  objectFit: "cover",
+}));

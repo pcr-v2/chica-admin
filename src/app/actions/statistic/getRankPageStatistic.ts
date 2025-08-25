@@ -167,7 +167,7 @@ export async function getRankPageStatistic(
       AND DATE(b.brushed_at) IN (${last7WorkingDaysStr})
       AND s.student_status = true
     GROUP BY s.student_id, s.student_name, s.student_grade, s.student_class, s.student_gender, s.student_number
-    ORDER BY brushed_at DESC
+    ORDER BY student_grade ASC, student_class ASC, student_number ASC
   `,
     schoolId,
   );
@@ -220,9 +220,12 @@ export async function getRankPageStatistic(
   const gteDate = periodStart.toDate();
   const lteDate = today.endOf("day").toDate();
 
+  // console.log("날짜", gteDate, lteDate);
+
   // 1. 학생별 양치율 상위 30명 (학교 전체)
   const studentRankArrayRaw = await mysqlPrisma.$queryRawUnsafe<
     {
+      brushed_at: Date;
       student_id: string;
       student_name: string;
       student_grade: number;
@@ -236,6 +239,7 @@ export async function getRankPageStatistic(
     `
     WITH StudentStats AS (
       SELECT
+        b.brushed_at,
         s.student_id,
         s.student_name,
         s.student_grade,
@@ -258,6 +262,7 @@ export async function getRankPageStatistic(
     ),
     RankedStudents AS (
       SELECT
+        brushed_at,
         student_id,
         student_name,
         student_grade,
@@ -265,23 +270,34 @@ export async function getRankPageStatistic(
         student_gender,
         student_number,
         percentage,
-        ROW_NUMBER() OVER (ORDER BY percentage DESC) AS student_rank
+        DENSE_RANK() OVER (ORDER BY percentage DESC) AS student_rank
       FROM StudentStats
     )
     SELECT *
     FROM RankedStudents
     WHERE student_rank <= 30
-    ORDER BY student_rank, student_name
+    ORDER BY student_rank ASC, student_grade ASC, student_class ASC, student_number ASC, student_name
   `,
     gteDate,
     lteDate,
     schoolId,
   );
 
+  const brushedAtList = Array.from(
+    new Set(
+      studentRankArrayRaw
+        .filter((item) => item.brushed_at) // null/undefined 방지
+        .map((item) => dayjs(item.brushed_at).format("YYYY년 M월")),
+    ),
+  );
+
   const studentRankArray = studentRankArrayRaw.map((item) => ({
     ...item,
     percentage: Number(item.percentage),
+    brushedAt: dayjs(item.brushed_at).format("YYYY년 M월"),
   }));
+
+  // console.log("studentRankArray", studentRankArray);
 
   return {
     code: "SUCCESS" as const,
@@ -292,6 +308,7 @@ export async function getRankPageStatistic(
 
       studentRankArray,
       unCheckedListRaw,
+      brushedAtList,
     },
   };
 }

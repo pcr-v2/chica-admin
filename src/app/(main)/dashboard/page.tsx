@@ -23,9 +23,7 @@ export default async function page() {
     schoolId: me.data?.schoolId as string,
     type: "day",
   });
-
-  // console.log("lineRes", lineRes);
-  // console.log("barRes", barRes);
+  // console.log("list", list);
 
   if (me.code === "FAIL") {
     return redirect("/signin");

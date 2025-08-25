@@ -79,11 +79,13 @@ export default function DashboardContainer(props: IProps) {
     <Wrapper>
       <MiddleWrap>
         <MiddleContent
-          graph={<ChartLine lineRes={lineData} />}
           tab={lineTab}
+          graphType="line"
+          graph={<ChartLine lineRes={lineData} />}
           onChange={(value) => setLineTab(value)}
         />
         <MiddleContent
+          graphType="bar"
           graph={<BarChart barRes={barData} tab={barTab} />}
           tab={barTab}
           onChange={(value) => setBarTab(value)}

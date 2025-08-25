@@ -33,6 +33,7 @@ export default function Table(props: IProps) {
         <TableHeaderColumn>반</TableHeaderColumn>
         <TableHeaderColumn>번호</TableHeaderColumn>
         <TableHeaderColumn>이름</TableHeaderColumn>
+        {type === "rank" && <TableHeaderColumn>실천율</TableHeaderColumn>}
       </TableHeader>
 
       {type === "uncheck"
@@ -72,15 +73,14 @@ export default function Table(props: IProps) {
                 }}
               >
                 <TableRowItem>
-                  {/* <Icon> */}
                   {el.student_gender === "male" ? <MaleIcon /> : <FeMaleIcon />}
-                  {/* </Icon> */}
                 </TableRowItem>
 
                 <TableRowItem>{el.student_grade}학년</TableRowItem>
                 <TableRowItem>{el.student_class}반</TableRowItem>
                 <TableRowItem>{el.student_number}번</TableRowItem>
                 <TableRowItem>{el.student_name}</TableRowItem>
+                <TableRowItem>{el.percentage}%</TableRowItem>
               </TableRow>
             );
           })}
@@ -96,13 +96,17 @@ const Wrapper = styled(Box)(() => {
     maxHeight: "320px",
     borderRadius: "10px",
     backgroundColor: "#fff",
+    position: "relative",
   };
 });
 
 const TableHeader = styled(Box)(() => {
   return {
+    top: 0,
+    zIndex: 10,
     width: "100%",
     display: "flex",
+    position: "sticky",
     padding: "12px 16px",
     alignItems: "center",
     backgroundColor: "#F1F2F3",

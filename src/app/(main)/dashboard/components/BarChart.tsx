@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
@@ -40,16 +41,16 @@ export function BarChart({ barRes, tab }: IProps) {
   const chartData =
     tab === "day"
       ? [
-          { label: "오늘", data: dailyData, backgroundColor: "#BDDEFF" },
           { label: "어제", data: dailyCompareData, backgroundColor: "#C8F1E3" },
+          { label: "오늘", data: dailyData, backgroundColor: "#BDDEFF" },
         ]
       : [
-          { label: "이번 주", data: weeklyData, backgroundColor: "#BDDEFF" },
           {
             label: "지난 주",
             data: weeklyCompareData,
             backgroundColor: "#C8F1E3",
           },
+          { label: "이번 주", data: weeklyData, backgroundColor: "#BDDEFF" },
         ];
 
   // ✅ 최대값 계산 (두 dataset 모두 포함)
@@ -62,6 +63,7 @@ export function BarChart({ barRes, tab }: IProps) {
       legend: {
         display: true,
         position: "bottom" as const,
+        align: "center" as const,
         labels: {
           padding: 15, // ✅ 레전드와 차트 간격 조정
           boxWidth: 12, // 레전드 색상 박스 크기
@@ -87,7 +89,7 @@ export function BarChart({ barRes, tab }: IProps) {
       y: {
         min: 0,
         suggestedMax: maxValue <= 100 ? 100 : maxValue * 1.1, // 최대값 +10%
-        ticks: { stepSize: 10 },
+        ticks: { stepSize: 20 },
         grid: {
           drawBorder: false,
           drawTicks: false,

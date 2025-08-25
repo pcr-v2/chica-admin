@@ -33,6 +33,7 @@
     "@types/lodash": "^4.17.20",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.19.2",
     "jose": "^6.0.11",

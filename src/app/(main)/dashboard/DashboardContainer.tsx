@@ -8,15 +8,17 @@ import toast from "react-hot-toast";
 
 import { BarChart } from "@/app/(main)/dashboard/components/BarChart";
 import BottomContent from "@/app/(main)/dashboard/components/BottomContent";
+import ClassListRank from "@/app/(main)/dashboard/components/ClassListRank";
 import ChartLine from "@/app/(main)/dashboard/components/LineChart";
 import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
 import TopContent from "@/app/(main)/dashboard/components/TopContent";
-import { GetMeResponse } from "@/app/actions/auth/getMe";
+import { getMe, GetMeResponse } from "@/app/actions/auth/getMe";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
 import {
   getBarChartStatistic,
   GetBarChartStatisticResponse,
 } from "@/app/actions/statistic/getBarChartStatistic";
+import { GetClassRankListStatisticResponse } from "@/app/actions/statistic/getClassRankListStatistic";
 import {
   getLineChartStatistic,
   GetLineChartStatisticResponse,
@@ -28,10 +30,11 @@ interface IProps {
   list: GetRankPageStatisticResponse;
   lineRes: GetLineChartStatisticResponse;
   barRes: GetBarChartStatisticResponse;
+  classRankList: GetClassRankListStatisticResponse;
 }
 
 export default function DashboardContainer(props: IProps) {
-  const { me, list, lineRes, barRes } = props;
+  const { me, list, lineRes, barRes, classRankList } = props;
 
   const currentYear = dayjs().year();
 
@@ -91,6 +94,8 @@ export default function DashboardContainer(props: IProps) {
           onChange={(value) => setBarTab(value)}
         />
       </MiddleWrap>
+
+      <ClassListRank me={me} classRankList={classRankList} />
 
       <BottomWrap>
         <BottomContent me={me} list={list} />

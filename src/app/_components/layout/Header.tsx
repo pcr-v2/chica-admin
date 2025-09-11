@@ -1,9 +1,12 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
+import { Toggle } from "@/app/_components/common/Toggle";
+import { convertGrant } from "@/app/actions/auth/ConvertGrantAction";
 import { signOut } from "@/app/actions/auth/SignOutAction";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import {
@@ -20,7 +23,12 @@ interface IProps {
 export default function Header(props: IProps) {
   const { me } = props;
   const nowPath = usePathname();
-  // console.log("me", me);
+  const router = useRouter();
+
+  const [value, setValue] = useState({
+    checked: me?.data?.type === "master" || false,
+    grant: me?.data?.type || "teacher",
+  });
 
   const handleLogout = async () => {
     toast.success("로그아웃 되었습니다.");
@@ -32,6 +40,41 @@ export default function Header(props: IProps) {
   const currentMenu = getCurrentMenuItem(nowPath, me?.data?.type as UserRole);
   const Icon = currentMenu?.icon;
 
+  // const convertGrantAvailable =
+  //   me &&
+  //   me?.data &&
+  //   nowPath === "/dashboard" &&
+  //   me.data?.schoolId === "21a01ae2-2f60-4f7c-bcae-9fa4fc287564";
+
+  // const handleGrant = async (v: boolean) => {
+  //   if (!me.data) return;
+
+  //   const res = await convertGrant({
+  //     id: "dev",
+  //     pw: "1q2w3e4r!",
+  //     schoolId: me.data.schoolId,
+  //     schoolType: v ? "master" : "teacher",
+  //   });
+
+  //   if (res.code === "FAIL") {
+  //     toast.error(res.message);
+  //     return;
+  //   }
+
+  //   toast.success("권한이 변경되었습니다.");
+
+  //   // 토글 상태만 v로 업데이트
+  //   setValue({
+  //     checked: v,
+  //     grant: v ? "master" : "teacher",
+  //   });
+
+  //   // 권한 바뀌면 새 토큰 발급되므로 필요 시 refresh
+  //   router.refresh();
+  // };
+
+  // console.log("value", value);
+
   return (
     <Wrapper>
       <PathLabel>
@@ -42,6 +85,15 @@ export default function Header(props: IProps) {
         )}
         {lable}
       </PathLabel>
+      {/* {convertGrantAvailable && (
+        <>
+          <Toggle
+            label="권한 변경"
+            checked={value.checked}
+            onChange={handleGrant}
+          />
+        </>
+      )} */}
 
       <UserMenu>
         <UserName>

@@ -42,6 +42,9 @@ export default function ChartLine({ lineRes }: IProps) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      datalabels: {
+        display: false, // boolean이 아니라 옵션 안에서 false
+      },
       legend: {
         display: true,
         position: "bottom" as const,

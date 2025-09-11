@@ -13,9 +13,9 @@ export default function ContentsAdd({ onClick }: { onClick: () => void }) {
       </GreenBox>
 
       <BottomWrap>
-        <TimeSpan>00:00:00</TimeSpan>
+        <TimeSpan>+버튼을 눌러 콘텐츠를 추가하세요.</TimeSpan>
 
-        <Delete />
+        {/* <Delete /> */}
       </BottomWrap>
     </Wrapper>
   );
@@ -68,14 +68,14 @@ const BottomWrap = styled(Box)(() => {
     width: "100%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   };
 });
 
 const TimeSpan = styled("span")(() => {
   return {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 400,
-    color: "#D5D7DB",
+    color: "#747d8a",
   };
 });

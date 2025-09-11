@@ -1,44 +1,54 @@
 "use client";
 
 import {
-  isServer,
   QueryClient,
   QueryClientProvider,
+  HydrationBoundary,
+  DehydratedState,
 } from "@tanstack/react-query";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface ProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  client: QueryClient;
+  state?: DehydratedState | null;
 }
 
-const QueryClientProviders = ({ children }: ProvidersProps) => {
+export default function QueryClientProviders({
+  children,
+  client,
+  state,
+}: ProvidersProps) {
   return (
-    <QueryClientProvider client={getQueryClient()}>
-      {children}
+    <QueryClientProvider client={client}>
+      <HydrationBoundary state={state}>{children}</HydrationBoundary>
     </QueryClientProvider>
   );
-};
-
-let browserQueryClient: QueryClient | undefined = undefined;
-
-function makeQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: 3,
-      },
-    },
-  });
 }
 
-function getQueryClient() {
-  if (isServer) {
-    return makeQueryClient();
+// 서버/클라이언트 공용 QueryClient 생성 함수
+let browserQueryClient: QueryClient | undefined = undefined;
+
+export function getQueryClient() {
+  if (typeof window === "undefined") {
+    return new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+          retry: 3,
+        },
+      },
+    });
   } else {
-    if (!browserQueryClient) browserQueryClient = makeQueryClient();
+    if (!browserQueryClient)
+      browserQueryClient = new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            retry: 3,
+          },
+        },
+      });
     return browserQueryClient;
   }
 }
-
-export default QueryClientProviders;

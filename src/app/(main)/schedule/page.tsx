@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import ScheduleContainer from "@/app/(main)/schedule/ScheduleContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import {
@@ -5,6 +7,12 @@ import {
   MergedSchedule,
 } from "@/app/actions/schedule/getScheduleListAction";
 import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "일정 관리",
+  };
+}
 
 export default async function page() {
   const me = await getMe();

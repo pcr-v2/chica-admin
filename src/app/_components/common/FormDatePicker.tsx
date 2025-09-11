@@ -43,6 +43,7 @@ export default function FormDatePicker(props: FormDatePickerProps) {
 
   return (
     <CustomDatePicker
+      sx={sx}
       name={name}
       format={"YYYY-MM-DD"}
       value={realValue}

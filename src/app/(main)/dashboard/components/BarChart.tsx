@@ -8,6 +8,8 @@ import {
   Title,
   Tooltip,
   Legend,
+  Chart,
+  ChartDataset,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import React from "react";
@@ -23,6 +25,14 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
+
+interface DataLabelContext {
+  chart: Chart;
+  dataIndex: number; // 현재 데이터 인덱스
+  dataset: ChartDataset; // 현재 막대/라인이 속한 dataset
+  datasetIndex: number; // dataset 배열에서의 인덱스
+  active: boolean; // 마우스 오버 등으로 활성화 여부
+}
 
 interface IProps {
   barRes: GetBarChartStatisticResponse;
@@ -60,6 +70,21 @@ export function BarChart({ barRes, tab }: IProps) {
     responsive: true,
     maintainAspectRatio: false, // 이게 있어야 부모 높이에 따라 반응함
     plugins: {
+      datalabels: {
+        display: function (context: DataLabelContext) {
+          const value = context.dataset.data[context.dataIndex] as number;
+          return value !== 0; // 0이면 안 보이게
+        },
+        color: "#747d8a",
+        anchor: "center" as const,
+        align: "center" as const,
+        rotation: -30, // -45도 회전, 양수면 시계방향
+        font: {
+          size: 10,
+          weight: "bold" as const,
+        },
+        formatter: (value: number) => `${Math.round(value)}%`,
+      },
       legend: {
         display: true,
         position: "bottom" as const,

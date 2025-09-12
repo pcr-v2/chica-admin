@@ -15,6 +15,10 @@ import {
   GetClassRankListStatisticResponse,
 } from "@/app/actions/statistic/getClassRankListStatistic";
 
+interface CustomCheckboxProps extends CheckboxProps {
+  iconSrc?: string;
+}
+
 interface IProps {
   me: GetMeResponse;
   classRankList: GetClassRankListStatisticResponse;
@@ -83,6 +87,7 @@ export default function ClassListRank(props: IProps) {
         >
           <CheckboxWrap>
             <CustomCheckbox
+              iconSrc="/images/icons/radio-icon.svg"
               value={isTotal}
               checked={isTotal}
               onChange={(e) => setIsTotal(e.target.checked)}
@@ -192,9 +197,10 @@ const CheckboxWrap = styled(Box)(() => {
   };
 });
 
-const CustomCheckbox = styled((props: CheckboxProps) => (
-  <Checkbox disableRipple {...props} />
-))(({ theme }) => ({
+const CustomCheckbox = styled((props: CustomCheckboxProps) => {
+  const { iconSrc, ...rest } = props; // iconSrc 빼고 넘김
+  return <Checkbox disableRipple {...rest} />;
+})(({ theme, iconSrc }) => ({
   margin: 0,
   width: 20,
   height: 20,
@@ -232,7 +238,7 @@ const CustomCheckbox = styled((props: CheckboxProps) => (
       left: "50%",
       content: '""',
       position: "absolute",
-      backgroundImage: 'url("/images/icons/radio-icon.svg")',
+      backgroundImage: iconSrc ? `url(${iconSrc})` : undefined, // prop 사용
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
       backgroundSize: "contain",

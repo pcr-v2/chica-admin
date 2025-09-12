@@ -35,6 +35,10 @@ import {
 //   eduOfficeName: string;
 // };
 
+interface CustomRadioProps extends RadioProps {
+  iconSrc?: string;
+}
+
 type TSchool = {
   schoolName: string;
   schoolCode: string;
@@ -366,17 +370,29 @@ export default function SchoolAddForm(props: IProps) {
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "8px" }}
                   >
-                    <CustomRadio value="elementary" />초
+                    <CustomRadio
+                      iconSrc="/images/icons/radio-icon.svg"
+                      value="elementary"
+                    />
+                    초
                   </Box>
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "8px" }}
                   >
-                    <CustomRadio value="middle" />중
+                    <CustomRadio
+                      iconSrc="/images/icons/radio-icon.svg"
+                      value="middle"
+                    />
+                    중
                   </Box>
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "8px" }}
                   >
-                    <CustomRadio value="high" />고
+                    <CustomRadio
+                      iconSrc="/images/icons/radio-icon.svg"
+                      value="high"
+                    />
+                    고
                   </Box>
                 </Box>
               </RadioWrap>
@@ -493,38 +509,30 @@ const Btn = styled(Box)(() => {
   };
 });
 
-const CustomRadio = styled((props: RadioProps) => (
-  <Radio disableRipple {...props} />
-))(({ theme }) => ({
+const CustomRadio = styled((props: CustomRadioProps) => {
+  const { iconSrc, ...rest } = props; // ✅ iconSrc는 빼고 넘김
+  return <Radio disableRipple {...rest} />;
+})(({ theme, iconSrc }) => ({
   padding: 0,
   margin: 0,
   width: 24,
   height: 24,
   position: "relative",
-  "&:hover": {
-    backgroundColor: "transparent",
-  },
   "& .MuiSvgIcon-root": {
-    display: "none", // 기본 원 숨기기
-  },
-  "& .MuiTouchRipple-root": {
     display: "none",
   },
 
-  // ✅ 디폴트 상태
   "&::before": {
     content: '""',
     position: "absolute",
     width: 24,
     height: 24,
     borderRadius: "50%",
-    border: "1px solid #d9d9d9", // 디폴트 보더 컬러
+    border: "1px solid #d9d9d9",
     backgroundColor: "#fff",
-    boxSizing: "border-box",
     transition: "all 0.2s linear",
   },
 
-  // ✅ 체크된 상태
   "&.Mui-checked": {
     "&::before": {
       backgroundColor: "#32C794",
@@ -537,7 +545,7 @@ const CustomRadio = styled((props: RadioProps) => (
       left: "50%",
       width: 20,
       height: 20,
-      backgroundImage: 'url("/images/icons/radio-icon.svg")',
+      backgroundImage: `url(${iconSrc})`, // ✅ prop 사용
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
       backgroundSize: "contain",

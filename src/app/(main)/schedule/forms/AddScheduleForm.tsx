@@ -9,6 +9,10 @@ import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import Input from "@/app/_components/common/Input";
 import { GetSchoolResponse } from "@/app/actions/school/getSchoolAction";
 
+interface CustomCheckboxProps extends CheckboxProps {
+  iconSrc?: string;
+}
+
 export type TAddScheduleValue = {
   scheduleName: string;
   startAt: string;
@@ -157,6 +161,7 @@ export default function AddScheduleForm(props: IProps) {
             ).map((value, i) => (
               <CheckboxWrap key={i}>
                 <CustomCheckbox
+                  iconSrc="/images/icons/radio-icon.svg"
                   value={value}
                   checked={target.includes(value)}
                   onChange={() => handleCheckbox(value)}
@@ -265,9 +270,10 @@ const SectionWrap = styled(Box)(() => {
   };
 });
 
-const CustomCheckbox = styled((props: CheckboxProps) => (
-  <Checkbox disableRipple {...props} />
-))(({ theme }) => ({
+const CustomCheckbox = styled((props: CustomCheckboxProps) => {
+  const { iconSrc, ...rest } = props; // iconSrc 빼고 넘김
+  return <Checkbox disableRipple {...rest} />;
+})(({ theme, iconSrc }) => ({
   margin: 0,
   width: 20,
   height: 20,
@@ -305,7 +311,7 @@ const CustomCheckbox = styled((props: CheckboxProps) => (
       left: "50%",
       content: '""',
       position: "absolute",
-      backgroundImage: 'url("/images/icons/radio-icon.svg")',
+      backgroundImage: iconSrc ? `url(${iconSrc})` : undefined, // prop 사용
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
       backgroundSize: "contain",

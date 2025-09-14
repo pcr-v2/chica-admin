@@ -167,7 +167,7 @@ export async function getRankPageStatistic(
       AND DATE(b.brushed_at) IN (${last7WorkingDaysStr})
       AND s.student_status = true
     GROUP BY s.student_id, s.student_name, s.student_grade, s.student_class, s.student_gender, s.student_number
-    ORDER BY student_grade ASC, student_class ASC, student_number ASC
+    ORDER BY student_grade ASC, CAST(student_class AS UNSIGNED) ASC, student_number ASC
   `,
     schoolId,
   );
@@ -276,7 +276,7 @@ export async function getRankPageStatistic(
     SELECT *
     FROM RankedStudents
     WHERE student_rank <= 30
-    ORDER BY student_rank ASC, student_grade ASC, student_class ASC, student_number ASC, student_name
+    ORDER BY student_rank ASC, student_grade ASC, CAST(student_class AS UNSIGNED) ASC, student_number ASC, student_name
   `,
     gteDate,
     lteDate,

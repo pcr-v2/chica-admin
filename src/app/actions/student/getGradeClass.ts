@@ -27,7 +27,7 @@ export async function getGradeClass(request: GetGradeClassRequest) {
     `
     SELECT
     student_grade AS studentGrade,
-    GROUP_CONCAT(DISTINCT student_class ORDER BY student_class) AS classList
+    GROUP_CONCAT(DISTINCT student_class ORDER BY CAST(student_class AS UNSIGNED)) AS classList
     FROM Student
     WHERE school_id = ? AND student_status = 1
     GROUP BY student_grade

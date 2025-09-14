@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import DashboardContainer from "@/app/(main)/dashboard/DashboardContainer";
-import MasterLogContainer from "@/app/_components/master/MasterLogContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
 import { getClassRankListStatistic } from "@/app/actions/statistic/getClassRankListStatistic";
@@ -21,11 +20,6 @@ export default async function Page() {
   // 로그인 체크
   if (me.code === "FAIL") {
     return redirect("/signin");
-  }
-
-  // 마스터 계정일 경우 Dashboard 데이터 스킵
-  if (me.data?.type === "master") {
-    return <MasterLogContainer me={me} />;
   }
 
   // 일반 사용자 → Dashboard 데이터 로드

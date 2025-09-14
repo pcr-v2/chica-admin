@@ -1,5 +1,15 @@
 import { redirect } from "next/navigation";
 
-export default function Home() {
-  throw redirect("/dashboard");
+import { getMe } from "@/app/actions/auth/getMe";
+
+export default async function Home() {
+  const me = await getMe();
+
+  if (me.data == null) return;
+
+  if (me.data.type === "teacher") {
+    throw redirect("/dashboard");
+  }
+
+  throw redirect("/logs");
 }

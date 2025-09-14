@@ -124,7 +124,8 @@ exports.Prisma.BrushedScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
   brushedAt: 'brushedAt',
-  brushedStatus: 'brushedStatus'
+  brushedStatus: 'brushedStatus',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ContentsScalarFieldEnum = {
@@ -201,18 +202,26 @@ exports.Prisma.BoardScalarFieldEnum = {
   title: 'title'
 };
 
+exports.Prisma.LogsScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  schoolId: 'schoolId',
+  logsStatus: 'logsStatus'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
-exports.Prisma.BrushedOrderByRelevanceFieldEnum = {
-  studentId: 'studentId'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.BrushedOrderByRelevanceFieldEnum = {
+  studentId: 'studentId'
 };
 
 exports.Prisma.ContentsOrderByRelevanceFieldEnum = {
@@ -260,6 +269,11 @@ exports.Prisma.BoardOrderByRelevanceFieldEnum = {
   comment: 'comment',
   title: 'title'
 };
+
+exports.Prisma.LogsOrderByRelevanceFieldEnum = {
+  content: 'content',
+  schoolId: 'schoolId'
+};
 exports.BrushedBrushedStatus = exports.$Enums.BrushedBrushedStatus = {
   No: 'No',
   Ok: 'Ok',
@@ -291,6 +305,11 @@ exports.BoardStatus = exports.$Enums.BoardStatus = {
   DELETED: 'DELETED'
 };
 
+exports.LogsLogsStatus = exports.$Enums.LogsLogsStatus = {
+  Ok: 'Ok',
+  No: 'No'
+};
+
 exports.Prisma.ModelName = {
   Brushed: 'Brushed',
   Contents: 'Contents',
@@ -298,7 +317,8 @@ exports.Prisma.ModelName = {
   Schedules: 'Schedules',
   School: 'School',
   Student: 'Student',
-  Board: 'Board'
+  Board: 'Board',
+  Logs: 'Logs'
 };
 
 /**

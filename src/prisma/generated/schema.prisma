@@ -14,6 +14,7 @@ model Brushed {
   studentId     String               @map("student_id") @db.Char(36)
   brushedAt     DateTime             @default(now()) @map("brushed_at") @db.DateTime(0)
   brushedStatus BrushedBrushedStatus @map("brushed_status")
+  updatedAt     DateTime?            @map("updated_at") @db.Timestamp(0)
   student       Student              @relation(fields: [studentId], references: [studentId], onDelete: Cascade, map: "Brushed_ibfk_1")
 
   @@index([studentId], map: "student_id")
@@ -74,6 +75,7 @@ model School {
   address      String            @db.VarChar(255)
   board        Board[]
   contents     Contents[]
+  logs         Logs[]
   schedules    Schedules[]
   student      Student[]
 }
@@ -108,6 +110,17 @@ model Board {
   school    School      @relation(fields: [schoolId], references: [schoolId], onDelete: NoAction, onUpdate: NoAction, map: "Board_ibfk_1")
 
   @@index([schoolId], map: "fk_board_school_uuid")
+}
+
+model Logs {
+  id         Int             @id @default(autoincrement())
+  content    String?         @db.VarChar(255)
+  createdAt  DateTime        @default(now()) @map("created_at") @db.DateTime(0)
+  schoolId   String?         @map("school_id") @db.VarChar(36)
+  logsStatus LogsLogsStatus? @map("logs_status")
+  school     School?         @relation(fields: [schoolId], references: [schoolId], map: "fk_logs_school")
+
+  @@index([schoolId], map: "fk_logs_school")
 }
 
 enum BrushedBrushedStatus {
@@ -149,4 +162,11 @@ enum BoardStatus {
   DELETED
 
   @@map("Board_status")
+}
+
+enum LogsLogsStatus {
+  Ok
+  No
+
+  @@map("Logs_logs_status")
 }

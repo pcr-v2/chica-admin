@@ -55,11 +55,16 @@ export default function SideBar(props: IProps) {
                 isactive={isActive.toString()}
               >
                 <IconLabel sx={{}}>
-                  {Icon && (
-                    <StyledIcon isactive={isActive.toString()}>
-                      <Icon style={{ width: "100%", height: "100%" }} />
-                    </StyledIcon>
-                  )}
+                  {Icon &&
+                    (parentMenu.path === "/logs" ? (
+                      <StyledLogsIcon isactive={isActive.toString()}>
+                        <Icon style={{ width: "100%", height: "100%" }} />
+                      </StyledLogsIcon>
+                    ) : (
+                      <StyledIcon isactive={isActive.toString()}>
+                        <Icon style={{ width: "100%", height: "100%" }} />
+                      </StyledIcon>
+                    ))}
                   <ParentMenu isactive={isActive.toString()}>
                     <SideBarText>{parentMenu.label}</SideBarText>
                   </ParentMenu>
@@ -242,6 +247,24 @@ const ChildItem = styled(Box)<{ isactive: string }>(({ isactive }) => ({
   color: isactive === "true" ? "#13BA81" : "#747D8A",
   "&:hover": {
     backgroundColor: "#EDFCF7",
+  },
+}));
+
+const StyledLogsIcon = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isactive",
+})<{ isactive: string }>(({ isactive, theme }) => ({
+  width: "28px",
+  height: "28px",
+  path: {
+    stroke: isactive === "true" ? "#13BA81" : "#747D8A",
+  },
+  transition: "0.2s ease",
+  [theme.breakpoints.down("desktop")]: {
+    width: "40px",
+    height: "40px",
+    path: {
+      fill: isactive === "true" ? "#fff" : "#747D8A",
+    },
   },
 }));
 

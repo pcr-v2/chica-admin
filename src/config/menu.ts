@@ -3,6 +3,7 @@ import { FunctionComponent, ReactNode, SVGProps } from "react";
 import SideContents from "@/public/images/icons/sidebar/side-contents.svg";
 import SideCs from "@/public/images/icons/sidebar/side-cs.svg";
 import SideHome from "@/public/images/icons/sidebar/side-home.svg";
+import SideLogs from "@/public/images/icons/sidebar/side-logs.svg";
 import SideMypage from "@/public/images/icons/sidebar/side-mypage.svg";
 import SideSchedule from "@/public/images/icons/sidebar/side-schedule.svg";
 import SideSchool from "@/public/images/icons/sidebar/side-school.svg";
@@ -43,6 +44,13 @@ export const MENUS: MenuItem[] = [
   //     },
   //   ],
   // },
+  {
+    label: "로그",
+    path: "/logs",
+    icon: SideLogs,
+    allowRoles: ["master"],
+    children: [],
+  },
   {
     label: "대시보드",
     path: "/dashboard",

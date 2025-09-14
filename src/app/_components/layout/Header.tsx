@@ -78,11 +78,16 @@ export default function Header(props: IProps) {
   return (
     <Wrapper>
       <PathLabel>
-        {Icon && (
-          <IconWrapper>
-            <Icon />
-          </IconWrapper>
-        )}
+        {Icon &&
+          (nowPath === "/logs" ? (
+            <LogsIconWrapper>
+              <Icon />
+            </LogsIconWrapper>
+          ) : (
+            <IconWrapper>
+              <Icon />
+            </IconWrapper>
+          ))}
         {lable}
       </PathLabel>
       {/* {convertGrantAvailable && (
@@ -151,6 +156,19 @@ const Logout = styled(LogoutIcon)(() => {
     path: { fill: "#464B53" },
     cursor: "pointer",
   };
+});
+
+const LogsIconWrapper = styled("span")({
+  marginRight: "12px",
+  alignItems: "center",
+  display: "inline-flex",
+  svg: {
+    width: 32,
+    height: 32,
+  },
+  path: {
+    stroke: "#464B53",
+  },
 });
 
 const IconWrapper = styled("span")({

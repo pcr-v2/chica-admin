@@ -19,26 +19,41 @@ export async function getLogs(request: GetLogsRequest) {
     };
   }
 
-  const { schoolType } = validated.data;
+  const { schoolType, date } = validated.data;
 
   if (schoolType === "teacher") {
     return;
   }
+  const startDate = date ? dayjs(date).startOf("day") : dayjs().startOf("day");
+  const endDate = date ? dayjs(date).endOf("day") : dayjs().endOf("day");
 
-  //   console.log(schoolType);
-  const start = dayjs().startOf("day").toDate(); // 2025-09-14 00:00:00
-  const end = dayjs().endOf("day").toDate(); // 2025-09-14 23:59:59
+  if (!startDate.isValid() || !endDate.isValid()) {
+    return {
+      code: "VALIDATION_ERROR" as const,
+      message: "날짜 형식이 올바르지 않습니다.",
+    };
+  }
 
   const res = await mysqlPrisma.logs.findMany({
     where: {
       createdAt: {
-        gte: start,
-        lte: end,
+        gte: startDate.toDate(),
+        lte: endDate.toDate(),
+      },
+    },
+    select: {
+      content: true,
+      id: true,
+      createdAt: true,
+      logsStatus: true,
+      schoolId: true,
+      school: {
+        select: {
+          schoolName: true,
+        },
       },
     },
   });
-
-  console.log("res", res);
 
   if (res == null) {
     return {

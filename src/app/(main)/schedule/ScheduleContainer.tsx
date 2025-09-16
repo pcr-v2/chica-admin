@@ -239,15 +239,15 @@ export default function ScheduleContainer(props: IProps) {
 
   return (
     <Wrapper>
-      <FilterBox>
-        {me.data?.type === "master" && (
+      {me.data?.type === "master" && (
+        <FilterBox>
           <MasterSchoolFilter
             onChange={(value) => setSelectedSchool(value)}
             schoolList={schoolList}
             selectedSchool={selectedSchool}
           />
-        )}
-      </FilterBox>
+        </FilterBox>
+      )}
 
       <ScheduleHeader
         type={type}

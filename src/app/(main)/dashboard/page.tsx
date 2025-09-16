@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import DashboardContainer from "@/app/(main)/dashboard/DashboardContainer";
 import { getMe } from "@/app/actions/auth/getMe";
+import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
 import { getClassRankListStatistic } from "@/app/actions/statistic/getClassRankListStatistic";
 import { getLineChartStatistic } from "@/app/actions/statistic/getLineChartStatistic";
@@ -60,6 +61,9 @@ export default async function Page() {
       endAt: "",
     },
   });
+
+  const schoolList = await getSchoolList();
+
   // console.log("test", classRankList);
   return (
     <DashboardContainer
@@ -68,6 +72,7 @@ export default async function Page() {
       lineRes={lineRes}
       barRes={barRes}
       classRankList={classRankList}
+      schoolList={schoolList}
     />
   );
 }

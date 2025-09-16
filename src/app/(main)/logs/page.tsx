@@ -3,6 +3,7 @@ import React from "react";
 import LogsContainer from "@/app/(main)/logs/LogsContainer";
 import { getMe } from "@/app/actions/auth/getMe";
 import { getLogs } from "@/app/actions/logs/getLogsAction";
+import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 
 export default async function page() {
   const me = await getMe();
@@ -11,5 +12,7 @@ export default async function page() {
     schoolType: me.data?.type as "master" | "teacher",
   });
 
-  return <LogsContainer logs={logs} />;
+  const schoolList = await getSchoolList();
+
+  return <LogsContainer logs={logs} schoolList={schoolList} />;
 }

@@ -8,7 +8,7 @@ import { z } from "zod";
  */
 const mapHeadersKoreanToEnglish = (header: string) => {
   const headerMap: { [key: string]: string } = {
-    학생이름: "studentName",
+    이름: "studentName",
     학년: "studentGrade",
     반: "studentClass",
     번호: "studentNumber",
@@ -89,7 +89,7 @@ export default async function uploadCsv<Z extends z.ZodSchema>(schema: Z) {
     });
     // console.log("jsonArray", jsonArray);
     const result = schema.safeParse(jsonArray);
-
+    // console.log("jsonArray", jsonArray);
     if (!result.success) {
       toast.error(
         `${result.error.errors[0].path[1]} 형식이 올바르지 않습니다.`,

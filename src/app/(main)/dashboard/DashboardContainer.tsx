@@ -12,8 +12,10 @@ import ClassListRank from "@/app/(main)/dashboard/components/ClassListRank";
 import ChartLine from "@/app/(main)/dashboard/components/LineChart";
 import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
 import TopContent from "@/app/(main)/dashboard/components/TopContent";
+import MasterSchoolFilter from "@/app/(main)/schedule/filters/MasterSchoolFilter";
 import { getMe, GetMeResponse } from "@/app/actions/auth/getMe";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
+import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import {
   getBarChartStatistic,
   GetBarChartStatisticResponse,
@@ -31,10 +33,13 @@ interface IProps {
   lineRes: GetLineChartStatisticResponse;
   barRes: GetBarChartStatisticResponse;
   classRankList: GetClassRankListStatisticResponse;
+  schoolList: GetSchoolListResponse;
 }
 
 export default function DashboardContainer(props: IProps) {
-  const { me, list, lineRes, barRes, classRankList } = props;
+  const { me, list, lineRes, barRes, classRankList, schoolList } = props;
+
+  const [selectedSchool, setSelectedSchool] = useState("");
 
   const currentYear = dayjs().year();
 
@@ -58,7 +63,7 @@ export default function DashboardContainer(props: IProps) {
   const [barTab, setBarTab] = useState<"day" | "week">("day");
 
   const { data: lineData } = useQuery({
-    queryKey: ["line", lineTab],
+    queryKey: ["line", lineTab, selectedSchool],
     queryFn: () =>
       getLineChartStatistic({
         schoolId: me.data?.schoolId as string,
@@ -68,7 +73,7 @@ export default function DashboardContainer(props: IProps) {
     initialData: lineRes,
   });
   const { data: barData } = useQuery({
-    queryKey: ["bar", barTab],
+    queryKey: ["bar", barTab, selectedSchool],
     queryFn: () =>
       getBarChartStatistic({
         schoolId: me.data?.schoolId as string,
@@ -80,6 +85,16 @@ export default function DashboardContainer(props: IProps) {
 
   return (
     <Wrapper>
+      {me.data?.type === "master" && (
+        <FilterBox>
+          <MasterSchoolFilter
+            onChange={(value) => setSelectedSchool(value)}
+            schoolList={schoolList.result}
+            selectedSchool={selectedSchool}
+          />
+        </FilterBox>
+      )}
+
       <MiddleWrap>
         <MiddleContent
           tab={lineTab}
@@ -184,5 +199,14 @@ const DownloadBtn = styled(Box)(() => {
     borderRadius: "8px",
     padding: "14px 20px",
     backgroundColor: "#32C794",
+  };
+});
+
+const FilterBox = styled(Box)(() => {
+  return {
+    width: "100%",
+    display: "flex",
+    maxWidth: "917px",
+    justifyContent: "start",
   };
 });

@@ -47,6 +47,9 @@ export async function getLogs(request: GetLogsRequest) {
       createdAt: true,
       logsStatus: true,
       schoolId: true,
+      count: true,
+      reason: true,
+      grade: true,
       school: {
         select: {
           schoolName: true,
@@ -62,9 +65,18 @@ export async function getLogs(request: GetLogsRequest) {
     };
   }
 
+  const totalCount = res.reduce(
+    (sum, el) => (el.logsStatus !== "No" ? sum + (el?.count ?? 0) : sum),
+    0,
+  );
+
   return {
     code: "SUCCESS" as const,
     message: "로그를 가져왔습니다.",
-    result: res,
+    result: {
+      data: res,
+
+      totalCreatedRows: totalCount,
+    },
   };
 }

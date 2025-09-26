@@ -2,12 +2,13 @@
 
 import { Box, Checkbox, CheckboxProps, styled } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 import MasterSchoolFilter from "@/app/(main)/student/components/MasterSchoolFilter";
-import RefreshBtn from "@/app/_components/common/RefreshBtn";
-import { passiveInsert } from "@/app/actions/passiveInsert/passiveInsertAction";
+import FormDatePicker from "@/app/_components/common/FormDatePicker";
+import { passiveControl } from "@/app/actions/passiveInsert/passiveControlAction";
 import { getSchool } from "@/app/actions/school/getSchoolAction";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 
@@ -19,8 +20,11 @@ interface IProps {
   schoolList: GetSchoolListResponse;
 }
 
-export default function PassiveInsert(props: IProps) {
+export default function PassiveDelete(props: IProps) {
   const { schoolList } = props;
+  const today = dayjs().format("YYYY-MM-DD");
+  const [startAt, setStartAt] = useState("");
+  const [endAt, setEndAt] = useState("");
 
   const [selectedSchool, setSelectedSchool] = useState("");
   const [target, setTarget] = useState<string[]>([]);
@@ -83,10 +87,11 @@ export default function PassiveInsert(props: IProps) {
     setTarget(newTarget);
   };
 
-  const handlePassiveInsert = async () => {
-    const res = await passiveInsert({
+  const handlePassiveDelete = async () => {
+    const res = await passiveControl({
       schoolId: selectedSchool,
       grade: target,
+      mode: "delete",
     });
 
     if (res.code !== "SUCCESS") {
@@ -99,32 +104,35 @@ export default function PassiveInsert(props: IProps) {
 
   return (
     <Wrapper>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          gap: "16px",
-          alignItems: "center",
-        }}
-      >
-        <Title>관리자 수동 삽입</Title>
-        <RefreshBtn
-          onClick={() => {
-            setTarget([]);
-            setSelectedSchool("");
+      <TitleAndBtn>
+        <Title>관리자 수동 삭제</Title>
+
+        <FormDatePicker
+          offMinDate
+          format="YY-MM-DD"
+          value={startAt}
+          sx={{ width: "100%", maxWidth: "150px" }}
+          onChange={(e) => setStartAt(e.target.value as string)}
+        />
+        <FormDatePicker
+          offMinDate
+          value={endAt}
+          format="YY-MM-DD"
+          sx={{ width: "100%", maxWidth: "150px" }}
+          onChange={(e) => {
+            const newEnd = e.target.value as string;
+
+            if (startAt && dayjs(newEnd).isBefore(dayjs(startAt))) {
+              toast.error("종료일은 시작일 이후여야 합니다.");
+              return; // 값 변경 막기
+            }
+
+            setEndAt(newEnd);
           }}
         />
-
-        <RegistBtn onClick={handlePassiveInsert}>수동 삽입</RegistBtn>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: "32px",
-          width: "100%",
-        }}
-      >
+        <DeleteBtn onClick={handlePassiveDelete}>수동 삭제</DeleteBtn>
+      </TitleAndBtn>
+      <SelectWrap>
         <Section>
           <TitleSpan>학교 선택</TitleSpan>
 
@@ -162,7 +170,7 @@ export default function PassiveInsert(props: IProps) {
             ))}
           </Box>
         </Section>
-      </Box>
+      </SelectWrap>
     </Wrapper>
   );
 }
@@ -170,7 +178,6 @@ export default function PassiveInsert(props: IProps) {
 const Wrapper = styled(Box)(() => {
   return {
     gap: "32px",
-    width: "100%",
     display: "flex",
     alignItems: "center",
     borderRadius: "12px",
@@ -275,7 +282,7 @@ const FilterBox = styled(Box)(() => {
   };
 });
 
-const RegistBtn = styled(Box)(() => {
+const DeleteBtn = styled(Box)(() => {
   return {
     fontSize: 16,
     width: "100%",
@@ -286,6 +293,24 @@ const RegistBtn = styled(Box)(() => {
     textAlign: "center",
     borderRadius: "8px",
     padding: "8px 12px",
-    backgroundColor: "#32C794",
+    backgroundColor: "#F44336",
+  };
+});
+
+const SelectWrap = styled(Box)(() => {
+  return {
+    gap: "32px",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+  };
+});
+
+const TitleAndBtn = styled(Box)(() => {
+  return {
+    gap: "16px",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
   };
 });

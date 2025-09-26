@@ -1,18 +1,19 @@
 "use client";
 
-import { Box, styled } from "@mui/material";
+import { Box, styled, SxProps } from "@mui/material";
 
 import RefreshIcon from "@/public/images/icons/refresh-icon.svg";
 
 interface IProps {
   onClick: () => void;
+  sx?: SxProps;
 }
 
 export default function RefreshBtn(props: IProps) {
-  const { onClick } = props;
+  const { sx, onClick } = props;
 
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper sx={sx} onClick={onClick}>
       <Refresh />
       초기화
     </Wrapper>

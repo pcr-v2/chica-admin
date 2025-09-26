@@ -3,6 +3,7 @@
 import { Box, styled } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
@@ -23,7 +24,23 @@ export default function MasterSchoolFilter(props: IProps) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
+
+  const toggleOpen = () => {
+    if (!isOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
+    setIsOpen((prev) => !prev);
+  };
 
   // ✅ 외부 클릭 감지
   useEffect(() => {
@@ -60,30 +77,40 @@ export default function MasterSchoolFilter(props: IProps) {
       </Btn>
 
       {/* Popper */}
-      <AnimatePresence>
-        {isOpen && (
-          <Dropdown
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-          >
-            {list?.map((el, idx) => (
-              <Item
-                key={`${el}-${idx}`}
-                onClick={() => {
-                  onChange(el.schoolId);
-                  setLabel(`${el.schoolName}`);
-                  setIsOpen(false);
-                }}
-                selected={selectedSchool === el.schoolId}
-              >
-                {el.schoolName}
-              </Item>
-            ))}
-          </Dropdown>
-        )}
-      </AnimatePresence>
+      {createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <Dropdown
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                position: "absolute",
+                top: dropdownPosition.top,
+                left: dropdownPosition.left,
+                width: dropdownPosition.width,
+                zIndex: 9999,
+              }}
+            >
+              {list?.map((el, idx) => (
+                <Item
+                  key={`${el}-${idx}`}
+                  onClick={() => {
+                    onChange(el.schoolId);
+                    setLabel(`${el.schoolName}`);
+                    setIsOpen(false);
+                  }}
+                  selected={selectedSchool === el.schoolId}
+                >
+                  {el.schoolName}
+                </Item>
+              ))}
+            </Dropdown>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </Container>
   );
 }

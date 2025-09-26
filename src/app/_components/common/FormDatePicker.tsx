@@ -12,6 +12,7 @@ type ChangeEvent = {
 export type FormDatePickerProps = {
   name?: string;
   value?: string | null;
+  format?: string;
   onChange?: (e: ChangeEvent) => void;
   sx?: SxProps;
   offMinDate?: boolean;
@@ -23,6 +24,7 @@ export default function FormDatePicker(props: FormDatePickerProps) {
     name,
     value,
     onChange,
+    format = "YYYY-MM-DD",
     sx,
     offMinDate = false,
     readOnly = false,
@@ -45,7 +47,7 @@ export default function FormDatePicker(props: FormDatePickerProps) {
     <CustomDatePicker
       sx={sx}
       name={name}
-      format={"YYYY-MM-DD"}
+      format={format}
       value={realValue}
       readOnly={readOnly}
       onChange={setValue}
@@ -92,18 +94,18 @@ const CustomDatePicker = styled(DatePicker)(() => {
   return {
     "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#32c794", // 원하는 색상
-      height: "41px !important",
+      height: "44px !important",
     },
     "& .MuiPickersOutlinedInput-notchedOutline": {
-      height: "41px !important",
+      height: "44px !important",
       // padding: "10px 12px",
       borderColor: "transparent !important",
       "& .Mui-focused": {
-        height: "41px !important",
+        height: "44px !important",
         border: "1px solid #32C794",
       },
       "&.Mui-focused fieldset": {
-        height: "41px !important",
+        height: "44px !important",
         border: "1px solid #32C794",
         // borderColor: theme.palette.text02.main,
       },
@@ -128,14 +130,25 @@ const CustomDatePicker = styled(DatePicker)(() => {
       },
       "&.Mui-focused fieldset": {
         border: "1px solid #32C794",
+        // outline: "1px solid #32C794",
       },
       "&.Mui-focused": {
-        height: "41px !important",
+        height: "44px !important",
         border: "1px solid #32C794 !important",
+        // outline: "1px solid #32C794 !important",
       },
     },
     "& .MuiInputAdornment-root": {
       fontSize: 9,
+    },
+    "& .MuiOutlinedInput-root": {
+      height: 44,
+      "& fieldset": { height: 44 },
+      "&.Mui-focused": { height: 44, "& fieldset": { height: 44 } },
+    },
+    "& .MuiInputBase-input": {
+      padding: "10px 12px",
+      lineHeight: "21px",
     },
   };
 });

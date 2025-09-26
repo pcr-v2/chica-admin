@@ -2,8 +2,7 @@
 
 import { Box, styled } from "@mui/material";
 
-import LogsTable from "@/app/(main)/logs/components/LogsTable";
-import PassiveInsert from "@/app/(main)/logs/components/PassiveInsert";
+import LogTable from "@/app/(main)/logs/LogTable";
 import { GetLogsResponse } from "@/app/actions/logs/getLogsAction";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 
@@ -17,8 +16,14 @@ export default function LogsContainer(props: IProps) {
 
   return (
     <Wrapper>
-      <LogsTable logs={logs} />
-      <PassiveInsert schoolList={schoolList} />
+      {/* <LogsTable logs={logs} /> */}
+      <LogTable logs={logs} schoolList={schoolList} />
+
+      {/* <PassiveWrap>
+        <PassiveInsert schoolList={schoolList} />
+        <Divider />
+        <PassiveDelete schoolList={schoolList} />
+      </PassiveWrap> */}
     </Wrapper>
   );
 }
@@ -33,4 +38,21 @@ const Wrapper = styled(Box)({
   justifyContent: "center",
   padding: "32px 28px 64px",
   backgroundColor: "#fff",
+});
+
+const PassiveWrap = styled(Box)(() => {
+  return {
+    gap: "36px",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+  };
+});
+
+const Divider = styled(Box)(() => {
+  return {
+    width: "1px",
+    height: "160px",
+    backgroundColor: "#9e9e9e",
+  };
 });

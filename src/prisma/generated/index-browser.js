@@ -312,7 +312,8 @@ exports.BoardStatus = exports.$Enums.BoardStatus = {
 
 exports.LogsLogsStatus = exports.$Enums.LogsLogsStatus = {
   Ok: 'Ok',
-  No: 'No'
+  No: 'No',
+  Del: 'Del'
 };
 
 exports.Prisma.ModelName = {

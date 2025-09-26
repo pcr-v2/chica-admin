@@ -106,7 +106,8 @@ export type BoardStatus = (typeof BoardStatus)[keyof typeof BoardStatus]
 
 export const LogsLogsStatus: {
   Ok: 'Ok',
-  No: 'No'
+  No: 'No',
+  Del: 'Del'
 };
 
 export type LogsLogsStatus = (typeof LogsLogsStatus)[keyof typeof LogsLogsStatus]

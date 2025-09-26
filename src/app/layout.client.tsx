@@ -15,6 +15,7 @@ import { ReactNode, useState } from "react";
 
 import QueryClientProviders from "@/app/QueryClientProviders";
 import { RootToast } from "@/app/_components/RootToast";
+import { Dialogs } from "@/store/dialog/Dialogs";
 import theme from "@/theme";
 
 interface IProps {
@@ -47,6 +48,7 @@ export default function ClientLayout(props: IProps) {
               dateAdapter={AdapterDayjs}
               adapterLocale={"ko"}
             >
+              <Dialogs />
               <ChildrenWrap>{children}</ChildrenWrap>
             </LocalizationProvider>
             <CssBaseline />

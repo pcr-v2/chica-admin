@@ -1,55 +1,28 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import FormDatePicker from "@/app/_components/common/FormDatePicker";
-import RefreshBtn from "@/app/_components/common/RefreshBtn";
-import { getLogs, GetLogsResponse } from "@/app/actions/logs/getLogsAction";
-
-interface IProps {
-  logs: GetLogsResponse;
-}
-
-type LogRow = {
+export type LogRow = {
   id: number;
   schoolId: string | null;
   createdAt: Date;
   school: { schoolName: string } | null;
   content: string | null;
-  logsStatus: "Ok" | "No" | null;
+  logsStatus: "Ok" | "No" | "Del" | null;
   count: number | null;
   grade: string | null;
   reason: string | null;
 };
 
-export default function LogsTable({ logs }: IProps) {
-  const today = dayjs().format("YYYY-MM-DD");
-  const [date, setDate] = useState(today);
-
-  const { data: logsData } = useQuery({
-    queryKey: ["get-logs", date],
-    queryFn: () => getLogs({ schoolType: "master", date }),
-    initialData: logs,
-  });
-
-  const data = useMemo<LogRow[]>(() => {
-    const source = logsData ?? logs;
-    if (source?.code === "SUCCESS") {
-      return source.result.data;
-    }
-    return [];
-  }, [logsData, logs]);
-
+export default function useLogTable(data: LogRow[]) {
   const columns = useMemo<ColumnDef<LogRow>[]>(
     () => [
       // 상태 (문자열 정렬)
@@ -124,7 +97,28 @@ export default function LogsTable({ logs }: IProps) {
         id: "content",
         header: () => <HeaderStart>내용</HeaderStart>,
         accessorFn: (row) => row.content ?? "",
-        cell: ({ row }) => <CellStart>{row.original.content}</CellStart>,
+        cell: ({ row }) => {
+          const content = row.original.content ?? "";
+
+          // "생성"과 "삭제"를 <span>으로 감싸서 색상 적용
+          const formatted = content.split(/(생성|삭제)/g).map((part, idx) => {
+            if (part === "생성")
+              return (
+                <span key={idx} style={{ color: "#32C794", fontWeight: 700 }}>
+                  {part}
+                </span>
+              );
+            if (part === "삭제")
+              return (
+                <span key={idx} style={{ color: "#F44336", fontWeight: 700 }}>
+                  {part}
+                </span>
+              );
+            return part;
+          });
+
+          return <CellStart>{formatted}</CellStart>;
+        },
         enableSorting: false, // 정렬 OFF
       },
     ],
@@ -138,130 +132,8 @@ export default function LogsTable({ logs }: IProps) {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const okCount = data.filter((el) => el.logsStatus === "Ok").length;
-  const noCount = data.filter((el) => el.logsStatus === "No").length;
-
-  return (
-    <Wrapper>
-      <TopPanel>
-        <Title>
-          {date === today ? `${date}(오늘)` : `${date}일`} 총{" "}
-          {logsData?.result?.totalCreatedRows}개의 row가 생성되었습니다.
-          {` (Ok:${okCount}개 / No:${noCount}개)`}
-        </Title>
-        <Box sx={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <RefreshBtn onClick={() => setDate(today)} />
-          <FormDatePicker
-            sx={{ width: "100%", maxWidth: "150px" }}
-            offMinDate
-            value={date}
-            onChange={(e) => setDate(e.target.value as string)}
-          />
-        </Box>
-      </TopPanel>
-
-      <LogTable>
-        <TableHeader>
-          {table.getHeaderGroups().map((group) =>
-            group.headers.map((header) => (
-              <div
-                key={header.id}
-                onClick={
-                  header.column.getCanSort()
-                    ? header.column.getToggleSortingHandler()
-                    : undefined
-                }
-              >
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext(),
-                )}
-              </div>
-            )),
-          )}
-        </TableHeader>
-
-        {table.getRowModel().rows.map((row, idx) => (
-          <TableRow
-            key={row.id}
-            sx={{
-              borderBottom:
-                data.length - 1 !== idx ? "1px solid #e0e0e0" : "none",
-            }}
-          >
-            {row.getVisibleCells().map((cell) => (
-              <div key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </div>
-            ))}
-          </TableRow>
-        ))}
-      </LogTable>
-    </Wrapper>
-  );
+  return { columns, table };
 }
-
-// Styled
-const Wrapper = styled(Box)({
-  gap: "40px",
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  borderRadius: "12px",
-  flexDirection: "column",
-  justifyContent: "center",
-  //   padding: "32px 28px 64px",
-  backgroundColor: "#fff",
-});
-
-const TopPanel = styled(Box)({
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-});
-
-const Title = styled(Box)({
-  fontSize: 20,
-  width: "100%",
-  fontWeight: 600,
-  display: "flex",
-  color: "#747D8A",
-  justifyContent: "start",
-});
-
-const TableHeader = styled(Box)({
-  top: 0,
-  zIndex: 10,
-  gap: "32px",
-  width: "100%",
-  display: "flex",
-  position: "sticky",
-  padding: "12px 16px",
-  alignItems: "center",
-  backgroundColor: "#F1F2F3",
-  borderRadius: "10px 10px 0 0",
-});
-
-const LogTable = styled(Box)({
-  width: "100%",
-  height: "100%",
-  overflowY: "auto",
-  maxHeight: "400px",
-  borderRadius: "10px",
-  position: "relative",
-  backgroundColor: "#fff",
-  border: "1px solid #e0e0e0",
-});
-
-const TableRow = styled(Box)({
-  gap: "32px",
-  width: "100%",
-  display: "flex",
-  padding: "10px 16px",
-  alignItems: "center",
-  backgroundColor: "#fff",
-});
 
 // Header
 const HeaderCenter = styled(Box)<{ width?: string }>(({ width }) => ({
@@ -313,8 +185,6 @@ const CellStart = styled(Box)({
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
 });
-
-// Badge
 const StatusBadge = styled(Box)<{ status: string }>(({ status }) => ({
   fontSize: 12,
   width: "100%",
@@ -324,5 +194,10 @@ const StatusBadge = styled(Box)<{ status: string }>(({ status }) => ({
   maxWidth: "40px",
   textAlign: "center",
   borderRadius: "100px",
-  backgroundColor: status === "Ok" ? "#32C794" : "#F44336",
+  backgroundColor:
+    status === "Ok"
+      ? "#32C794"
+      : status === "Del"
+        ? "#FFA726" // Del일 경우 노란색
+        : "#F44336", // No일 경우 빨간색
 }));

@@ -136,7 +136,7 @@ export default function useLogTable(data: LogRow[]) {
 }
 
 // Header
-const HeaderCenter = styled(Box)<{ width?: string }>(({ width }) => ({
+const HeaderCenter = styled(Box)<{ width?: string }>(({ width, theme }) => ({
   fontSize: 16,
   fontWeight: 400,
   color: "#747D8A",
@@ -146,21 +146,29 @@ const HeaderCenter = styled(Box)<{ width?: string }>(({ width }) => ({
   width: width ?? "auto",
   textOverflow: "ellipsis",
   flex: width ? `0 0 ${width}` : "1 1 auto",
+  [theme.breakpoints.down("desktop")]: {
+    fontSize: 14,
+  },
 }));
 
-const HeaderStart = styled(Box)({
-  flex: 1,
-  fontSize: 16,
-  fontWeight: 400,
-  color: "#747D8A",
-  textAlign: "start",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
+const HeaderStart = styled(Box)(({ theme }) => {
+  return {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#747D8A",
+    textAlign: "start",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+    },
+  };
 });
 
 // Cell
-const CellCenter = styled(Box)<{ width?: string }>(({ width }) => ({
+const CellCenter = styled(Box)<{ width?: string }>(({ width, theme }) => ({
   fontSize: 16,
   fontWeight: 400,
   display: "flex",
@@ -173,19 +181,28 @@ const CellCenter = styled(Box)<{ width?: string }>(({ width }) => ({
   justifyContent: "center",
   textOverflow: "ellipsis",
   flex: width ? `0 0 ${width}` : "1 1 auto",
+  [theme.breakpoints.down("desktop")]: {
+    fontSize: 14,
+  },
 }));
 
-const CellStart = styled(Box)({
-  flex: 1,
-  fontSize: 16,
-  fontWeight: 400,
-  color: "#464B53",
-  textAlign: "start",
-  overflow: "hidden",
-  whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
+const CellStart = styled(Box)(({ theme }) => {
+  return {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#464B53",
+    textAlign: "start",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+    },
+  };
 });
-const StatusBadge = styled(Box)<{ status: string }>(({ status }) => ({
+
+const StatusBadge = styled(Box)<{ status: string }>(({ status, theme }) => ({
   fontSize: 12,
   width: "100%",
   padding: "4px",
@@ -200,4 +217,8 @@ const StatusBadge = styled(Box)<{ status: string }>(({ status }) => ({
       : status === "Del"
         ? "#FFA726" // Del일 경우 노란색
         : "#F44336", // No일 경우 빨간색
+
+  [theme.breakpoints.down("desktop")]: {
+    fontSize: 10,
+  },
 }));

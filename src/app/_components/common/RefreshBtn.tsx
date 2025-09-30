@@ -20,22 +20,28 @@ export default function RefreshBtn(props: IProps) {
   );
 }
 
-const Refresh = styled(RefreshIcon)<{ isopen: string }>(({ isopen }) => ({
-  width: "24px",
-  height: "24px",
-  path: {
-    fill: "#32C794",
-  },
-}));
+const Refresh = styled(RefreshIcon)<{ isopen: string }>(
+  ({ isopen, theme }) => ({
+    width: "24px",
+    height: "24px",
+    path: {
+      fill: "#32C794",
+    },
+    [theme.breakpoints.down("desktop")]: {
+      width: "20px",
+      height: "20px",
+    },
+  }),
+);
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
     gap: "8px",
     fontSize: 14,
     width: "100px",
-    minWidth: "100px",
     fontWeight: 400,
     display: "flex",
+    minWidth: "100px",
     cursor: "pointer",
     color: "#32C794",
     textAlign: "center",
@@ -44,10 +50,18 @@ const Wrapper = styled(Box)(() => {
     alignItems: "center",
     backgroundColor: "#fff",
     border: "1px solid #32C794",
-
+    justifyContent: "center",
     ":hover": {
       color: "#13BA81 !important",
       backgroundColor: "rgba(110, 219, 181, 0.12) !important",
+    },
+
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 12,
+      minWidth: "80px",
+      maxWidth: "80px",
+      padding: "4px 8px",
+      borderRadius: "4px",
     },
   };
 });

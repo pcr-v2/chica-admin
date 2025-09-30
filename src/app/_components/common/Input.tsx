@@ -119,6 +119,13 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     "&.Mui-disabled:hover": {
       backgroundColor: "#FAFAFA !important", // 호버 시에도 동일하게
     },
+    [theme.breakpoints.down("desktop")]: {
+      "& input.MuiInputBase-input": {
+        fontSize: 16,
+        color: "#464B53",
+        padding: "10px 12px",
+      },
+    },
   },
 }));
 

@@ -62,10 +62,10 @@ export default function ClientLayout(props: IProps) {
 
 const ChildrenWrap = styled(Box)(() => {
   return {
-    width: "100%",
-    display: "flex",
     flex: 1,
     flexGrow: 1,
+    width: "100%",
+    display: "flex",
     minHeight: "100dvh",
     alignItems: "center",
     justifyContent: "center",

@@ -45,7 +45,7 @@ export default function SignInForm(props: IProps) {
 
 const Wrapper = styled(Box)(() => {
   return {
-    gap: "32px",
+    gap: "20px",
     width: "100%",
     display: "flex",
     maxWidth: "360px",

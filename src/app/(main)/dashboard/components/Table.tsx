@@ -95,12 +95,13 @@ const Wrapper = styled(Box)(() => {
     overflowY: "auto",
     maxHeight: "320px",
     borderRadius: "10px",
-    backgroundColor: "#fff",
     position: "relative",
+    backgroundColor: "#fff",
+    overscrollBehavior: "none",
   };
 });
 
-const TableHeader = styled(Box)(() => {
+const TableHeader = styled(Box)(({ theme }) => {
   return {
     top: 0,
     zIndex: 10,
@@ -112,20 +113,27 @@ const TableHeader = styled(Box)(() => {
     backgroundColor: "#F1F2F3",
     justifyContent: "space-between",
     borderRadius: "10px 10px 0px 0px",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "8px 10px",
+      minWidth: "max-content",
+    },
   };
 });
 
-const TableHeaderColumn = styled(Box)(() => {
+const TableHeaderColumn = styled(Box)(({ theme }) => {
   return {
     fontSize: 16,
     width: "90px",
     fontWeight: 400,
     color: "#747D8A",
     textAlign: "start",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+    },
   };
 });
 
-const TableRow = styled(Box)(() => {
+const TableRow = styled(Box)(({ theme }) => {
   return {
     width: "100%",
     display: "flex",
@@ -134,10 +142,14 @@ const TableRow = styled(Box)(() => {
     backgroundColor: "#fff",
     justifyContent: "space-between",
     borderRadius: "10px 10px 0px 0px",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "8px 10px",
+      minWidth: "max-content",
+    },
   };
 });
 
-const TableRowItem = styled(Box)(() => {
+const TableRowItem = styled(Box)(({ theme }) => {
   return {
     fontSize: 16,
     width: "90px",
@@ -146,6 +158,9 @@ const TableRowItem = styled(Box)(() => {
     color: "#464B53",
     textAlign: "start",
     alignItems: "center",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+    },
   };
 });
 
@@ -162,22 +177,20 @@ const Icon = styled(Box)({
   },
 });
 
-const MaleIcon = styled(Male)<{ isopen: string }>(({ isopen }) => ({
+const MaleIcon = styled(Male)<{ isopen: string }>(({ isopen, theme }) => ({
   width: "42px",
   height: "42px",
-  path: {
-    // fill: "",
+  [theme.breakpoints.down("desktop")]: {
+    width: "24px",
+    height: "24px",
   },
-  // transition: "transform 0.2s ease-in-out",
-  // transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));
 
-const FeMaleIcon = styled(Female)<{ isopen: string }>(({ isopen }) => ({
+const FeMaleIcon = styled(Female)<{ isopen: string }>(({ isopen, theme }) => ({
   width: "42px",
   height: "42px",
-  path: {
-    // fill: "",
+  [theme.breakpoints.down("desktop")]: {
+    width: "24px",
+    height: "24px",
   },
-  // transition: "transform 0.2s ease-in-out",
-  // transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));

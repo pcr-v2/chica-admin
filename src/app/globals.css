@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  word-break: keep-all;
 
   font-family: "Pretendard", sans-serif;
   line-height: 150%;

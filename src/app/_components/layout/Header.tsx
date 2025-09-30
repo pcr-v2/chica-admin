@@ -137,7 +137,7 @@ const PathLabel = styled("span")(({ theme }) => {
     alignItems: "center",
     letterSpacing: "-0.18px",
     [theme.breakpoints.down("desktop")]: {
-      fontSize: 20,
+      fontSize: 16,
       letterSpacing: "-0.2px",
     },
   };
@@ -183,22 +183,31 @@ const LogsIconWrapper = styled("span")(({ theme }) => {
     [theme.breakpoints.down("desktop")]: {
       marginRight: "4px",
       svg: {
-        width: 24,
-        height: 24,
+        width: 20,
+        height: 20,
       },
     },
   };
 });
 
-const IconWrapper = styled("span")({
-  marginRight: "12px",
-  alignItems: "center",
-  display: "inline-flex",
-  svg: {
-    width: 32,
-    height: 32,
-  },
-  path: {
-    fill: "#464B53",
-  },
+const IconWrapper = styled("span")(({ theme }) => {
+  return {
+    marginRight: "12px",
+    alignItems: "center",
+    display: "inline-flex",
+    svg: {
+      width: 32,
+      height: 32,
+    },
+    path: {
+      fill: "#464B53",
+    },
+    [theme.breakpoints.down("desktop")]: {
+      marginRight: "4px",
+      svg: {
+        width: 20,
+        height: 20,
+      },
+    },
+  };
 });

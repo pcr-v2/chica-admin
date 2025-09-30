@@ -86,28 +86,39 @@ export default function MasterSchoolFilter(props: IProps) {
   );
 }
 
-const Container = styled("div")({
-  zIndex: 0,
-  display: "flex",
-  minWidth: "141px",
-  borderRadius: "8px",
-  position: "relative",
-  padding: "10px 12px",
-  backgroundColor: "#f7f8fa",
+const Container = styled("div")(({ theme }) => {
+  return {
+    zIndex: 0,
+    display: "flex",
+    minWidth: "141px",
+    borderRadius: "8px",
+    position: "relative",
+    padding: "10px 12px",
+    backgroundColor: "#f7f8fa",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "4px 8px",
+      minWidth: "fit-content",
+    },
+  };
 });
 
-const Btn = styled(Box)({
-  gap: "6px",
-  width: "100%",
-  fontSize: 14,
-  display: "flex",
-  fontWeight: 400,
-  cursor: "pointer",
-  color: "#747D8A",
-  lineHeight: "150%",
-  alignItems: "center",
-  position: "relative",
-  justifyContent: "space-between",
+const Btn = styled(Box)(({ theme }) => {
+  return {
+    gap: "6px",
+    width: "100%",
+    fontSize: 14,
+    display: "flex",
+    fontWeight: 400,
+    cursor: "pointer",
+    color: "#747D8A",
+    lineHeight: "150%",
+    alignItems: "center",
+    position: "relative",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 12,
+    },
+  };
 });
 
 const ArrowImg = styled(Arrow)<{ isopen: string }>(({ isopen }) => ({
@@ -120,7 +131,7 @@ const ArrowImg = styled(Arrow)<{ isopen: string }>(({ isopen }) => ({
   transform: `rotate(${isopen === "true" ? 0 : 180}deg)`,
 }));
 
-const Dropdown = styled(motion.ul)(() => ({
+const Dropdown = styled(motion.ul)(({ theme }) => ({
   top: 41,
   left: 0,
   zIndex: 9,
@@ -135,9 +146,12 @@ const Dropdown = styled(motion.ul)(() => ({
   backgroundColor: "#fff",
   border: "1px solid #ddd",
   boxShadow: "2px 4px 24px 0 rgba(0, 0, 0, 0.40)",
+  [theme.breakpoints.down("desktop")]: {
+    top: 28,
+  },
 }));
 
-const Item = styled("li")<{ selected: boolean }>(({ selected }) => ({
+const Item = styled("li")<{ selected: boolean }>(({ selected, theme }) => ({
   zIndex: 999,
   fontSize: 14,
   fontWeight: 400,
@@ -156,6 +170,11 @@ const Item = styled("li")<{ selected: boolean }>(({ selected }) => ({
   color: selected ? "#32C794" : "#747D8A",
   "&:hover": {
     backgroundColor: "#EDFCF7",
+  },
+  [theme.breakpoints.down("desktop")]: {
+    fontSize: 12,
+    minWidth: "112px",
+    maxWidth: "112px",
   },
 }));
 

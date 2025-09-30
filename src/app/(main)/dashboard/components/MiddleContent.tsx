@@ -34,7 +34,7 @@ export default function MiddleContent(props: IProps) {
   );
 }
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
     gap: "40px",
     display: "flex",
@@ -46,18 +46,31 @@ const Wrapper = styled(Box)(() => {
     maxWidth: "786.5px",
     width: "calc(50% - 20px)",
     aspectRatio: "786.5 / 474",
+
+    [theme.breakpoints.down("desktop")]: {
+      width: "100%",
+      padding: "20px",
+      maxWidth: "100%",
+      aspectRatio: "auto",
+      borderRadius: "12px",
+    },
   };
 });
 
-const Title = styled(Box)(() => {
+const Title = styled(Box)(({ theme }) => {
   return {
     fontSize: 20,
     width: "100%",
     fontWeight: 600,
+    display: "flex",
     color: "#464B53",
     textAlign: "start",
-    display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "8px",
+      fontSize: 16,
+      flexWrap: "wrap",
+    },
   };
 });

@@ -46,15 +46,19 @@ export default function BottomContent(props: IProps) {
   );
 }
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
     gap: "40px",
     width: "100%",
     display: "flex",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "24px",
+      flexDirection: "column",
+    },
   };
 });
 
-const TableWrap = styled(Box)(() => {
+const TableWrap = styled(Box)(({ theme }) => {
   return {
     gap: "24px",
     display: "flex",
@@ -63,15 +67,24 @@ const TableWrap = styled(Box)(() => {
     maxWidth: "786.5px",
     width: "calc(50% - 20px)",
     aspectRatio: "786.5 / 374",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "12px",
+      width: "100%",
+      maxWidth: "100%",
+      aspectRatio: "auto",
+    },
   };
 });
 
-const Title = styled(Box)(() => {
+const Title = styled(Box)(({ theme }) => {
   return {
     fontSize: 20,
     width: "100%",
     fontWeight: 600,
     color: "#464B53",
     textAlign: "start",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 16,
+    },
   };
 });

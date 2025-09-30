@@ -181,8 +181,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
   padding: "28px 24px",
   flexDirection: "column",
   [theme.breakpoints.down("desktop")]: {
-    maxWidth: "80px",
-    padding: "24px 16px",
+    maxWidth: "72px",
+    padding: "24px 10px",
   },
 }));
 

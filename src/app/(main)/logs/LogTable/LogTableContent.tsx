@@ -74,8 +74,6 @@ const TableInner = styled(Box)(() => ({
 const TableHeader = styled(Box)(({ theme }) => {
   return {
     top: 0,
-    // left: 0,
-    // right: 0,
     zIndex: 10,
     gap: "32px",
     width: "100%",

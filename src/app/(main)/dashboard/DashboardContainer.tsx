@@ -150,13 +150,17 @@ const Wrapper = styled(Box)(() => {
   };
 });
 
-const MiddleWrap = styled(Box)(() => {
+const MiddleWrap = styled(Box)(({ theme }) => {
   return {
     gap: "40px",
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "24px",
+      flexDirection: "column",
+    },
   };
 });
 
@@ -202,11 +206,16 @@ const DownloadBtn = styled(Box)(() => {
   };
 });
 
-const FilterBox = styled(Box)(() => {
+const FilterBox = styled(Box)(({ theme }) => {
   return {
     width: "100%",
     display: "flex",
-    maxWidth: "917px",
+    maxWidth: "143px",
+    borderRadius: "8px",
     justifyContent: "start",
+    border: "1px solid #464B53",
+    [theme.breakpoints.down("desktop")]: {
+      maxWidth: "fit-content",
+    },
   };
 });

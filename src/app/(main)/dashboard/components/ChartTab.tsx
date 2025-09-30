@@ -37,11 +37,10 @@ const SelectWrap = styled(Box)(() => {
   };
 });
 
-const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
+const SingleTab = styled(Box)<{ isactive: string }>(({ isactive, theme }) => {
   return {
     gap: "6px",
     fontSize: 16,
-    fontWeight: isactive === "true" ? 700 : 500,
     display: "flex",
     cursor: "pointer",
     lineHeight: "150%",
@@ -50,21 +49,25 @@ const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     borderLeft: "1px solid",
     letterSpacing: "-0.42px",
     justifyContent: "center",
+    borderColor: "#32C794",
     borderBottom: "1px solid",
     backdropFilter: "blur(4px)",
-    transition: "all 0.3s ease-in-out",
     borderRadius: "8px 0px 0px 8px",
+    transition: "all 0.3s ease-in-out",
+    fontWeight: isactive === "true" ? 700 : 500,
     color: isactive === "true" ? "#32C794" : "#747d8a",
-    borderColor: "#32C794",
     backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+      padding: "4px 8px",
+    },
   };
 });
 
-const MultiTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
+const MultiTab = styled(Box)<{ isactive: string }>(({ isactive, theme }) => {
   return {
     gap: "6px",
     fontSize: 16,
-    fontWeight: isactive === "true" ? 700 : 500,
     display: "flex",
     cursor: "pointer",
     lineHeight: "150%",
@@ -73,12 +76,17 @@ const MultiTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     letterSpacing: "-0.42px",
     justifyContent: "center",
     borderRight: "1px solid",
+    borderColor: "#32C794",
     borderBottom: "1px solid",
     backdropFilter: "blur(4px)",
-    transition: "all 0.3s ease-in-out",
     borderRadius: "0px 8px 8px 0px",
+    transition: "all 0.3s ease-in-out",
+    fontWeight: isactive === "true" ? 700 : 500,
     color: isactive === "true" ? "#32C794" : "#747d8a",
-    borderColor: "#32C794",
     backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+      padding: "4px 8px",
+    },
   };
 });

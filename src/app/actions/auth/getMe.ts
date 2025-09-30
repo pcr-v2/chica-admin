@@ -37,6 +37,17 @@ export async function getMe() {
       };
     }
 
+    let countUnAnswerCount = 0;
+    if (admin.schoolType === "master") {
+      const res = await mysqlPrisma.board.count({
+        where: {
+          status: "UNANSWERED",
+        },
+      });
+
+      countUnAnswerCount = res;
+    }
+
     return {
       code: "SUCCESS" as const,
       data: {
@@ -50,6 +61,7 @@ export async function getMe() {
         email: admin.teacherEmail,
         startAt: admin.startAt,
         endAt: admin.endAt,
+        countUnAnswerCount: countUnAnswerCount,
       },
     };
   } catch (error) {

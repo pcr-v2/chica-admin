@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMenusByRole, MenuItem, UserRole } from "@/config/menu";
+import useResponsive from "@/libs/hooks/useResponsive";
 import SideArrow from "@/public/images/icons/sidebar/side-arrow.svg";
 import SideLogo from "@/public/images/logo/side-logo.svg";
 
@@ -14,6 +15,8 @@ interface IProps {
 
 export default function SideBar(props: IProps) {
   const { me } = props;
+
+  const downDesktop = useResponsive("down", "desktop");
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -62,11 +65,37 @@ export default function SideBar(props: IProps) {
                       </StyledLogsIcon>
                     ) : (
                       <StyledIcon isactive={isActive.toString()}>
-                        <Icon style={{ width: "100%", height: "100%" }} />
+                        <Icon
+                          style={{
+                            zIndex: 3,
+                            width: "100%",
+                            height: "100%",
+                            position: "relative",
+                          }}
+                        />
+
+                        {downDesktop &&
+                          parentMenu.label === "고객센터" &&
+                          me.data &&
+                          me.data?.countUnAnswerCount > 0 && (
+                            <UnAnswerBox>
+                              {me.data?.countUnAnswerCount}
+                            </UnAnswerBox>
+                          )}
                       </StyledIcon>
                     ))}
                   <ParentMenu isactive={isActive.toString()}>
-                    <SideBarText>{parentMenu.label}</SideBarText>
+                    <SideBarText>
+                      {parentMenu.label}
+
+                      {parentMenu.label === "고객센터" &&
+                        me.data &&
+                        me.data?.countUnAnswerCount > 0 && (
+                          <UnAnswerBox>
+                            {me.data?.countUnAnswerCount}
+                          </UnAnswerBox>
+                        )}
+                    </SideBarText>
                   </ParentMenu>
                 </IconLabel>
 
@@ -211,6 +240,8 @@ const ParentMenu = styled(Box)<{ isactive: string }>(({ isactive }) => {
   return {
     fontSize: 18,
     fontWeight: 400,
+    display: "flex",
+    alignItems: "center",
     color: isactive === "true" ? "#13BA81" : "#747D8A",
   };
 });
@@ -278,8 +309,10 @@ const StyledIcon = styled(Box, {
   },
   transition: "0.2s ease",
   [theme.breakpoints.down("desktop")]: {
+    zIndex: 1,
     width: "40px",
     height: "40px",
+    position: "relative", // 부모 기준점
     path: {
       fill: isactive === "true" ? "#fff" : "#747D8A",
     },
@@ -289,8 +322,32 @@ const StyledIcon = styled(Box, {
 const SideBarText = styled(Box)(({ theme }) => {
   return {
     display: "flex",
+    alignItems: "center",
     [theme.breakpoints.down("desktop")]: {
       display: "none",
+    },
+  };
+});
+
+const UnAnswerBox = styled(Box)(({ theme }) => {
+  return {
+    fontSize: 14,
+    width: "24px",
+    padding: "4px",
+    height: "24px",
+    fontWeight: 500,
+    display: "flex",
+    marginLeft: "8px",
+    color: "#EF5350",
+    borderRadius: "8px",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFEBEE",
+    [theme.breakpoints.down("desktop")]: {
+      top: -4,
+      left: 20,
+      zIndex: 2,
+      position: "absolute",
     },
   };
 });

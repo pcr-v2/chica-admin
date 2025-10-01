@@ -34,7 +34,7 @@ export default function ClassListRank(props: IProps) {
   const [startAt, setStartAt] = useState("");
   const [isTotal, setIsTotal] = useState(true);
 
-  const queryKey = ["classRankList"];
+  const queryKey = ["classRankList", startAt, endAt, isTotal];
   const queryClient = useQueryClient();
   const { data, refetch } = useQuery({
     queryKey,

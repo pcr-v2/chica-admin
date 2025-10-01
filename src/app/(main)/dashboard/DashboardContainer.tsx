@@ -25,11 +25,14 @@ import {
   getLineChartStatistic,
   GetLineChartStatisticResponse,
 } from "@/app/actions/statistic/getLineChartStatistic";
+import { GetPersonalRankStatisticResponse } from "@/app/actions/statistic/getPersonalRankStatistic";
 import { GetRankPageStatisticResponse } from "@/app/actions/statistic/getRankPageStatistic";
+import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
 
 interface IProps {
   me: GetMeResponse;
-  list: GetRankPageStatisticResponse;
+  personalRankList: GetPersonalRankStatisticResponse;
+  unCheckedList: GetUnCheckedStatisticResponse;
   lineRes: GetLineChartStatisticResponse;
   barRes: GetBarChartStatisticResponse;
   classRankList: GetClassRankListStatisticResponse;
@@ -37,7 +40,15 @@ interface IProps {
 }
 
 export default function DashboardContainer(props: IProps) {
-  const { me, list, lineRes, barRes, classRankList, schoolList } = props;
+  const {
+    me,
+    personalRankList,
+    unCheckedList,
+    lineRes,
+    barRes,
+    classRankList,
+    schoolList,
+  } = props;
 
   const [selectedSchool, setSelectedSchool] = useState("");
 
@@ -113,9 +124,13 @@ export default function DashboardContainer(props: IProps) {
       <ClassListRank me={me} classRankList={classRankList} />
 
       <BottomWrap>
-        <BottomContent me={me} list={list} />
+        <BottomContent
+          me={me}
+          personalRankList={personalRankList}
+          unCheckedList={unCheckedList}
+        />
 
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             display: "flex",
@@ -128,14 +143,14 @@ export default function DashboardContainer(props: IProps) {
               {currentYear}년 공휴일 추가
             </HolidayBtn>
           )}
-          {/* <DownloadBtn
+          <DownloadBtn
             onClick={() => {
               alert("개발중");
             }}
           >
             전체 데이터 다운로드
-          </DownloadBtn> */}
-        </Box>
+          </DownloadBtn>
+        </Box> */}
       </BottomWrap>
     </Wrapper>
   );

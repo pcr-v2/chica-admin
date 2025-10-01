@@ -8,7 +8,6 @@ import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatist
 import { getClassRankListStatistic } from "@/app/actions/statistic/getClassRankListStatistic";
 import { getLineChartStatistic } from "@/app/actions/statistic/getLineChartStatistic";
 import { getPersonalRankStatistic } from "@/app/actions/statistic/getPersonalRankStatistic";
-import { getRankPageStatistic } from "@/app/actions/statistic/getRankPageStatistic";
 import { getUnCheckedStatistic } from "@/app/actions/statistic/getUnCheckedStatistic";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,22 +23,6 @@ export default async function Page() {
   if (me.code === "FAIL") {
     return redirect("/signin");
   }
-
-  // 일반 사용자 → Dashboard 데이터 로드
-  // const [list, lineRes, barRes] = await Promise.all([
-  //   getRankPageStatistic({
-  //     schoolId: me.data?.schoolId as string,
-  //     type: "term",
-  //   }),
-  //   getLineChartStatistic({
-  //     schoolId: me.data?.schoolId as string,
-  //     type: "day",
-  //   }),
-  //   getBarChartStatistic({
-  //     schoolId: me.data?.schoolId as string,
-  //     type: "day",
-  //   }),
-  // ]);
 
   const personalRankList = await getPersonalRankStatistic({
     schoolId: me.data?.schoolId as string,

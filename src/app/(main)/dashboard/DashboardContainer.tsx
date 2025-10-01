@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -11,9 +11,8 @@ import BottomContent from "@/app/(main)/dashboard/components/BottomContent";
 import ClassListRank from "@/app/(main)/dashboard/components/ClassListRank";
 import ChartLine from "@/app/(main)/dashboard/components/LineChart";
 import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
-import TopContent from "@/app/(main)/dashboard/components/TopContent";
 import MasterSchoolFilter from "@/app/(main)/schedule/filters/MasterSchoolFilter";
-import { getMe, GetMeResponse } from "@/app/actions/auth/getMe";
+import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
 import {
@@ -26,7 +25,6 @@ import {
   GetLineChartStatisticResponse,
 } from "@/app/actions/statistic/getLineChartStatistic";
 import { GetPersonalRankStatisticResponse } from "@/app/actions/statistic/getPersonalRankStatistic";
-import { GetRankPageStatisticResponse } from "@/app/actions/statistic/getRankPageStatistic";
 import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
 
 interface IProps {

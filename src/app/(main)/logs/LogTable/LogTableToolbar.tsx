@@ -12,6 +12,7 @@ import PassiveModal from "@/app/(main)/logs/components/PassiveModal";
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
 import RefreshBtn from "@/app/_components/common/RefreshBtn";
 import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
+import useResponsive from "@/libs/hooks/useResponsive";
 import DataAddIcon from "@/public/images/icons/data-add-icon.svg";
 import DataIcon from "@/public/images/icons/data-icon.svg";
 import DataMinusIcon from "@/public/images/icons/data-minus-icon.svg";
@@ -27,6 +28,8 @@ interface IProps {
 export default function LogTableToolbar(props: IProps) {
   const { totalLog, data, schoolList, onChangeDate } = props;
 
+  const downDesktop = useResponsive("down", "desktop");
+
   const today = dayjs().format("YYYY-MM-DD");
   const [date, setDate] = useState(today);
   const [isHover, setIsHover] = useState(false);
@@ -36,7 +39,8 @@ export default function LogTableToolbar(props: IProps) {
 
   const handleChangeDate = (type: "reset" | "set", value?: string) => {
     if (type === "reset") {
-      setDate("");
+      setDate(today);
+      onChangeDate(today);
       return;
     }
 
@@ -49,14 +53,17 @@ export default function LogTableToolbar(props: IProps) {
   return (
     <Wrapper>
       <Title>
-        {date === today ? `${date}(오늘)` : `${date}일`} 총 {totalLog}개의 row가
-        생성되었습니다.&nbsp;
-        {`(Ok :`}&nbsp;
-        <span style={{ color: "#32C794" }}>{`${okCount}`}</span>
-        개&nbsp;/&nbsp;
-        <span>{`No :`}</span>&nbsp;
-        <span style={{ color: "#F44336" }}>{`${noCount}`}</span>
-        {`${`개)`}`}
+        {date === today ? `${date}(오늘)` : `${date}일`}
+        {downDesktop && <br />} 총 {totalLog}개의 Row 생성&nbsp;
+        {downDesktop && <br />}
+        <span>
+          {`(Ok :`}&nbsp;
+          <span style={{ color: "#32C794" }}>{`${okCount}`}</span>
+          개&nbsp;/&nbsp;
+          <span>{`No :`}</span>&nbsp;
+          <span style={{ color: "#F44336" }}>{`${noCount}`}</span>
+          {`${`개)`}`}
+        </span>
       </Title>
 
       <BtnWrap>
@@ -64,6 +71,7 @@ export default function LogTableToolbar(props: IProps) {
           whileHover={{ backgroundColor: "#F1F2F3" }}
           onHoverStart={() => setIsHover(true)}
           onHoverEnd={() => setIsHover(false)}
+          onClick={() => setIsHover(!isHover)}
         >
           <Data />
           <span>Data 관리</span>
@@ -81,7 +89,7 @@ export default function LogTableToolbar(props: IProps) {
                   whileHover={{ color: "#32C794" }}
                   onClick={() => openDialog(InsertModal, { schoolList })}
                 >
-                  <DataAdd />
+                  <DataAddSt />
                   <span>수동 삽입</span>
                 </HoverItem>
                 <HoverItem
@@ -89,7 +97,7 @@ export default function LogTableToolbar(props: IProps) {
                   whileHover={{ color: "#F44336" }}
                   onClick={() => openDialog(DeleteModal, { schoolList })}
                 >
-                  <DataMinus />
+                  <DataMinusSt />
                   <span>수동 삭제</span>
                 </HoverItem>
               </HoverMenu>
@@ -102,7 +110,13 @@ export default function LogTableToolbar(props: IProps) {
           sx={{ fontWeight: 600 }}
         />
         <FormDatePicker
-          sx={{ width: "100%", maxWidth: "150px" }}
+          sx={(theme) => ({
+            width: "100%",
+            maxWidth: "150px",
+            [theme.breakpoints.down("desktop")]: {
+              maxWidth: "125px",
+            },
+          })}
           offMinDate
           value={date}
           onChange={(e) => handleChangeDate("set", e.target.value as string)}
@@ -112,24 +126,33 @@ export default function LogTableToolbar(props: IProps) {
   );
 }
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
+    gap: "12px",
     width: "100%",
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
+    [theme.breakpoints.down("desktop")]: {},
   };
 });
 
-const Title = styled(Box)({
-  fontSize: 20,
-  fontWeight: 600,
-  display: "flex",
-  color: "#747D8A",
-  justifyContent: "start",
+const Title = styled(Box)(({ theme }) => {
+  return {
+    fontSize: 20,
+    fontWeight: 600,
+    display: "flex",
+    color: "#747D8A",
+    justifyContent: "start",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+      flexWrap: "wrap",
+    },
+  };
 });
 
-const DataBtn = styled(motion.div)(() => {
+const DataBtn = styled(motion.div)(({ theme }) => {
   return {
     gap: "8px",
     fontSize: 16,
@@ -144,14 +167,23 @@ const DataBtn = styled(motion.div)(() => {
     position: "relative",
     backgroundColor: "#fff",
     border: "1px solid #464B53",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 12,
+      padding: "4px 8px",
+      borderRadius: "4px",
+    },
   };
 });
 
-const BtnWrap = styled(Box)(() => {
+const BtnWrap = styled(Box)(({ theme }) => {
   return {
     gap: "12px",
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "6px",
+    },
   };
 });
 
@@ -181,7 +213,7 @@ const DataMinus = styled(DataMinusIcon)(() => ({
   },
 }));
 
-const HoverMenu = styled(motion.div)(() => {
+const HoverMenu = styled(motion.div)(({ theme }) => {
   return {
     top: 44,
     left: 0,
@@ -197,10 +229,13 @@ const HoverMenu = styled(motion.div)(() => {
     justifyContent: "center",
     backgroundColor: "#fff",
     boxShadow: "2px 4px 24px 0 rgba(0, 0, 0, 0.40)",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "8px",
+    },
   };
 });
 
-const HoverItem = styled(motion.div)(() => {
+const HoverItem = styled(motion.div)(({ theme }) => {
   return {
     gap: "8px",
     fontSize: 16,
@@ -209,5 +244,26 @@ const HoverItem = styled(motion.div)(() => {
     fontWeight: 500,
     cursor: "pointer",
     alignItems: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "4px",
+      fontSize: 10,
+    },
+  };
+});
+
+const DataAddSt = styled(DataAdd)(({ theme }) => {
+  return {
+    [theme.breakpoints.down("desktop")]: {
+      width: "16px",
+      height: "16px",
+    },
+  };
+});
+const DataMinusSt = styled(DataMinus)(({ theme }) => {
+  return {
+    [theme.breakpoints.down("desktop")]: {
+      width: "16px",
+      height: "16px",
+    },
   };
 });

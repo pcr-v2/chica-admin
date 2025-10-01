@@ -41,25 +41,28 @@ const Wrapper = styled(Box)(() => {
   };
 });
 
-const RightPannel = styled(Box)(() => {
+const RightPannel = styled(Box)(({ theme }) => {
   return {
     gap: "14px",
     width: "100%",
     display: "flex",
     overflow: "hidden",
     padding: "0px 32px",
+    height: "calc(100dvh)",
     flexDirection: "column",
     backgroundColor: "#F7F8FA",
-    height: "calc(100dvh)",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "0px 16px",
+    },
   };
 });
 
 const ContentPage = styled(Box)(() => {
   return {
     flex: 1,
+    width: "100%",
     overflowY: "auto",
     overflowX: "hidden",
-    width: "100%",
     paddingBottom: "40px",
   };
 });

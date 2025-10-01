@@ -1,5 +1,6 @@
 "use client";
 
+import { Box } from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +15,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 
 import { GetLineChartStatisticResponse } from "@/app/actions/statistic/getLineChartStatistic";
+import useResponsive from "@/libs/hooks/useResponsive";
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +32,8 @@ interface IProps {
 }
 
 export default function ChartLine({ lineRes }: IProps) {
+  const downDesktop = useResponsive("down", "desktop");
+
   const labels = lineRes.data?.labels || [];
 
   const maleData = lineRes.data?.maleRates || [];
@@ -53,7 +57,7 @@ export default function ChartLine({ lineRes }: IProps) {
           boxWidth: 12, // 레전드 색상 박스 크기
           boxHeight: 12, // 색상 박스 높이
           font: {
-            size: 16, // ✅ 폰트 사이즈
+            size: downDesktop ? 12 : 16, // ✅ 폰트 사이즈
             weight: 400,
             family: "Pretandard",
           },
@@ -111,8 +115,16 @@ export default function ChartLine({ lineRes }: IProps) {
   };
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <Box
+      sx={(theme) => ({
+        width: "100%",
+        height: "100%",
+        [theme.breakpoints.down("desktop")]: {
+          minHeight: "400px",
+        },
+      })}
+    >
       <Line options={options} data={data} />
-    </div>
+    </Box>
   );
 }

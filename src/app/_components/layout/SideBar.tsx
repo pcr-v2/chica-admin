@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled, Tooltip } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -6,8 +6,8 @@ import { useState } from "react";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMenusByRole, MenuItem, UserRole } from "@/config/menu";
 import useResponsive from "@/libs/hooks/useResponsive";
+import SideLogo from "@/public/images/icons/sidebar/logo.svg";
 import SideArrow from "@/public/images/icons/sidebar/side-arrow.svg";
-import SideLogo from "@/public/images/logo/side-logo.svg";
 
 interface IProps {
   me: GetMeResponse;
@@ -16,12 +16,11 @@ interface IProps {
 export default function SideBar(props: IProps) {
   const { me } = props;
 
-  const downDesktop = useResponsive("down", "desktop");
-
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const router = useRouter();
   const nowPath = usePathname();
+  const downDesktop = useResponsive("down", "desktop");
 
   const toggleMenu = (el: MenuItem) => {
     if (el.children && el.children?.length <= 0) {
@@ -51,61 +50,72 @@ export default function SideBar(props: IProps) {
                 nowPath === child.path || nowPath.startsWith(child.path),
             );
 
+          const menuContent = (
+            <SingleMenuWrap
+              onClick={() => toggleMenu(parentMenu)}
+              isactive={isActive.toString()}
+            >
+              <IconLabel>
+                {Icon &&
+                  (parentMenu.path === "/logs" ? (
+                    <StyledLogsIcon isactive={isActive.toString()}>
+                      <Icon style={{ width: "100%", height: "100%" }} />
+                    </StyledLogsIcon>
+                  ) : (
+                    <StyledIcon isactive={isActive.toString()}>
+                      <Icon style={{ width: "100%", height: "100%" }} />
+                    </StyledIcon>
+                  ))}
+                <ParentMenu isactive={isActive.toString()}>
+                  <SideBarText>{parentMenu.label}</SideBarText>
+                </ParentMenu>
+              </IconLabel>
+              {parentMenu.children && parentMenu.children.length > 0 && (
+                <Arrow
+                  animate={{ rotate: isOpen ? 0 : 180 }}
+                  transition={{ duration: 0.1 }}
+                />
+              )}
+            </SingleMenuWrap>
+          );
+
           return (
             <Box key={parentMenu.label} sx={{ width: "100%" }}>
-              <SingleMenuWrap
-                onClick={() => toggleMenu(parentMenu)}
-                isactive={isActive.toString()}
-              >
-                <IconLabel sx={{}}>
-                  {Icon &&
-                    (parentMenu.path === "/logs" ? (
-                      <StyledLogsIcon isactive={isActive.toString()}>
-                        <Icon style={{ width: "100%", height: "100%" }} />
-                      </StyledLogsIcon>
-                    ) : (
-                      <StyledIcon isactive={isActive.toString()}>
-                        <Icon
-                          style={{
-                            zIndex: 3,
-                            width: "100%",
-                            height: "100%",
-                            position: "relative",
-                          }}
-                        />
-
-                        {downDesktop &&
-                          parentMenu.label === "고객센터" &&
-                          me.data &&
-                          me.data?.countUnAnswerCount > 0 && (
-                            <UnAnswerBox>
-                              {me.data?.countUnAnswerCount}
-                            </UnAnswerBox>
-                          )}
-                      </StyledIcon>
-                    ))}
-                  <ParentMenu isactive={isActive.toString()}>
-                    <SideBarText>
-                      {parentMenu.label}
-
-                      {parentMenu.label === "고객센터" &&
-                        me.data &&
-                        me.data?.countUnAnswerCount > 0 && (
-                          <UnAnswerBox>
-                            {me.data?.countUnAnswerCount}
-                          </UnAnswerBox>
-                        )}
-                    </SideBarText>
-                  </ParentMenu>
-                </IconLabel>
-
-                {parentMenu.children && parentMenu.children.length > 0 && (
-                  <Arrow
-                    animate={{ rotate: isOpen ? 0 : 180 }}
-                    transition={{ duration: 0.1 }}
-                  />
-                )}
-              </SingleMenuWrap>
+              {downDesktop ? (
+                <Tooltip
+                  title={parentMenu.label}
+                  placement="right"
+                  // arrow
+                  followCursor
+                  slotProps={{
+                    tooltip: {
+                      sx: {
+                        fontSize: 14,
+                        padding: "8px",
+                        fontWeight: 600,
+                        color: "#fff",
+                        marginTop: "4px",
+                        borderRadius: "8px",
+                        bgcolor: "#32C794",
+                      },
+                    },
+                    popper: {
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: {
+                            offset: [0, 14],
+                          },
+                        },
+                      ],
+                    },
+                  }}
+                >
+                  {menuContent}
+                </Tooltip>
+              ) : (
+                menuContent
+              )}
 
               <AnimatePresence initial={false}>
                 {isOpen &&
@@ -171,25 +181,31 @@ const Wrapper = styled(Box)(({ theme }) => ({
   padding: "28px 24px",
   flexDirection: "column",
   [theme.breakpoints.down("desktop")]: {
-    maxWidth: "114px",
+    maxWidth: "72px",
+    padding: "24px 10px",
   },
 }));
 
-const LogoWrap = styled(Box)(() => {
+const LogoWrap = styled(Box)(({ theme }) => {
   return {
     gap: "12px",
     display: "flex",
     alignItems: "center",
     padding: "9px 0px 9px 8px",
+    [theme.breakpoints.down("desktop")]: {
+      padding: "8px",
+    },
   };
 });
 
 const Logo = styled(SideLogo)(({ theme }) => ({
-  width: "28px",
-  height: "28px",
+  width: "32px",
+  height: "32px",
+  borderRadius: "8px",
   [theme.breakpoints.down("desktop")]: {
-    width: "50px",
-    height: "50px",
+    // width: "40px",
+    // height: "40px",
+    margin: "auto",
   },
 }));
 
@@ -228,6 +244,8 @@ const SingleMenuWrap = styled(Box)<{ isactive: string }>(
       backgroundColor: "#EDFCF7",
     },
     [theme.breakpoints.down("desktop")]: {
+      margin: "auto",
+      padding: "8px",
       backgroundColor: isactive === "true" ? "#32C794" : "#fff",
       "&:hover": {
         backgroundColor: isactive === "true" ? "#32C794" : "#EDFCF7",
@@ -246,11 +264,16 @@ const ParentMenu = styled(Box)<{ isactive: string }>(({ isactive }) => {
   };
 });
 
-const IconLabel = styled(Box)(() => ({
+const IconLabel = styled(Box)(({ theme }) => ({
   gap: "8px",
   display: "flex",
   alignItems: "center",
   justifyContent: "start",
+  [theme.breakpoints.down("desktop")]: {
+    gap: "0px",
+    width: "32px",
+    margin: "auto",
+  },
 }));
 
 const Arrow = styled(motion.create(SideArrow))(() => ({
@@ -288,14 +311,12 @@ const StyledLogsIcon = styled(Box, {
   height: "28px",
   path: {
     stroke: isactive === "true" ? "#13BA81" : "#747D8A",
+    fill: "#fff",
   },
   transition: "0.2s ease",
   [theme.breakpoints.down("desktop")]: {
-    width: "40px",
-    height: "40px",
-    path: {
-      fill: isactive === "true" ? "#fff" : "#747D8A",
-    },
+    width: "32px",
+    height: "32px",
   },
 }));
 

@@ -7,7 +7,9 @@ import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
 import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
 import { getClassRankListStatistic } from "@/app/actions/statistic/getClassRankListStatistic";
 import { getLineChartStatistic } from "@/app/actions/statistic/getLineChartStatistic";
+import { getPersonalRankStatistic } from "@/app/actions/statistic/getPersonalRankStatistic";
 import { getRankPageStatistic } from "@/app/actions/statistic/getRankPageStatistic";
+import { getUnCheckedStatistic } from "@/app/actions/statistic/getUnCheckedStatistic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -39,9 +41,13 @@ export default async function Page() {
   //   }),
   // ]);
 
-  const list = await getRankPageStatistic({
+  const personalRankList = await getPersonalRankStatistic({
     schoolId: me.data?.schoolId as string,
-    type: "term",
+    isTotal: true,
+    searchRange: {
+      startAt: "",
+      endAt: "",
+    },
   });
 
   const lineRes = await getLineChartStatistic({
@@ -64,13 +70,18 @@ export default async function Page() {
 
   const schoolList = await getSchoolList();
 
+  const unCheckedList = await getUnCheckedStatistic({
+    schoolId: me.data?.schoolId as string,
+  });
+
   // console.log("test", classRankList);
   return (
     <DashboardContainer
       me={me}
-      list={list}
+      personalRankList={personalRankList}
       lineRes={lineRes}
       barRes={barRes}
+      unCheckedList={unCheckedList}
       classRankList={classRankList}
       schoolList={schoolList}
     />

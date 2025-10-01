@@ -25,11 +25,14 @@ import {
   getLineChartStatistic,
   GetLineChartStatisticResponse,
 } from "@/app/actions/statistic/getLineChartStatistic";
+import { GetPersonalRankStatisticResponse } from "@/app/actions/statistic/getPersonalRankStatistic";
 import { GetRankPageStatisticResponse } from "@/app/actions/statistic/getRankPageStatistic";
+import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
 
 interface IProps {
   me: GetMeResponse;
-  list: GetRankPageStatisticResponse;
+  personalRankList: GetPersonalRankStatisticResponse;
+  unCheckedList: GetUnCheckedStatisticResponse;
   lineRes: GetLineChartStatisticResponse;
   barRes: GetBarChartStatisticResponse;
   classRankList: GetClassRankListStatisticResponse;
@@ -37,7 +40,15 @@ interface IProps {
 }
 
 export default function DashboardContainer(props: IProps) {
-  const { me, list, lineRes, barRes, classRankList, schoolList } = props;
+  const {
+    me,
+    personalRankList,
+    unCheckedList,
+    lineRes,
+    barRes,
+    classRankList,
+    schoolList,
+  } = props;
 
   const [selectedSchool, setSelectedSchool] = useState("");
 
@@ -113,9 +124,13 @@ export default function DashboardContainer(props: IProps) {
       <ClassListRank me={me} classRankList={classRankList} />
 
       <BottomWrap>
-        <BottomContent me={me} list={list} />
+        <BottomContent
+          me={me}
+          personalRankList={personalRankList}
+          unCheckedList={unCheckedList}
+        />
 
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             display: "flex",
@@ -128,14 +143,14 @@ export default function DashboardContainer(props: IProps) {
               {currentYear}년 공휴일 추가
             </HolidayBtn>
           )}
-          {/* <DownloadBtn
+          <DownloadBtn
             onClick={() => {
               alert("개발중");
             }}
           >
             전체 데이터 다운로드
-          </DownloadBtn> */}
-        </Box>
+          </DownloadBtn>
+        </Box> */}
       </BottomWrap>
     </Wrapper>
   );
@@ -150,13 +165,17 @@ const Wrapper = styled(Box)(() => {
   };
 });
 
-const MiddleWrap = styled(Box)(() => {
+const MiddleWrap = styled(Box)(({ theme }) => {
   return {
     gap: "40px",
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "24px",
+      flexDirection: "column",
+    },
   };
 });
 
@@ -202,11 +221,16 @@ const DownloadBtn = styled(Box)(() => {
   };
 });
 
-const FilterBox = styled(Box)(() => {
+const FilterBox = styled(Box)(({ theme }) => {
   return {
     width: "100%",
     display: "flex",
-    maxWidth: "917px",
+    maxWidth: "143px",
+    borderRadius: "8px",
     justifyContent: "start",
+    border: "1px solid #464B53",
+    [theme.breakpoints.down("desktop")]: {
+      maxWidth: "fit-content",
+    },
   };
 });

@@ -14,6 +14,7 @@ import {
   getClassRankListStatistic,
   GetClassRankListStatisticResponse,
 } from "@/app/actions/statistic/getClassRankListStatistic";
+import useResponsive from "@/libs/hooks/useResponsive";
 
 interface CustomCheckboxProps extends CheckboxProps {
   iconSrc?: string;
@@ -27,11 +28,13 @@ interface IProps {
 export default function ClassListRank(props: IProps) {
   const { me, classRankList } = props;
 
+  const downTablet = useResponsive("down", "tablet");
+
   const [endAt, setEndAt] = useState("");
   const [startAt, setStartAt] = useState("");
   const [isTotal, setIsTotal] = useState(true);
 
-  const queryKey = ["classRankList"];
+  const queryKey = ["classRankList", startAt, endAt, isTotal];
   const queryClient = useQueryClient();
   const { data, refetch } = useQuery({
     queryKey,
@@ -67,24 +70,9 @@ export default function ClassListRank(props: IProps) {
 
   return (
     <Wrapper>
-      <Box
-        sx={{
-          gap: "16px",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Title sx={{ width: "100%" }}>반별 리더보드</Title>
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-            alignItems: "center",
-            justifyContent: "end",
-          }}
-        >
+      <ChartFilter>
+        <Title>반별 리더보드</Title>
+        <DateWrap>
           <CheckboxWrap>
             <CustomCheckbox
               iconSrc="/images/icons/radio-icon.svg"
@@ -94,8 +82,19 @@ export default function ClassListRank(props: IProps) {
             />
             전체기간
           </CheckboxWrap>
+
           <FormDatePicker
-            sx={{ width: "100%", maxWidth: "150px" }}
+            sx={(theme) => ({
+              width: "100%",
+              maxWidth: "150px",
+              [theme.breakpoints.down("desktop")]: {
+                maxWidth: "125px",
+              },
+              "@media (max-width:556px)": {
+                maxWidth: "100%",
+              },
+            })}
+            format="YY-MM-DD"
             offMinDate
             readOnly={isTotal}
             value={startAt} // dragDate가 있으면 그 값 사용
@@ -114,10 +113,20 @@ export default function ClassListRank(props: IProps) {
             }}
           />
 
-          <span>~</span>
+          {!downTablet && <span>~</span>}
 
           <FormDatePicker
-            sx={{ width: "100%", maxWidth: "150px" }}
+            sx={(theme) => ({
+              width: "100%",
+              maxWidth: "150px",
+              [theme.breakpoints.down("desktop")]: {
+                maxWidth: "125px",
+              },
+              "@media (max-width:556px)": {
+                maxWidth: "100%",
+              },
+            })}
+            format="YY-MM-DD"
             offMinDate
             readOnly={isTotal}
             value={endAt} // dragDate가 있으면 그 값 사용
@@ -134,15 +143,15 @@ export default function ClassListRank(props: IProps) {
           />
 
           <SearchBtn onClick={handleSearch}>조회</SearchBtn>
-        </Box>
-      </Box>
+        </DateWrap>
+      </ChartFilter>
 
       <ClassRankChart classRankList={data} />
     </Wrapper>
   );
 }
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
     gap: "40px",
     display: "flex",
@@ -152,21 +161,31 @@ const Wrapper = styled(Box)(() => {
     backgroundColor: "#fff",
 
     aspectRatio: "1565 / 474",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "24px",
+      padding: "20px",
+      borderRadius: "12px",
+    },
   };
 });
 
-const Title = styled("span")(() => {
+const Title = styled("span")(({ theme }) => {
   return {
     fontSize: 20,
+    width: "100%",
     fontWeight: 600,
     display: "flex",
     color: "#464B53",
     textAlign: "start",
     alignItems: "center",
+    whiteSpace: "nowrap",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 16,
+    },
   };
 });
 
-const SearchBtn = styled(Box)(() => {
+const SearchBtn = styled(Box)(({ theme }) => {
   return {
     fontSize: 16,
     width: "100%",
@@ -182,18 +201,31 @@ const SearchBtn = styled(Box)(() => {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#32C794",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 14,
+      height: "30px",
+      padding: "4px 8px",
+    },
+    "@media (max-width:556px)": {
+      maxWidth: "100%",
+    },
   };
 });
 
-const CheckboxWrap = styled(Box)(() => {
+const CheckboxWrap = styled(Box)(({ theme }) => {
   return {
     gap: "8px",
     fontSize: 18,
     fontWeight: 400,
     display: "flex",
     color: "#747D8A",
+    whiteSpace: "nowrap",
     paddingRight: "12px",
     alignItems: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "4px",
+      fontSize: 14,
+    },
   };
 });
 
@@ -247,42 +279,30 @@ const CustomCheckbox = styled((props: CustomCheckboxProps) => {
   },
 }));
 
-const GraphWrap = styled(Box)(() => {
+const ChartFilter = styled(motion.div)(({ theme }) => {
   return {
-    gap: "8px",
+    gap: "16px",
     width: "100%",
-    maxWidth: "54px",
+    display: "flex",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "8px",
+      flexWrap: "wrap",
+    },
+  };
+});
+
+const DateWrap = styled(Box)(({ theme }) => {
+  return {
+    gap: "12px",
+    width: "100%",
     display: "flex",
     alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-  };
-});
+    justifyContent: "end",
 
-const ClassText = styled(motion.div)(() => {
-  return {
-    fontSize: 25,
-    width: "54px",
-    fontWeight: 700,
-    lineHeight: "150%",
-    color: "#464b53",
-    textAlign: "center",
-    letterSpacing: "-0.5px",
-  };
-});
-
-const GraphBar = styled(motion.div)(() => {
-  return {
-    width: "48px",
-    borderRadius: "12px",
-  };
-});
-
-const BoardContent = styled(motion.div)(() => {
-  return {
-    gap: "32px",
-    width: "100%",
-    display: "flex",
-    alignItems: "end",
+    "@media (max-width:556px)": {
+      alignItems: "start",
+      flexDirection: "column",
+    },
   };
 });

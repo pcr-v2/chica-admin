@@ -1,4 +1,4 @@
-import { styled, SxProps } from "@mui/material";
+import { styled, SxProps, Theme } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
@@ -14,7 +14,7 @@ export type FormDatePickerProps = {
   value?: string | null;
   format?: string;
   onChange?: (e: ChangeEvent) => void;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
   offMinDate?: boolean;
   readOnly?: boolean; // 추가
 };
@@ -90,7 +90,7 @@ export default function FormDatePicker(props: FormDatePickerProps) {
   );
 }
 
-const CustomDatePicker = styled(DatePicker)(() => {
+const CustomDatePicker = styled(DatePicker)(({ theme }) => {
   return {
     "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#32c794", // 원하는 색상
@@ -149,6 +149,30 @@ const CustomDatePicker = styled(DatePicker)(() => {
     "& .MuiInputBase-input": {
       padding: "10px 12px",
       lineHeight: "21px",
+    },
+
+    [theme.breakpoints.down("desktop")]: {
+      "& .MuiPickersInputBase-root": {
+        fontSize: 12,
+        padding: "5px 8px",
+        border: "1px solid #d9d9d9",
+        backgroundColor: "#fff",
+        "&:hover fieldset": {
+          borderColor: "#d9d9d9",
+        },
+        "& fieldset": {
+          borderColor: "#d9d9d9",
+        },
+        "&.Mui-focused fieldset": {
+          border: "1px solid #32C794",
+          // outline: "1px solid #32C794",
+        },
+        "&.Mui-focused": {
+          height: "30px !important",
+          border: "1px solid #32C794 !important",
+          // outline: "1px solid #32C794 !important",
+        },
+      },
     },
   };
 });

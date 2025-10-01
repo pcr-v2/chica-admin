@@ -40,6 +40,10 @@ export default async function RootLayout(props: IProps) {
   return (
     <html lang="en">
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="icon"

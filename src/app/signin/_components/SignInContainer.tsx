@@ -76,6 +76,7 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "flex",
     minHeight: "100dvh",
+    padding: "0px 24px",
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
@@ -84,18 +85,18 @@ const Wrapper = styled(Box)(() => {
 
 const Logo = styled("img")(() => {
   return {
-    width: "240px",
+    width: "100%",
+    maxWidth: "240px",
     marginBottom: "64px",
   };
 });
 
 const BottomContent = styled(Box)(() => {
   return {
-    gap: "24px",
     width: "100%",
     display: "flex",
     maxWidth: "360px",
-    marginTop: "40px",
+    marginTop: "60px",
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
@@ -123,5 +124,6 @@ const CopyRightSpan = styled("span")(() => {
     fontWeight: 400,
     marginTop: "32px",
     color: "#9d9d9d",
+    textAlign: "center",
   };
 });

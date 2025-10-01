@@ -90,15 +90,6 @@ export default function Header(props: IProps) {
           ))}
         {lable}
       </PathLabel>
-      {/* {convertGrantAvailable && (
-        <>
-          <Toggle
-            label="권한 변경"
-            checked={value.checked}
-            onChange={handleGrant}
-          />
-        </>
-      )} */}
 
       <UserMenu>
         <UserName>
@@ -111,26 +102,33 @@ export default function Header(props: IProps) {
   );
 }
 
-const Wrapper = styled(Box)(() => {
+const Wrapper = styled(Box)(({ theme }) => {
   return {
     width: "100%",
     display: "flex",
     padding: "28px 0px 12px",
     backgroundColor: "#F7F8FA",
     justifyContent: "space-between",
+    [theme.breakpoints.down("desktop")]: {
+      flexWrap: "wrap",
+      padding: "24px 0px 8px",
+    },
   };
 });
 
-const UserMenu = styled(Box)(() => {
+const UserMenu = styled(Box)(({ theme }) => {
   return {
     gap: "8px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.down("desktop")]: {
+      gap: "4px",
+    },
   };
 });
 
-const PathLabel = styled("span")(() => {
+const PathLabel = styled("span")(({ theme }) => {
   return {
     fontSize: 24,
     fontWeight: 500,
@@ -138,48 +136,78 @@ const PathLabel = styled("span")(() => {
     color: "#464B53",
     alignItems: "center",
     letterSpacing: "-0.18px",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 16,
+      letterSpacing: "-0.2px",
+    },
   };
 });
 
-const UserName = styled("span")(() => {
+const UserName = styled("span")(({ theme }) => {
   return {
     fontSize: 22,
     fontWeight: 600,
     color: "#747D8A",
+    [theme.breakpoints.down("desktop")]: {
+      fontSize: 16,
+      fontWeight: 500,
+    },
   };
 });
 
-const Logout = styled(LogoutIcon)(() => {
+const Logout = styled(LogoutIcon)(({ theme }) => {
   return {
     width: "28px",
     height: "28px",
-    path: { fill: "#464B53" },
     cursor: "pointer",
+    path: { fill: "#464B53" },
+    [theme.breakpoints.down("desktop")]: {
+      width: "20px",
+      height: "20px",
+    },
   };
 });
 
-const LogsIconWrapper = styled("span")({
-  marginRight: "12px",
-  alignItems: "center",
-  display: "inline-flex",
-  svg: {
-    width: 32,
-    height: 32,
-  },
-  path: {
-    stroke: "#464B53",
-  },
+const LogsIconWrapper = styled("span")(({ theme }) => {
+  return {
+    marginRight: "12px",
+    alignItems: "center",
+    display: "inline-flex",
+    svg: {
+      width: 32,
+      height: 32,
+    },
+    path: {
+      stroke: "#464B53",
+    },
+    [theme.breakpoints.down("desktop")]: {
+      marginRight: "4px",
+      svg: {
+        width: 20,
+        height: 20,
+      },
+    },
+  };
 });
 
-const IconWrapper = styled("span")({
-  marginRight: "12px",
-  alignItems: "center",
-  display: "inline-flex",
-  svg: {
-    width: 32,
-    height: 32,
-  },
-  path: {
-    fill: "#464B53",
-  },
+const IconWrapper = styled("span")(({ theme }) => {
+  return {
+    marginRight: "12px",
+    alignItems: "center",
+    display: "inline-flex",
+    svg: {
+      width: 32,
+      height: 32,
+    },
+    path: {
+      fill: "#464B53",
+    },
+    [theme.breakpoints.down("desktop")]: {
+      marginRight: "4px",
+      svg: {
+        width: 20,
+        height: 20,
+      },
+    },
+  };
 });

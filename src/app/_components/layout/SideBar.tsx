@@ -55,7 +55,7 @@ export default function SideBar(props: IProps) {
               onClick={() => toggleMenu(parentMenu)}
               isactive={isActive.toString()}
             >
-              <IconLabel>
+              <IconLabel sx={{}}>
                 {Icon &&
                   (parentMenu.path === "/logs" ? (
                     <StyledLogsIcon isactive={isActive.toString()}>
@@ -63,11 +63,35 @@ export default function SideBar(props: IProps) {
                     </StyledLogsIcon>
                   ) : (
                     <StyledIcon isactive={isActive.toString()}>
-                      <Icon style={{ width: "100%", height: "100%" }} />
+                      <Icon
+                        style={{
+                          zIndex: 3,
+                          width: "100%",
+                          height: "100%",
+                          position: "relative",
+                        }}
+                      />
+
+                      {downDesktop &&
+                        parentMenu.label === "고객센터" &&
+                        me.data &&
+                        me.data?.countUnAnswerCount > 0 && (
+                          <UnAnswerBox>
+                            {me.data?.countUnAnswerCount}
+                          </UnAnswerBox>
+                        )}
                     </StyledIcon>
                   ))}
                 <ParentMenu isactive={isActive.toString()}>
-                  <SideBarText>{parentMenu.label}</SideBarText>
+                  <SideBarText>
+                    {parentMenu.label}
+
+                    {parentMenu.label === "고객센터" &&
+                      me.data &&
+                      me.data?.countUnAnswerCount > 0 && (
+                        <UnAnswerBox>{me.data?.countUnAnswerCount}</UnAnswerBox>
+                      )}
+                  </SideBarText>
                 </ParentMenu>
               </IconLabel>
               {parentMenu.children && parentMenu.children.length > 0 && (
@@ -366,7 +390,7 @@ const UnAnswerBox = styled(Box)(({ theme }) => {
     backgroundColor: "#FFEBEE",
     [theme.breakpoints.down("desktop")]: {
       top: -4,
-      left: 20,
+      left: 12,
       zIndex: 2,
       position: "absolute",
     },

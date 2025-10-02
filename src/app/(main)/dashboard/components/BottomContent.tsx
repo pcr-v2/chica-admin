@@ -34,6 +34,7 @@ export default function BottomContent(props: IProps) {
   const [endAt, setEndAt] = useState("");
   const [startAt, setStartAt] = useState("");
   const [isTotal, setIsTotal] = useState(true);
+  const [isRound, setIsRound] = useState(true);
 
   const queryClient = useQueryClient();
   const queryKey = ["student-statistic-list"];
@@ -76,6 +77,15 @@ export default function BottomContent(props: IProps) {
         <ChartFilter>
           <Title>개인전 순위</Title>
           <DateWrap>
+            <CheckboxWrap>
+              <CustomCheckbox
+                iconSrc="/images/icons/radio-icon.svg"
+                value={isRound}
+                checked={isRound}
+                onChange={(e) => setIsRound(e.target.checked)}
+              />
+              결과% 반올림
+            </CheckboxWrap>
             <CheckboxWrap>
               <CustomCheckbox
                 iconSrc="/images/icons/radio-icon.svg"
@@ -149,7 +159,7 @@ export default function BottomContent(props: IProps) {
           </DateWrap>
         </ChartFilter>
 
-        <PersonalRankTable personalRankList={personalList} />
+        <PersonalRankTable personalRankList={personalList} isRound={isRound} />
       </TableWrap>
 
       <TableWrap>

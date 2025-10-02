@@ -32,6 +32,7 @@ export default function ClassListRank(props: IProps) {
 
   const [endAt, setEndAt] = useState("");
   const [startAt, setStartAt] = useState("");
+  const [isRound, setIsRound] = useState(true);
   const [isTotal, setIsTotal] = useState(true);
 
   const queryKey = ["classRankList", startAt, endAt, isTotal];
@@ -73,6 +74,15 @@ export default function ClassListRank(props: IProps) {
       <ChartFilter>
         <Title>반별 리더보드</Title>
         <DateWrap>
+          <CheckboxWrap>
+            <CustomCheckbox
+              iconSrc="/images/icons/radio-icon.svg"
+              value={isRound}
+              checked={isRound}
+              onChange={(e) => setIsRound(e.target.checked)}
+            />
+            결과% 반올림
+          </CheckboxWrap>
           <CheckboxWrap>
             <CustomCheckbox
               iconSrc="/images/icons/radio-icon.svg"
@@ -146,7 +156,7 @@ export default function ClassListRank(props: IProps) {
         </DateWrap>
       </ChartFilter>
 
-      <ClassRankChart classRankList={data} />
+      <ClassRankChart classRankList={data} isRound={isRound} />
     </Wrapper>
   );
 }

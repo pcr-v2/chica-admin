@@ -72,7 +72,7 @@ export async function getPersonalRankStatistic(
             0,
             SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) / COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 END) * 100
           ),
-          1
+          5
         ) AS percentage
       FROM Student s
       LEFT JOIN Brushed b 

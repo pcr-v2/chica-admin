@@ -88,7 +88,7 @@ export async function getClassRankListStatistic(
         COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 ELSE NULL END) AS denominator,
         CASE 
           WHEN COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 ELSE NULL END) = 0 THEN 0
-          ELSE ROUND(SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) / COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 ELSE NULL END) * 100, 1)
+          ELSE ROUND(SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) / COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 ELSE NULL END) * 100, 5)
         END AS percentage
       FROM Student s
       JOIN SchoolInfo si ON s.school_id = si.school_id

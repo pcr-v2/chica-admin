@@ -27,10 +27,11 @@ ChartJS.register(
 
 interface IProps {
   classRankList: GetClassRankListStatisticResponse;
+  isRound: boolean;
 }
 
 export default function ClassRankChart(props: IProps) {
-  const { classRankList } = props;
+  const { classRankList, isRound } = props;
 
   const rates = classRankList.data?.classList.map((d) => d.rate) ?? [];
   const maxValue = Math.max(...rates);
@@ -47,10 +48,11 @@ export default function ClassRankChart(props: IProps) {
         align: "center" as const,
         rotation: -30, // -45도 회전, 양수면 시계방향
         font: {
-          size: 12,
+          size: isRound ? 12 : 9,
           weight: "bold" as const,
         },
-        formatter: (value: number) => `${Math.round(value)}%`,
+        formatter: (value: number) =>
+          isRound ? `${Math.round(value)}%` : `${value}%`,
       },
     },
     scales: {

@@ -8,10 +8,11 @@ import Male from "@/public/images/icons/male-icon.svg";
 
 interface IProps {
   personalRankList: GetPersonalRankStatisticResponse;
+  isRound: boolean;
 }
 
 export default function PersonalRankTable(props: IProps) {
-  const { personalRankList } = props;
+  const { personalRankList, isRound } = props;
 
   return (
     <Wrapper>
@@ -66,7 +67,9 @@ export default function PersonalRankTable(props: IProps) {
             <TableRowItem>{el.student_class}반</TableRowItem>
             <TableRowItem>{el.student_number}번</TableRowItem>
             <TableRowItem>{el.student_name}</TableRowItem>
-            <TableRowItem>{el.percentage}%</TableRowItem>
+            <TableRowItem>
+              {isRound ? Math.round(el.percentage) : el.percentage}%
+            </TableRowItem>
           </TableRow>
         );
       })}

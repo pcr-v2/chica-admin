@@ -89,7 +89,7 @@ export default async function uploadCsv<Z extends z.ZodSchema>(schema: Z) {
     });
     // console.log("jsonArray", jsonArray);
     const result = schema.safeParse(jsonArray);
-    // console.log("jsonArray", jsonArray);
+    // console.log("result", result);
     if (!result.success) {
       toast.error(
         `${result.error.errors[0].path[1]} 형식이 올바르지 않습니다.`,

@@ -26,3 +26,24 @@ export const getChartStatisticSchema = z.object({
     required_error: "통계 타입이 없습니다.",
   }),
 });
+
+export const getTotalStatisticSchema = z.object({
+  schoolId: z.string({ required_error: "학교 아이디가 없습니다." }),
+  gender: z
+    .enum(["male", "female", "both", "total"], {
+      required_error: "성별이 없습니다.",
+    })
+    .default("total"),
+  searchDateType: z
+    .enum(["daily", "weekly", "monthly"], {
+      required_error: "일자 타입이 없습니다.",
+    })
+    .default("monthly"),
+  searchRange: z.object({
+    startAt: z.string().optional(),
+    endAt: z.string().optional(),
+  }),
+  targetGrade: z
+    .string({ required_error: "대상 학년이 없습니다." })
+    .default("total"),
+});

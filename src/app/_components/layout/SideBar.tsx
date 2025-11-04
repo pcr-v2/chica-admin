@@ -57,9 +57,15 @@ export default function SideBar(props: IProps) {
             >
               <IconLabel sx={{}}>
                 {Icon &&
-                  (parentMenu.path === "/logs" ? (
+                  (parentMenu.path === "/logs" ||
+                  parentMenu.path === "/statistic" ? (
                     <StyledLogsIcon isactive={isActive.toString()}>
-                      <Icon style={{ width: "100%", height: "100%" }} />
+                      <Icon
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
                     </StyledLogsIcon>
                   ) : (
                     <StyledIcon isactive={isActive.toString()}>
@@ -214,7 +220,7 @@ const LogoWrap = styled(Box)(({ theme }) => {
   return {
     gap: "12px",
     display: "flex",
-    alignItems: "center",
+    alignItems: "end",
     padding: "9px 0px 9px 8px",
     [theme.breakpoints.down("desktop")]: {
       padding: "8px",
@@ -235,10 +241,11 @@ const Logo = styled(SideLogo)(({ theme }) => ({
 
 const LogoText = styled("span")(({ theme }) => {
   return {
-    fontSize: 24,
+    fontSize: 28,
     display: "flex",
-    fontWeight: 500,
+    fontWeight: 600,
     color: "#32C794",
+    lineHeight: "100%",
     [theme.breakpoints.down("desktop")]: {
       display: "none",
     },

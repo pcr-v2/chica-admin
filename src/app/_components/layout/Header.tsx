@@ -79,7 +79,7 @@ export default function Header(props: IProps) {
     <Wrapper>
       <PathLabel>
         {Icon &&
-          (nowPath === "/logs" ? (
+          (nowPath === "/logs" || nowPath === "/statistic" ? (
             <LogsIconWrapper>
               <Icon />
             </LogsIconWrapper>

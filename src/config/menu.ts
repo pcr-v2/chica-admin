@@ -7,6 +7,7 @@ import SideLogs from "@/public/images/icons/sidebar/side-logs.svg";
 import SideMypage from "@/public/images/icons/sidebar/side-mypage.svg";
 import SideSchedule from "@/public/images/icons/sidebar/side-schedule.svg";
 import SideSchool from "@/public/images/icons/sidebar/side-school.svg";
+import SideStatistic from "@/public/images/icons/sidebar/side-statistic.svg";
 import SideStudent from "@/public/images/icons/sidebar/side-student.svg";
 
 // ✅ 1. 사용자 타입 정의
@@ -112,6 +113,13 @@ export const MENUS: MenuItem[] = [
     label: "대시보드",
     path: "/dashboard",
     icon: SideHome,
+    allowRoles: ["teacher"],
+    children: [],
+  },
+  {
+    label: "통계 데이터",
+    path: "/statistic",
+    icon: SideStatistic,
     allowRoles: ["teacher"],
     children: [],
   },

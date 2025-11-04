@@ -53,8 +53,8 @@ export default function FormDatePicker(props: FormDatePickerProps) {
       onChange={setValue}
       slotProps={{
         textField: {
-          readOnly: true,
-          onKeyDown: (e) => e.preventDefault(),
+          readOnly: false,
+          // onKeyDown: (e) => e.preventDefault(),
         },
         popper: {
           placement: "top-end",

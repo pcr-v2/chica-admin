@@ -77,40 +77,41 @@ export default function MasterSchoolFilter(props: IProps) {
       </Btn>
 
       {/* Popper */}
-      {createPortal(
-        <AnimatePresence>
-          {isOpen && (
-            <Dropdown
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                position: "absolute",
-                top: dropdownPosition.top,
-                left: dropdownPosition.left,
-                width: dropdownPosition.width,
-                zIndex: 9999,
-              }}
-            >
-              {list?.map((el, idx) => (
-                <Item
-                  key={`${el}-${idx}`}
-                  onClick={() => {
-                    onChange(el.schoolId);
-                    setLabel(`${el.schoolName}`);
-                    setIsOpen(false);
-                  }}
-                  selected={selectedSchool === el.schoolId}
-                >
-                  {el.schoolName}
-                </Item>
-              ))}
-            </Dropdown>
-          )}
-        </AnimatePresence>,
-        document.body,
-      )}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <Dropdown
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  position: "absolute",
+                  top: dropdownPosition.top,
+                  left: dropdownPosition.left,
+                  width: dropdownPosition.width,
+                  zIndex: 9999,
+                }}
+              >
+                {list?.map((el, idx) => (
+                  <Item
+                    key={`${el}-${idx}`}
+                    onClick={() => {
+                      onChange(el.schoolId);
+                      setLabel(`${el.schoolName}`);
+                      setIsOpen(false);
+                    }}
+                    selected={selectedSchool === el.schoolId}
+                  >
+                    {el.schoolName}
+                  </Item>
+                ))}
+              </Dropdown>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </Container>
   );
 }

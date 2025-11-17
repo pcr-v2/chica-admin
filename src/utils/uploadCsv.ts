@@ -6,17 +6,47 @@ import { z } from "zod";
  *
  * 양식 통일과정에서 제공하는 CSV파일의 헤더 (컬럼명)가 한글임으로 키밸류로 영문으로 전환해서 사용
  */
-const mapHeadersKoreanToEnglish = (header: string) => {
-  const headerMap: { [key: string]: string } = {
-    이름: "studentName",
-    학년: "studentGrade",
-    반: "studentClass",
-    번호: "studentNumber",
-    성별: "studentGender",
-    학생사용여부: "studentStatus",
-  };
-  return headerMap[header] || header;
+const headerAliases: Record<string, string[]> = {
+  studentName: ["이름", "학생이름", "성명", "학생명"],
+  studentGrade: ["학년"],
+  studentClass: ["반", "학급"],
+  studentNumber: ["번호", "출석번호"],
+  studentGender: ["성별"],
+  studentStatus: ["학생사용여부", "사용여부"],
 };
+
+const mapHeadersKoreanToEnglish = (header: string) => {
+  const normalized = header.trim().replace(/"/g, "");
+
+  for (const [key, candidates] of Object.entries(headerAliases)) {
+    if (candidates.includes(normalized)) return key;
+  }
+
+  return normalized;
+};
+
+/**
+ * 인코딩 자동 감지 후 텍스트로 변환
+ * - UTF-8 우선 시도
+ * - 깨지면 EUC-KR(CP949)로 재시도
+ */
+const readFileWithSmartEncoding = async (file: File) => {
+  const buffer = await file.arrayBuffer();
+
+  // 1) UTF-8 우선 디코딩
+  let text = new TextDecoder("utf-8", { fatal: false }).decode(buffer);
+
+  // 2) 깨짐 여부 판단 (� replacement character 등장)
+  const broken = (text.match(/�/g)?.length ?? 0) > 3;
+
+  // 3) 깨졌으면 EUC-KR로 다시 디코딩
+  if (broken) {
+    text = new TextDecoder("euc-kr").decode(buffer);
+  }
+
+  return text;
+};
+
 /**
  * uploadCsv 함수 동작
  *
@@ -38,7 +68,9 @@ const mapHeadersKoreanToEnglish = (header: string) => {
  */
 
 export default async function uploadCsv<Z extends z.ZodSchema>(schema: Z) {
-  // 1. 파일 선택
+  /**
+   * 파일 선택 UI
+   */
   const pickFiles = async (): Promise<FileList> => {
     return new Promise<FileList>((resolve, reject) => {
       const input = document.createElement("input");
@@ -63,56 +95,55 @@ export default async function uploadCsv<Z extends z.ZodSchema>(schema: Z) {
     });
   };
 
-  // 2. text => json 변환
+  /**
+   * CSV 텍스트 → JSON 배열 변환
+   */
   const readTextAsJson = (text: string) => {
     const lines = text?.split("\n")?.filter((line) => line?.trim() !== "");
+    if (!lines || lines.length === 0) return [{}] as z.infer<Z>;
 
     let headers = lines[0]?.replace(`"`, "")?.trim()?.split(",");
-    headers = headers.map(mapHeadersKoreanToEnglish); // 헤더 변환
+    headers = headers.map(mapHeadersKoreanToEnglish);
 
-    const rows = lines?.slice(1);
+    const rows = lines.slice(1);
 
-    const jsonArray = rows?.map((row) => {
+    const jsonArray = rows.map((row) => {
       const values = row
-        ?.split(",")
-        .map((value) =>
-          value?.replace(/\r/g, "")?.trim()?.replace(/^"|"$/g, ""),
-        );
+        .split(",")
+        .map((v) => v.replace(/\r/g, "").trim().replace(/^"|"$/g, ""));
 
-      const jsonObject: { [key: string]: string } = {};
-
-      headers.forEach((header, index) => {
-        jsonObject[header] = values[index];
+      const obj: Record<string, string> = {};
+      headers.forEach((header, i) => {
+        obj[header] = values[i];
       });
 
-      return jsonObject;
+      return obj;
     });
-    // console.log("jsonArray", jsonArray);
+
     const result = schema.safeParse(jsonArray);
-    // console.log("result", result);
+
     if (!result.success) {
       toast.error(
         `${result.error.errors[0].path[1]} 형식이 올바르지 않습니다.`,
       );
-      const defaultData = [{}]; // 기본값으로 빈 객체 배열 반환
-      return defaultData as z.infer<Z>;
+      return [{}] as z.infer<Z>;
     }
 
     return result.data as z.infer<Z>;
   };
 
-  // CSV 파일 파싱
+  // 1) 파일 선택
   const files = await pickFiles();
   const file = files.item(0);
 
   if (file == null) {
     toast.error("파일을 선택해 주세요.");
-    const defaultData = [{}]; // 기본값으로 빈 객체 배열 반환
-    return defaultData as z.infer<Z>;
+    return [{}] as z.infer<Z>;
   }
 
-  const text = await file.text();
-  const result = readTextAsJson(text);
-
-  return result;
+  // 2) 인코딩 자동 감지로 텍스트 변환
+  const text = await readFileWithSmartEncoding(file);
+  console.log(text);
+  // 3) CSV → JSON 변환 + 스키마 검증
+  return readTextAsJson(text);
 }

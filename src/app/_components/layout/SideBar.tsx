@@ -1,5 +1,6 @@
 import { Box, styled, Tooltip } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -33,7 +34,7 @@ export default function SideBar(props: IProps) {
   return (
     <Wrapper>
       <LogoWrap>
-        <Logo />
+        <Logo src={SideLogo} alt="logo" />
 
         <LogoText>양치킹</LogoText>
       </LogoWrap>
@@ -228,7 +229,7 @@ const LogoWrap = styled(Box)(({ theme }) => {
   };
 });
 
-const Logo = styled(SideLogo)(({ theme }) => ({
+const Logo = styled(Image)(({ theme }) => ({
   width: "32px",
   height: "32px",
   borderRadius: "8px",

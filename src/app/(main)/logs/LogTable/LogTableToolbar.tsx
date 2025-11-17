@@ -3,6 +3,7 @@
 import { Box, styled } from "@mui/material";
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 import { LogRow } from "@/app/(main)/logs/LogTable/useLogTable";
@@ -73,7 +74,7 @@ export default function LogTableToolbar(props: IProps) {
           onHoverEnd={() => setIsHover(false)}
           onClick={() => setIsHover(!isHover)}
         >
-          <Data />
+          <Data src={DataIcon} alt="data-icon" />
           <span>Data 관리</span>
 
           <AnimatePresence>
@@ -89,7 +90,7 @@ export default function LogTableToolbar(props: IProps) {
                   whileHover={{ color: "#32C794" }}
                   onClick={() => openDialog(InsertModal, { schoolList })}
                 >
-                  <DataAddSt />
+                  <DataAddSt src={DataAddIcon} alt="data-add" />
                   <span>수동 삽입</span>
                 </HoverItem>
                 <HoverItem
@@ -97,7 +98,7 @@ export default function LogTableToolbar(props: IProps) {
                   whileHover={{ color: "#F44336" }}
                   onClick={() => openDialog(DeleteModal, { schoolList })}
                 >
-                  <DataMinusSt />
+                  <DataMinusSt src={DataMinusIcon} alt="data-minus" />
                   <span>수동 삭제</span>
                 </HoverItem>
               </HoverMenu>
@@ -197,7 +198,7 @@ const Data = styled(DataIcon)(() => {
   };
 });
 
-const DataAdd = styled(DataAddIcon)(() => ({
+const DataAdd = styled(Image)(() => ({
   width: "24px",
   height: "24px",
   path: {
@@ -259,7 +260,7 @@ const DataAddSt = styled(DataAdd)(({ theme }) => {
     },
   };
 });
-const DataMinusSt = styled(DataMinus)(({ theme }) => {
+const DataMinusSt = styled(Image)(({ theme }) => {
   return {
     [theme.breakpoints.down("desktop")]: {
       width: "16px",

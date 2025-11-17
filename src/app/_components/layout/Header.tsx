@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -96,7 +97,7 @@ export default function Header(props: IProps) {
           {me?.data?.type === "master" && "관리자"}
           {me?.data?.name}-선생님
         </UserName>
-        <Logout onClick={handleLogout} />
+        <Logout src={LogoutIcon} alt="logout" onClick={handleLogout} />
       </UserMenu>
     </Wrapper>
   );
@@ -155,7 +156,7 @@ const UserName = styled("span")(({ theme }) => {
   };
 });
 
-const Logout = styled(LogoutIcon)(({ theme }) => {
+const Logout = styled(Image)(({ theme }) => {
   return {
     width: "28px",
     height: "28px",

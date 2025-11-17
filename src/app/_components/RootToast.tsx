@@ -1,6 +1,7 @@
 "use client";
 
 import { styled } from "@mui/material";
+import Image from "next/image";
 import { useEffect } from "react";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
@@ -29,7 +30,7 @@ export function RootToast({
         maxWidth: "none",
       }}
       toastOptions={{
-        icon: <InfoImg />,
+        icon: <InfoImg src={Info} alt="info" />,
         style: {
           fontSize: 16,
           fontWeight: 500,
@@ -63,7 +64,7 @@ export function RootToast({
   );
 }
 
-const InfoImg = styled(Info)(() => {
+const InfoImg = styled(Image)(() => {
   return {
     width: "24px",
     height: "24px",

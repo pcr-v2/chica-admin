@@ -23,6 +23,20 @@ export type GetLineChartStatisticResponse = Awaited<
   ReturnType<typeof getLineChartStatistic>
 >;
 
+type PeriodRange = {
+  startDate: dayjs.Dayjs;
+  endDate: dayjs.Dayjs;
+};
+
+type Gender = "male" | "female";
+
+type RawLineChartStat = {
+  periodIdx: number | bigint;
+  gender: Gender;
+  okCount: bigint | number | null;
+  totalCount: bigint | number | null;
+};
+
 export async function getLineChartStatistic(
   request: GetLineChartStatisticRequest,
 ) {
@@ -182,7 +196,7 @@ export async function getLineChartStatistic(
 
   // 7. xLabels 및 periodRanges 생성 (공휴일/스케줄 휴일 제외)
   let xLabels: string[] = [];
-  let periodRanges: { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs }[] = [];
+  let periodRanges: PeriodRange[] = [];
   const currentYearPrefix = `${today.year()}-`;
 
   if (type === "day") {
@@ -244,133 +258,101 @@ export async function getLineChartStatistic(
   }
 
   // 8. 양치율 계산 (전체, 남자, 여자)
-  const rates: number[] = [];
-  const maleRates: number[] = [];
-  const femaleRates: number[] = [];
+  const periodStats = periodRanges.map(() => ({
+    total: { ok: 0, count: 0 },
+    male: { ok: 0, count: 0 },
+    female: { ok: 0, count: 0 },
+  }));
 
-  for (const period of periodRanges) {
-    // 전체
-    const brushedStats = await mysqlPrisma.$queryRawUnsafe<
-      {
-        brushedOkCount: bigint;
-        brushedTotalCount: bigint;
-      }[]
-    >(
-      `
-      SELECT
-        SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) AS brushedOkCount,
-        COUNT(CASE WHEN b.brushed_status IN ('Ok','No') THEN 1 END) AS brushedTotalCount
-      FROM Brushed b
-      JOIN Student s ON b.student_id = s.student_id
-      WHERE s.school_id = ?
-        AND b.brushed_at BETWEEN ? AND ?
-        AND DATE(b.brushed_at) NOT IN (${
-          [...holidayDates].map((d) => `'${d}'`).join(",") || "1"
-        })
-        AND NOT EXISTS (
-          SELECT 1 FROM Schedules sc
-          WHERE sc.school_id = s.school_id
-            AND sc.schedule_at = DATE(b.brushed_at)
-            AND (
-              sc.schedule_target = 'all'
-              OR FIND_IN_SET(CAST(s.student_grade AS CHAR), sc.schedule_target)
-            )
-        )
-    `,
-      schoolId,
+  if (periodRanges.length > 0) {
+    const periodCaseSql = periodRanges
+      .map((_, index) => `WHEN b.brushed_at BETWEEN ? AND ? THEN ${index}`)
+      .join("\n");
+    const periodParams = periodRanges.flatMap((period) => [
       new Date(dayjs(period.startDate).toISOString()),
       new Date(dayjs(period.endDate).toISOString()),
-    );
+    ]);
+    const firstPeriod = periodRanges[0];
+    const lastPeriod = periodRanges[periodRanges.length - 1];
+    const whereParts = ["s.school_id = ?", "b.period_idx IS NOT NULL"];
+    const whereParams: unknown[] = [schoolId];
+    const holidayDateList = [...holidayDates];
 
-    // 남자
-    const brushedStatsMale = await mysqlPrisma.$queryRawUnsafe<
-      {
-        brushedOkCount: bigint;
-        brushedTotalCount: bigint;
-      }[]
-    >(
-      `
-      SELECT
-        SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) AS brushedOkCount,
-        COUNT(CASE WHEN b.brushed_status IN ('Ok','No') THEN 1 END) AS brushedTotalCount
-      FROM Brushed b
-      JOIN Student s ON b.student_id = s.student_id
-      WHERE s.school_id = ?
-        AND s.student_gender = 'male'
-        AND b.brushed_at BETWEEN ? AND ?
-        AND DATE(b.brushed_at) NOT IN (${
-          [...holidayDates].map((d) => `'${d}'`).join(",") || "1"
-        })
-        AND NOT EXISTS (
-          SELECT 1 FROM Schedules sc
-          WHERE sc.school_id = s.school_id
-            AND sc.schedule_at = DATE(b.brushed_at)
-            AND (
-              sc.schedule_target = 'all'
-              OR FIND_IN_SET(CAST(s.student_grade AS CHAR), sc.schedule_target)
-            )
-        )
-    `,
-      schoolId,
-      new Date(dayjs(period.startDate).toISOString()),
-      new Date(dayjs(period.endDate).toISOString()),
-    );
-
-    // 여자
-    const brushedStatsFemale = await mysqlPrisma.$queryRawUnsafe<
-      {
-        brushedOkCount: bigint;
-        brushedTotalCount: bigint;
-      }[]
-    >(
-      `
-      SELECT
-        SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) AS brushedOkCount,
-        COUNT(CASE WHEN b.brushed_status IN ('Ok','No') THEN 1 END) AS brushedTotalCount
-      FROM Brushed b
-      JOIN Student s ON b.student_id = s.student_id
-      WHERE s.school_id = ?
-        AND s.student_gender = 'female'
-        AND b.brushed_at BETWEEN ? AND ?
-        AND DATE(b.brushed_at) NOT IN (${
-          [...holidayDates].map((d) => `'${d}'`).join(",") || "1"
-        })
-        AND NOT EXISTS (
-          SELECT 1 FROM Schedules sc
-          WHERE sc.school_id = s.school_id
-            AND sc.schedule_at = DATE(b.brushed_at)
-            AND (
-              sc.schedule_target = 'all'
-              OR FIND_IN_SET(CAST(s.student_grade AS CHAR), sc.schedule_target)
-            )
-        )
-    `,
-      schoolId,
-      new Date(dayjs(period.startDate).toISOString()),
-      new Date(dayjs(period.endDate).toISOString()),
-    );
-
-    // 계산 함수
-    function calcRate(
-      stats: { brushedOkCount: bigint; brushedTotalCount: bigint }[],
-    ) {
-      if (stats.length === 0 || stats[0].brushedTotalCount === BigInt(0))
-        return 0;
-      return (
-        (Number(stats[0].brushedOkCount) / Number(stats[0].brushedTotalCount)) *
-        100
+    if (holidayDateList.length > 0) {
+      whereParts.push(
+        `DATE(b.brushed_at) NOT IN (${holidayDateList
+          .map(() => "?")
+          .join(",")})`,
       );
+      whereParams.push(...holidayDateList);
     }
 
-    rates.push(Number(calcRate(brushedStats).toFixed(1)));
-    maleRates.push(Number(calcRate(brushedStatsMale).toFixed(1)));
-    femaleRates.push(Number(calcRate(brushedStatsFemale).toFixed(1)));
+    whereParts.push(`
+      NOT EXISTS (
+        SELECT 1 FROM Schedules sc
+        WHERE sc.school_id = s.school_id
+          AND sc.schedule_at = DATE(b.brushed_at)
+          AND (
+            sc.schedule_target = 'all'
+            OR FIND_IN_SET(CAST(s.student_grade AS CHAR), sc.schedule_target)
+          )
+      )
+    `);
+
+    const stats = await mysqlPrisma.$queryRawUnsafe<RawLineChartStat[]>(
+      `
+      SELECT
+        b.period_idx AS periodIdx,
+        s.student_gender AS gender,
+        SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) AS okCount,
+        COUNT(CASE WHEN b.brushed_status IN ('Ok','No') THEN 1 END) AS totalCount
+      FROM (
+        SELECT
+          b.student_id,
+          b.brushed_at,
+          b.brushed_status,
+          CASE
+            ${periodCaseSql}
+            ELSE NULL
+          END AS period_idx
+        FROM Brushed b
+        WHERE b.brushed_at BETWEEN ? AND ?
+      ) b
+      JOIN Student s ON b.student_id = s.student_id
+      WHERE ${whereParts.join(" AND ")}
+      GROUP BY b.period_idx, s.student_gender
+      ORDER BY b.period_idx ASC, s.student_gender ASC
+    `,
+      ...periodParams,
+      new Date(dayjs(firstPeriod.startDate).toISOString()),
+      new Date(dayjs(lastPeriod.endDate).toISOString()),
+      ...whereParams,
+    );
+
+    for (const row of stats) {
+      const periodIndex = Number(row.periodIdx);
+      const gender = row.gender;
+      const okCount = Number(row.okCount ?? 0);
+      const totalCount = Number(row.totalCount ?? 0);
+      const period = periodStats[periodIndex];
+
+      if (period == null) continue;
+
+      period.total.ok += okCount;
+      period.total.count += totalCount;
+      period[gender].ok += okCount;
+      period[gender].count += totalCount;
+    }
   }
 
-  //   console.log("라벨", xLabels);
-  //   console.log("전체 rates", rates);
-  //   console.log("남자 rates", maleRates);
-  //   console.log("여자 rates", femaleRates);
+  function calcRate(stats: { ok: number; count: number }) {
+    if (stats.count === 0) return 0;
+    return Number(((stats.ok / stats.count) * 100).toFixed(1));
+  }
+
+  const rates = periodStats.map((period) => calcRate(period.total));
+  const maleRates = periodStats.map((period) => calcRate(period.male));
+  const femaleRates = periodStats.map((period) => calcRate(period.female));
 
   return {
     code: "SUCCESS" as const,

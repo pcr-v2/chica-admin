@@ -20,42 +20,49 @@ export default async function Page() {
   const me = await getMe();
 
   // 로그인 체크
-  if (me.code === "FAIL") {
+  if (me.code !== "SUCCESS") {
     return redirect("/signin");
   }
 
-  const personalRankList = await getPersonalRankStatistic({
-    schoolId: me.data?.schoolId as string,
-    isTotal: true,
-    searchRange: {
-      startAt: "",
-      endAt: "",
-    },
-  });
+  const schoolId = me.data.schoolId;
 
-  const lineRes = await getLineChartStatistic({
-    schoolId: me.data?.schoolId as string,
-    type: "day",
-  });
-  const barRes = await getBarChartStatistic({
-    schoolId: me.data?.schoolId as string,
-    type: "day",
-  });
-
-  const classRankList = await getClassRankListStatistic({
-    schoolId: me.data?.schoolId as string,
-    isTotal: true,
-    searchRange: {
-      startAt: "",
-      endAt: "",
-    },
-  });
-
-  const schoolList = await getSchoolList();
-
-  const unCheckedList = await getUnCheckedStatistic({
-    schoolId: me.data?.schoolId as string,
-  });
+  const [
+    personalRankList,
+    lineRes,
+    barRes,
+    classRankList,
+    schoolList,
+    unCheckedList,
+  ] = await Promise.all([
+    getPersonalRankStatistic({
+      schoolId,
+      isTotal: true,
+      searchRange: {
+        startAt: "",
+        endAt: "",
+      },
+    }),
+    getLineChartStatistic({
+      schoolId,
+      type: "day",
+    }),
+    getBarChartStatistic({
+      schoolId,
+      type: "day",
+    }),
+    getClassRankListStatistic({
+      schoolId,
+      isTotal: true,
+      searchRange: {
+        startAt: "",
+        endAt: "",
+      },
+    }),
+    getSchoolList(),
+    getUnCheckedStatistic({
+      schoolId,
+    }),
+  ]);
 
   // console.log("test", classRankList);
   return (

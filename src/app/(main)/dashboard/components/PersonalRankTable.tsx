@@ -2,17 +2,19 @@
 
 import { Box, styled } from "@mui/material";
 
+import LoadingOverlay from "@/app/_components/common/LoadingOverlay";
 import { GetPersonalRankStatisticResponse } from "@/app/actions/statistic/getPersonalRankStatistic";
 import Female from "@/public/images/icons/female-icon.svg";
 import Male from "@/public/images/icons/male-icon.svg";
 
 interface IProps {
-  personalRankList: GetPersonalRankStatisticResponse;
+  personalRankList?: GetPersonalRankStatisticResponse;
   isRound: boolean;
+  isLoading?: boolean;
 }
 
 export default function PersonalRankTable(props: IProps) {
-  const { personalRankList, isRound } = props;
+  const { personalRankList, isRound, isLoading = false } = props;
 
   return (
     <Wrapper>
@@ -26,14 +28,14 @@ export default function PersonalRankTable(props: IProps) {
         <TableHeaderColumn>실천율</TableHeaderColumn>
       </TableHeader>
 
-      {personalRankList.data?.map((el, idx) => {
+      {personalRankList?.data?.map((el, idx) => {
         return (
           <TableRow
             key={idx}
             style={{
               borderBottom:
-                personalRankList.data &&
-                personalRankList.data?.length - 1 === idx
+                personalRankList?.data &&
+                personalRankList.data.length - 1 === idx
                   ? "none"
                   : "1px solid #F3F3F3",
             }}
@@ -73,6 +75,7 @@ export default function PersonalRankTable(props: IProps) {
           </TableRow>
         );
       })}
+      <LoadingOverlay open={isLoading} />
     </Wrapper>
   );
 }

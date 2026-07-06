@@ -3,17 +3,17 @@
 import { Box, Checkbox, CheckboxProps, styled } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import ClassRankChart from "@/app/(main)/dashboard/components/ClassRankChart";
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
-import { GetMeResponse } from "@/app/actions/auth/getMe";
 import {
   getClassRankListStatistic,
   GetClassRankListStatisticResponse,
 } from "@/app/actions/statistic/getClassRankListStatistic";
+import useInView from "@/libs/hooks/useInView";
 import useResponsive from "@/libs/hooks/useResponsive";
 
 interface CustomCheckboxProps extends CheckboxProps {
@@ -21,36 +21,37 @@ interface CustomCheckboxProps extends CheckboxProps {
 }
 
 interface IProps {
-  me: GetMeResponse;
-  classRankList: GetClassRankListStatisticResponse;
+  schoolId: string;
+  classRankList?: GetClassRankListStatisticResponse;
 }
 
 export default function ClassListRank(props: IProps) {
-  const { me, classRankList } = props;
+  const { schoolId, classRankList } = props;
 
   const downTablet = useResponsive("down", "tablet");
+  const [setSectionRef, shouldLoad] = useInView<HTMLDivElement>("300px");
 
   const [endAt, setEndAt] = useState("");
   const [startAt, setStartAt] = useState("");
   const [isRound, setIsRound] = useState(true);
   const [isTotal, setIsTotal] = useState(true);
 
-  const queryKey = ["classRankList", startAt, endAt, isTotal];
+  const queryKey = ["classRankList", schoolId, startAt, endAt, isTotal];
   const queryClient = useQueryClient();
-  const { data, refetch } = useQuery({
+  const { data, refetch, isFetching } = useQuery({
     queryKey,
     queryFn: () =>
       getClassRankListStatistic({
-        schoolId: me.data?.schoolId!,
+        schoolId,
         isTotal,
         searchRange: {
-          startAt: startAt ?? null,
-          endAt: endAt ?? null,
+          startAt,
+          endAt,
         },
       }),
     initialData: classRankList,
     staleTime: 0,
-    enabled: false, // 자동 실행 금지
+    enabled: shouldLoad && !!schoolId && isTotal && !startAt && !endAt,
   });
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function ClassListRank(props: IProps) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper ref={setSectionRef}>
       <ChartFilter>
         <Title>반별 리더보드</Title>
         <DateWrap>
@@ -156,7 +157,11 @@ export default function ClassListRank(props: IProps) {
         </DateWrap>
       </ChartFilter>
 
-      <ClassRankChart classRankList={data} isRound={isRound} />
+      <ClassRankChart
+        classRankList={data}
+        isRound={isRound}
+        isLoading={isFetching}
+      />
     </Wrapper>
   );
 }

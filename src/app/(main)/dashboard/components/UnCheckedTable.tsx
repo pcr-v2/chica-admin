@@ -2,16 +2,18 @@
 
 import { Box, styled } from "@mui/material";
 
+import LoadingOverlay from "@/app/_components/common/LoadingOverlay";
 import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
 import Female from "@/public/images/icons/female-icon.svg";
 import Male from "@/public/images/icons/male-icon.svg";
 
 interface IProps {
-  unCheckedList: GetUnCheckedStatisticResponse;
+  unCheckedList?: GetUnCheckedStatisticResponse;
+  isLoading?: boolean;
 }
 
 export default function UnCheckedTable(props: IProps) {
-  const { unCheckedList } = props;
+  const { unCheckedList, isLoading = false } = props;
 
   return (
     <Wrapper>
@@ -23,13 +25,13 @@ export default function UnCheckedTable(props: IProps) {
         <TableHeaderColumn>이름</TableHeaderColumn>
       </TableHeader>
 
-      {unCheckedList.data?.map((el, idx) => {
+      {unCheckedList?.data?.map((el, idx) => {
         return (
           <TableRow
             key={idx}
             style={{
               borderBottom:
-                unCheckedList.data && unCheckedList.data?.length - 1 === idx
+                unCheckedList?.data && unCheckedList.data.length - 1 === idx
                   ? "none"
                   : "1px solid #F3F3F3",
             }}
@@ -45,6 +47,7 @@ export default function UnCheckedTable(props: IProps) {
           </TableRow>
         );
       })}
+      <LoadingOverlay open={isLoading} />
     </Wrapper>
   );
 }

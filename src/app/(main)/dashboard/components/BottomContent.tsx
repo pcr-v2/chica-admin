@@ -10,12 +10,15 @@ import toast from "react-hot-toast";
 import PersonalRankTable from "@/app/(main)/dashboard/components/PersonalRankTable";
 import UnCheckedTable from "@/app/(main)/dashboard/components/UnCheckedTable";
 import FormDatePicker from "@/app/_components/common/FormDatePicker";
-import { GetMeResponse } from "@/app/actions/auth/getMe";
 import {
   getPersonalRankStatistic,
   GetPersonalRankStatisticResponse,
 } from "@/app/actions/statistic/getPersonalRankStatistic";
-import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
+import {
+  getUnCheckedStatistic,
+  GetUnCheckedStatisticResponse,
+} from "@/app/actions/statistic/getUnCheckedStatistic";
+import useInView from "@/libs/hooks/useInView";
 import useResponsive from "@/libs/hooks/useResponsive";
 
 interface CustomCheckboxProps extends CheckboxProps {
@@ -23,13 +26,13 @@ interface CustomCheckboxProps extends CheckboxProps {
 }
 
 interface IProps {
-  me: GetMeResponse;
-  personalRankList: GetPersonalRankStatisticResponse;
-  unCheckedList: GetUnCheckedStatisticResponse;
+  schoolId: string;
+  personalRankList?: GetPersonalRankStatisticResponse;
+  unCheckedList?: GetUnCheckedStatisticResponse;
 }
 
 export default function BottomContent(props: IProps) {
-  const { me, personalRankList, unCheckedList } = props;
+  const { schoolId, personalRankList, unCheckedList } = props;
 
   const [endAt, setEndAt] = useState("");
   const [startAt, setStartAt] = useState("");
@@ -37,14 +40,19 @@ export default function BottomContent(props: IProps) {
   const [isRound, setIsRound] = useState(true);
 
   const queryClient = useQueryClient();
-  const queryKey = ["student-statistic-list"];
+  const queryKey = ["student-statistic-list", schoolId, isTotal, startAt, endAt];
   const downTablet = useResponsive("down", "tablet");
+  const [setSectionRef, shouldLoad] = useInView<HTMLDivElement>("300px");
 
-  const { data: personalList, refetch } = useQuery({
+  const {
+    data: personalList,
+    refetch,
+    isFetching: isPersonalFetching,
+  } = useQuery({
     queryKey,
     queryFn: () =>
       getPersonalRankStatistic({
-        schoolId: me.data?.schoolId as string,
+        schoolId,
         isTotal,
         searchRange: {
           startAt,
@@ -53,6 +61,14 @@ export default function BottomContent(props: IProps) {
       }),
     initialData: personalRankList,
     staleTime: 0,
+    enabled: shouldLoad && !!schoolId && isTotal && !startAt && !endAt,
+  });
+
+  const { data: unCheckedData, isFetching: isUncheckedFetching } = useQuery({
+    queryKey: ["unchecked-list", schoolId],
+    queryFn: () => getUnCheckedStatistic({ schoolId }),
+    initialData: unCheckedList,
+    enabled: shouldLoad && !!schoolId,
   });
 
   useEffect(() => {
@@ -72,7 +88,7 @@ export default function BottomContent(props: IProps) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper ref={setSectionRef}>
       <TableWrap>
         <ChartFilter>
           <Title>개인전 순위</Title>
@@ -159,13 +175,20 @@ export default function BottomContent(props: IProps) {
           </DateWrap>
         </ChartFilter>
 
-        <PersonalRankTable personalRankList={personalList} isRound={isRound} />
+        <PersonalRankTable
+          personalRankList={personalList}
+          isRound={isRound}
+          isLoading={isPersonalFetching}
+        />
       </TableWrap>
 
       <TableWrap>
         <Title>5일 연속 미참여 학생 리스트</Title>
 
-        <UnCheckedTable unCheckedList={unCheckedList} />
+        <UnCheckedTable
+          unCheckedList={unCheckedData}
+          isLoading={isUncheckedFetching}
+        />
       </TableWrap>
     </Wrapper>
   );

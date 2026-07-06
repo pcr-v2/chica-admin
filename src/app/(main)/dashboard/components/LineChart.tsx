@@ -14,6 +14,7 @@ import {
 import React from "react";
 import { Line } from "react-chartjs-2";
 
+import LoadingOverlay from "@/app/_components/common/LoadingOverlay";
 import { GetLineChartStatisticResponse } from "@/app/actions/statistic/getLineChartStatistic";
 import useResponsive from "@/libs/hooks/useResponsive";
 
@@ -28,19 +29,20 @@ ChartJS.register(
 );
 
 interface IProps {
-  lineRes: GetLineChartStatisticResponse;
+  lineRes?: GetLineChartStatisticResponse;
+  isLoading?: boolean;
 }
 
-export default function ChartLine({ lineRes }: IProps) {
+export default function ChartLine({ lineRes, isLoading = false }: IProps) {
   const downDesktop = useResponsive("down", "desktop");
 
-  const labels = lineRes.data?.labels || [];
+  const labels = lineRes?.data?.labels || [];
 
-  const maleData = lineRes.data?.maleRates || [];
-  const femaleData = lineRes.data?.femaleRates || [];
-  const totalData = lineRes.data?.rates || [];
+  const maleData = lineRes?.data?.maleRates || [];
+  const femaleData = lineRes?.data?.femaleRates || [];
+  const totalData = lineRes?.data?.rates || [];
 
-  const yMax = Math.max(...[...maleData, ...femaleData]);
+  const yMax = Math.max(0, ...maleData, ...femaleData);
 
   const options = {
     responsive: true,
@@ -119,12 +121,14 @@ export default function ChartLine({ lineRes }: IProps) {
       sx={(theme) => ({
         width: "100%",
         height: "100%",
+        position: "relative",
         [theme.breakpoints.down("desktop")]: {
           minHeight: "400px",
         },
       })}
     >
       <Line options={options} data={data} />
+      <LoadingOverlay open={isLoading} />
     </Box>
   );
 }

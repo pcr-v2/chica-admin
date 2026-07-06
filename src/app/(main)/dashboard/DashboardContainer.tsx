@@ -14,39 +14,16 @@ import MiddleContent from "@/app/(main)/dashboard/components/MiddleContent";
 import MasterSchoolFilter from "@/app/(main)/schedule/filters/MasterSchoolFilter";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { fetchAndSaveHolidays } from "@/app/actions/school/fetchAndSaveHolidays";
-import { GetSchoolListResponse } from "@/app/actions/school/getSchoolListAction";
-import {
-  getBarChartStatistic,
-  GetBarChartStatisticResponse,
-} from "@/app/actions/statistic/getBarChartStatistic";
-import { GetClassRankListStatisticResponse } from "@/app/actions/statistic/getClassRankListStatistic";
-import {
-  getLineChartStatistic,
-  GetLineChartStatisticResponse,
-} from "@/app/actions/statistic/getLineChartStatistic";
-import { GetPersonalRankStatisticResponse } from "@/app/actions/statistic/getPersonalRankStatistic";
-import { GetUnCheckedStatisticResponse } from "@/app/actions/statistic/getUnCheckedStatistic";
+import { getSchoolList } from "@/app/actions/school/getSchoolListAction";
+import { getBarChartStatistic } from "@/app/actions/statistic/getBarChartStatistic";
+import { getLineChartStatistic } from "@/app/actions/statistic/getLineChartStatistic";
 
 interface IProps {
   me: GetMeResponse;
-  personalRankList: GetPersonalRankStatisticResponse;
-  unCheckedList: GetUnCheckedStatisticResponse;
-  lineRes: GetLineChartStatisticResponse;
-  barRes: GetBarChartStatisticResponse;
-  classRankList: GetClassRankListStatisticResponse;
-  schoolList: GetSchoolListResponse;
 }
 
 export default function DashboardContainer(props: IProps) {
-  const {
-    me,
-    personalRankList,
-    unCheckedList,
-    lineRes,
-    barRes,
-    classRankList,
-    schoolList,
-  } = props;
+  const { me } = props;
 
   const [selectedSchool, setSelectedSchool] = useState("");
 
@@ -70,26 +47,30 @@ export default function DashboardContainer(props: IProps) {
 
   const [lineTab, setLineTab] = useState<"day" | "week">("day");
   const [barTab, setBarTab] = useState<"day" | "week">("day");
+  const schoolId = selectedSchool || me.data?.schoolId || "";
 
-  const { data: lineData } = useQuery({
-    queryKey: ["line", lineTab, selectedSchool],
+  const { data: lineData, isFetching: isLineFetching } = useQuery({
+    queryKey: ["line", lineTab, schoolId],
     queryFn: () =>
       getLineChartStatistic({
-        schoolId: me.data?.schoolId as string,
+        schoolId,
         type: lineTab,
       }),
-    enabled: !!me.data,
-    initialData: lineRes,
+    enabled: !!schoolId,
   });
-  const { data: barData } = useQuery({
-    queryKey: ["bar", barTab, selectedSchool],
+  const { data: barData, isFetching: isBarFetching } = useQuery({
+    queryKey: ["bar", barTab, schoolId],
     queryFn: () =>
       getBarChartStatistic({
-        schoolId: me.data?.schoolId as string,
+        schoolId,
         type: barTab,
       }),
-    enabled: !!me.data,
-    initialData: barRes,
+    enabled: !!schoolId,
+  });
+  const { data: schoolList } = useQuery({
+    queryKey: ["school-list"],
+    queryFn: () => getSchoolList(),
+    enabled: me.data?.type === "master",
   });
 
   return (
@@ -98,7 +79,7 @@ export default function DashboardContainer(props: IProps) {
         <FilterBox>
           <MasterSchoolFilter
             onChange={(value) => setSelectedSchool(value)}
-            schoolList={schoolList.result}
+            schoolList={schoolList?.result ?? []}
             selectedSchool={selectedSchool}
           />
         </FilterBox>
@@ -108,25 +89,27 @@ export default function DashboardContainer(props: IProps) {
         <MiddleContent
           tab={lineTab}
           graphType="line"
-          graph={<ChartLine lineRes={lineData} />}
+          graph={<ChartLine lineRes={lineData} isLoading={isLineFetching} />}
           onChange={(value) => setLineTab(value)}
         />
         <MiddleContent
           graphType="bar"
-          graph={<BarChart barRes={barData} tab={barTab} />}
+          graph={
+            <BarChart
+              barRes={barData}
+              tab={barTab}
+              isLoading={isBarFetching}
+            />
+          }
           tab={barTab}
           onChange={(value) => setBarTab(value)}
         />
       </MiddleWrap>
 
-      <ClassListRank me={me} classRankList={classRankList} />
+      <ClassListRank schoolId={schoolId} />
 
       <BottomWrap>
-        <BottomContent
-          me={me}
-          personalRankList={personalRankList}
-          unCheckedList={unCheckedList}
-        />
+        <BottomContent schoolId={schoolId} />
 
         {/* <Box
           sx={{

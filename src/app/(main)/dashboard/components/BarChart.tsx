@@ -16,6 +16,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
+import LoadingOverlay from "@/app/_components/common/LoadingOverlay";
 import { GetBarChartStatisticResponse } from "@/app/actions/statistic/getBarChartStatistic";
 import useResponsive from "@/libs/hooks/useResponsive";
 
@@ -37,20 +38,21 @@ interface DataLabelContext {
 }
 
 interface IProps {
-  barRes: GetBarChartStatisticResponse;
+  barRes?: GetBarChartStatisticResponse;
   tab: "day" | "week";
+  isLoading?: boolean;
 }
 
-export function BarChart({ barRes, tab }: IProps) {
+export function BarChart({ barRes, tab, isLoading = false }: IProps) {
   const downDesktop = useResponsive("down", "desktop");
 
-  const labels = barRes.data?.labels || [];
+  const labels = barRes?.data?.labels || [];
 
-  const dailyData = barRes.data?.todayRate || [];
-  const dailyCompareData = barRes.data?.yesterdayRate || [];
+  const dailyData = barRes?.data?.todayRate || [];
+  const dailyCompareData = barRes?.data?.yesterdayRate || [];
 
-  const weeklyData = barRes.data?.thisWeekRate || [];
-  const weeklyCompareData = barRes.data?.lastWeekRate || [];
+  const weeklyData = barRes?.data?.thisWeekRate || [];
+  const weeklyCompareData = barRes?.data?.lastWeekRate || [];
 
   const chartData =
     tab === "day"
@@ -68,7 +70,7 @@ export function BarChart({ barRes, tab }: IProps) {
         ];
 
   // ✅ 최대값 계산 (두 dataset 모두 포함)
-  const maxValue = Math.max(...chartData.flatMap((d) => d.data ?? []));
+  const maxValue = Math.max(0, ...chartData.flatMap((d) => d.data ?? []));
   // ✅ 차트 옵션
   const options = {
     responsive: true,
@@ -147,12 +149,14 @@ export function BarChart({ barRes, tab }: IProps) {
       sx={(theme) => ({
         width: "100%",
         height: "100%",
+        position: "relative",
         [theme.breakpoints.down("desktop")]: {
           minHeight: "400px",
         },
       })}
     >
       <Bar options={options} data={data} />
+      <LoadingOverlay open={isLoading} />
     </Box>
   );
 }

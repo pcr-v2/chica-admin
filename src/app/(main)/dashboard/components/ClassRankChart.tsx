@@ -13,6 +13,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
+import LoadingOverlay from "@/app/_components/common/LoadingOverlay";
 import { GetClassRankListStatisticResponse } from "@/app/actions/statistic/getClassRankListStatistic";
 
 ChartJS.register(
@@ -26,15 +27,16 @@ ChartJS.register(
 );
 
 interface IProps {
-  classRankList: GetClassRankListStatisticResponse;
+  classRankList?: GetClassRankListStatisticResponse;
   isRound: boolean;
+  isLoading?: boolean;
 }
 
 export default function ClassRankChart(props: IProps) {
-  const { classRankList, isRound } = props;
+  const { classRankList, isRound, isLoading = false } = props;
 
-  const rates = classRankList.data?.classList.map((d) => d.rate) ?? [];
-  const maxValue = Math.max(...rates);
+  const rates = classRankList?.data?.classList.map((d) => d.rate) ?? [];
+  const maxValue = Math.max(0, ...rates);
 
   const options = {
     responsive: true,
@@ -81,7 +83,7 @@ export default function ClassRankChart(props: IProps) {
     },
   };
 
-  const labels = classRankList.data?.classList.map(
+  const labels = classRankList?.data?.classList.map(
     (d) => `${d.grade}학년 ${d.class}반`,
   );
 
@@ -90,7 +92,7 @@ export default function ClassRankChart(props: IProps) {
     datasets: [
       {
         label: "반별 양치율 (%)",
-        data: classRankList.data?.classList.map((d) => d.rate) ?? [],
+        data: classRankList?.data?.classList.map((d) => d.rate) ?? [],
         borderRadius: 6,
         maxBarThickness: 48,
         backgroundColor: "rgba(73, 196, 196, 0.6)",
@@ -107,6 +109,7 @@ export default function ClassRankChart(props: IProps) {
         maxWidth: "1565px",
         minHeight: "350px",
         padding: "0px 0px 24px",
+        position: "relative",
       }}
     >
       <div
@@ -120,6 +123,7 @@ export default function ClassRankChart(props: IProps) {
       >
         <Bar options={options} data={data} />
       </div>
+      <LoadingOverlay open={isLoading} />
     </div>
   );
 }
